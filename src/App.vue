@@ -1,27 +1,28 @@
 <template>
-  <div class="wrapper"> 
-    <h1 class="h1">{{ title }}</h1>
+  <div class="wrapper">      
+    <TheHeader/>
 
-    <Card class="card"
-          :list="moviesList.data"
+    <ListMovies class="list"
+                :movies-list="moviesList"
     />
-
   </div>
 </template>
 
 <script>
-import Card from './components/Card.vue';
+import TheHeader from './components/TheHeader.vue';
+import ListMovies from './components/ListMovies.vue';
 
 export default {
   name: 'App',
 
   components: {
-    Card,
-  },
+    TheHeader,
+    ListMovies,
+},
 
   data() {
     return {
-      title: 'Movies by Aleksey',
+      title: 'Movies',
       moviesList: []
     }
   },
@@ -41,26 +42,14 @@ export default {
 
 <style lang="scss" scoped>
   .wrapper {
-    max-width: 1920px;
+    max-width: 1440px;
+    margin: 50px 0;
+    background-color: #000;
+    opacity: .65;
     margin: 0 auto
   }
-  .h1 {
-    text-align: center;
-  }
 
-  .button {
-    display: block;
-    width: 10%;
-    height: 35px;
-    margin: 0 auto;
-    color: #fff;
-    background-color: brown;
-    border-radius: 15px;
-    border: none;
-    cursor: pointer;
-
-    &:hover {
-      background-color: red;
-    }
+  .list {
+    margin-top: 25px;
   }
 </style>

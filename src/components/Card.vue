@@ -1,13 +1,11 @@
-<template>
-    <div class="card-row">
-        <div class="card"
-             v-for="item in list"
-             :key="item.id"
-        >            
-            <img class="poster" :src="item.big_poster">   
-            <h2 class="title">{{ item.name_russian }}</h2>        
-        </div>        
-    </div>
+<template>    
+    <div class="card"
+            v-for="item in list.data"
+            :key="item.id"
+    >            
+        <img class="poster" :src="item.small_poster">
+        <h3 class="name">{{ item.name_russian }}</h3>
+    </div>    
 </template>
 
 <script>
@@ -30,20 +28,17 @@ export default {
 
     .card {
         position: relative;
-        width: 300px;
-        height: 350px;
-        border: 1px solid green;
-    }
-
-    .title {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 1;
+        flex: 0 0 15%;
+        margin-right: 10px;
     }
 
     .poster {
         width: 100%;
-        height: 100%;
+        height: 75%
+    }
+
+    .name {
+        text-align: center;
+        color: #fff;
     }
 </style>
