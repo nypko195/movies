@@ -1,15 +1,14 @@
 <template>
-  <div class="wrapper">      
+  <div class="wrapper">
+    <div class="bg"></div>     
     <TheHeader/>
 
-    <ListMovies class="list"
-                :movies-list="moviesList"
-    />
+    <ListMovies :movies-list="moviesList"/>
   </div>
 </template>
 
 <script>
-import TheHeader from './components/TheHeader.vue';
+import TheHeader from './components/The/TheHeader.vue';
 import ListMovies from './components/ListMovies.vue';
 
 export default {
@@ -27,29 +26,26 @@ export default {
     }
   },
 
-  async mounted() {
+  async created() {
       let response = await fetch('https://kinobd.ru/api/films', {
         method: 'GET', 
       });
       this.moviesList = await response.json();   
   },
-
-  methods: {
-    
-  }
 }
 </script>
 
 <style lang="scss" scoped>
   .wrapper {
-    max-width: 1440px;
-    margin: 50px 0;
-    background-color: #000;
-    opacity: .65;
-    margin: 0 auto
+    background-color: #111; 
+    margin: 0 auto;
   }
 
-  .list {
-    margin-top: 25px;
+  .bg {
+    display: block;
+    height: 28rem;
+    background-image: url('../src/assets/bg/bg.jpg');
+    background-repeat: no-repeat;
+    background-position: top;
   }
 </style>

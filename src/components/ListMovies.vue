@@ -1,8 +1,7 @@
 <template>
     <div class="list-movies">
-        <h2 class="list-movies__title">{{ title }}</h2>
         <div class="list-movies__row">
-            <Card class="list-movies__card" :list="moviesList"/>
+            <Card :list="moviesList"/>
         </div>
     </div>
 </template>
@@ -33,21 +32,17 @@ export default {
 
 <style lang="scss">
     .list-movies{
-        /*  */
-
-        &__title {
-            color: #fff;
-            text-align: center;
-        }
+        max-width: 110rem;
+        margin: 0 auto;
+        margin-top: 10px;
+        padding-top: 20px;
+        background-color: #f1eeee;
+        border-radius: 5px;
 
         &__row {
             display: flex;
-            margin: 0 20px;
-            padding: 10px;
-            flex: 0 0 10%;
-            overflow-y: auto;
-            background-color: rgb(93, 122, 204);
-
+            justify-content: center;
+            flex-wrap: wrap;
         }
     }
 </style>

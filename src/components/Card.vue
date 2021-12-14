@@ -3,8 +3,8 @@
             v-for="item in list.data"
             :key="item.id"
     >            
-        <img class="poster" :src="item.small_poster">
-        <h3 class="name">{{ item.name_russian }}</h3>
+        <img class="poster" :src="item.small_poster"/>
+        <span class="year">{{ item.year }}</span>
     </div>    
 </template>
 
@@ -14,31 +14,32 @@ export default {
 
     props: {
         list: {
-            type: Array,
+            type: Object,
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-    .card-row {
-        display: flex;
-        flex-wrap: wrap;
-    }
-
     .card {
         position: relative;
         flex: 0 0 15%;
-        margin-right: 10px;
+        margin-right: 1.5rem;
+        margin-bottom: 1rem;
     }
 
     .poster {
-        width: 100%;
-        height: 75%
+        width: 17rem;
+        height: 25rem;
     }
 
-    .name {
-        text-align: center;
+    .year {
+        position: absolute;
+        bottom: 7%;
+        left: 10%;
+        padding: 5px;
+        background-color: #4a9999;    
         color: #fff;
+        font-size: 1.6rem;
     }
 </style>
