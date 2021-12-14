@@ -5,7 +5,6 @@
     >            
         <img class="poster" :src="item.small_poster"/>
         <span class="year">{{ item.year }}</span>
-        <h3>test git</h3>
     </div>    
 </template>
 
