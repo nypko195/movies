@@ -4,12 +4,15 @@
     <TheHeader/>
 
     <ListMovies :movies-list="moviesList"/>
+
+    <TheFooter/>
   </div>
 </template>
 
 <script>
 import TheHeader from './components/The/TheHeader.vue';
 import ListMovies from './components/ListMovies.vue';
+import TheFooter from './components/The/TheFooter.vue';
 
 export default {
   name: 'App',
@@ -17,6 +20,7 @@ export default {
   components: {
     TheHeader,
     ListMovies,
+    TheFooter,
 },
 
   data() {
@@ -30,7 +34,8 @@ export default {
       let response = await fetch('https://kinobd.ru/api/films', {
         method: 'GET', 
       });
-      this.moviesList = await response.json();   
+      let data = await response.json(); 
+      this.moviesList = await data.data;  
   },
 }
 </script>

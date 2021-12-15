@@ -1,7 +1,7 @@
 <template>
     <div class="list-movies">
         <div class="list-movies__row">
-            <Card :list="moviesList"/>
+            <Card :movies-list="moviesList"/>
         </div>
     </div>
 </template>
@@ -18,7 +18,7 @@ export default {
 
     props: {
         moviesList: {
-            type: Object,
+            type: Array,
         }
     },
 
@@ -33,13 +33,16 @@ export default {
 <style lang="scss">
     .list-movies{
         max-width: 110rem;
+        height: 70rem;
         margin: 0 auto;
         margin-top: 10px;
+        margin-bottom: 10px;
         padding-top: 20px;
         background-color: #f1eeee;
         border-radius: 5px;
 
         &__row {
+            position: relative;
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
