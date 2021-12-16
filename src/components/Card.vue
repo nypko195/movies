@@ -1,13 +1,15 @@
 <template>    
-    <div class="card"
-            v-for="item in activeListMovies"
-            :key="item.id"
-    >            
-        <img class="poster" :src="item.small_poster"/>
-        <span class="year">{{ item.year }}</span>        
-    </div> 
+    <div class="card-row">
+        <div class="card"
+             v-for="item in activeListMovies"
+             :key="item.id"
+        >            
+            <img class="poster" :src="item.small_poster"/>
+            <span class="year">{{ item.year }}</span>        
+        </div> 
+    </div>
     <div class="paginations">
-        <button class="button prev" 
+        <button class="button prev"
                 @click="page--" 
                 v-show="isShowBtnPagePrev"
         >
@@ -63,7 +65,8 @@ export default {
         },
 
         isShowBtnPageNext: function() {
-            if(this.activeListMovies.length === 10) {
+            //подумать над решение если не знать количество страниц
+            if(this.page !== 5) {
                 return true;
             } else {
                 return false;
@@ -74,11 +77,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .card-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
     .card {
         position: relative;
-        flex: 0 0 15%;
+        flex: 0 0 16%;
         margin-right: 1.5rem;
         margin-bottom: 1rem;
+
+        &:nth-child(5n) {
+            margin-right: 0;
+        }
     }
 
     .poster {
@@ -97,10 +109,12 @@ export default {
     }
 
     .paginations {
-        position: absolute;
-        bottom: -8%;
+        position: relative;
+        width: 100%;
+        margin: 1rem 0 2rem;
 
         .button {
+            position: absolute;
             width: 10rem;
             height: 3rem;
             background-color: #4a9999; 
@@ -109,12 +123,21 @@ export default {
             font-size: 1.6rem;
             font-weight: 700;
             text-transform: uppercase;
-        }
+        }   
 
         .count-page {
+            position: absolute;
+            left: 50%;
             font-size: 1.6rem;
             font-weight: 700;
-            margin: 0 2rem;
+        } 
+        
+        .prev {
+            left: 36%;
+        }
+
+        .next {
+            left: 55%;
         }
     }    
 </style>

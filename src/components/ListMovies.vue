@@ -1,25 +1,28 @@
 <template>
     <div class="list-movies">
-        <div class="list-movies__row">
-            <Card :movies-list="moviesList"/>
-        </div>
+        <Loader v-if="loader"/>
+
+        <Card v-else :movies-list="moviesList"/>
     </div>
 </template>
 
 <script>
 import Card from './Card.vue';
+import Loader from './ui/Loader.vue';
 
 export default {
     name: 'ListMovies',
     
     components: {
         Card,
+        Loader,
     },
 
     props: {
         moviesList: {
             type: Array,
-        }
+        },
+        loader: Boolean,
     },
 
     data(){
@@ -32,20 +35,18 @@ export default {
 
 <style lang="scss">
     .list-movies{
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        align-items: center;
         max-width: 110rem;
-        height: 70rem;
+        min-height: 70rem;
+        height: auto;
         margin: 0 auto;
         margin-top: 10px;
         margin-bottom: 10px;
         padding-top: 20px;
         background-color: #f1eeee;
-        border-radius: 5px;
-
-        &__row {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
+        border-radius: 5px;   
     }
 </style>

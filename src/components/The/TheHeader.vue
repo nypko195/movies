@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        <a href="#" class="header-logo">{{ title }}</a>
+        <a href="" class="header-logo">{{ title }}</a>
         <input class="header-search" placeholder="Введите название"/>
     </div>
 </template>

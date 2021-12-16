@@ -1,9 +1,11 @@
 <template>
   <div class="wrapper">
     <div class="bg"></div>     
-    <TheHeader/>
+    <TheHeader/>    
 
-    <ListMovies :movies-list="moviesList"/>
+    <ListMovies :movies-list="moviesList"
+                :loader="loader"
+    />
 
     <TheFooter/>
   </div>
@@ -26,16 +28,19 @@ export default {
   data() {
     return {
       title: 'Movies',
-      moviesList: []
+      moviesList: [],
+      loadter: null,
     }
   },
 
   async created() {
+      this.loader = true;
       let response = await fetch('https://kinobd.ru/api/films', {
         method: 'GET', 
       });
       let data = await response.json(); 
-      this.moviesList = await data.data;  
+      this.moviesList = await data.data; 
+      this.loader = false; 
   },
 }
 </script>
