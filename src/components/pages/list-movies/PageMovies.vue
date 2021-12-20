@@ -1,20 +1,20 @@
 <template>
-    <div class="list-movies">
+    <div class="page-movies">
         <Loader v-if="loader"/>
 
-        <Card v-else :movies-list="moviesList"/>
+        <ListMovies v-if="!loader" :movies-list="moviesList"/>
     </div>
 </template>
 
 <script>
-import Card from './Card.vue';
-import Loader from './ui/Loader.vue';
+import ListMovies from './ListMovies.vue';
+import Loader from '../../ui/Loader.vue';
 
 export default {
-    name: 'ListMovies',
+    name: 'PageMovies',
     
     components: {
-        Card,
+        ListMovies,
         Loader,
     },
 
@@ -22,19 +22,16 @@ export default {
         moviesList: {
             type: Array,
         },
+
         loader: Boolean,
     },
-
-    data(){
-        return {
-            title: 'Cписок фильмов'
-        }
-    }
 }
 </script>
 
 <style lang="scss">
-    .list-movies{
+@import "../../../styles/bundle.scss";
+
+    .page-movies{
         display: flex;
         position: relative;
         flex-direction: column;
@@ -46,7 +43,7 @@ export default {
         margin-top: 10px;
         margin-bottom: 10px;
         padding-top: 20px;
-        background-color: #f1eeee;
+        background-color: $bg-block;
         border-radius: 5px;   
     }
 </style>

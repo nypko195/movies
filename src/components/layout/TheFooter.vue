@@ -4,7 +4,8 @@
     </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../../styles/bundle.scss";
     .footer {
         display: flex;
         max-width: 110rem;
@@ -13,7 +14,7 @@
         padding: 0 10rem;
         justify-content: space-between;
         align-items: center;   
-        background-color: #fff;
+        background-color: $white;
         border-radius: 5px;
     }
 </style>
