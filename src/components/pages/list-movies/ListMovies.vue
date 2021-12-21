@@ -80,7 +80,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../styles/bundle.scss";
     .list-movies {
         display: flex;
         flex-wrap: wrap;

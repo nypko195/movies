@@ -5,7 +5,6 @@
 </template>
 
 <style lang="scss" scoped>
-@import "../../styles/bundle.scss";
     .footer {
         display: flex;
         max-width: 110rem;

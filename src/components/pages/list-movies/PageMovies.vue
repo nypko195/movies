@@ -29,8 +29,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../../styles/bundle.scss";
-
     .page-movies{
         display: flex;
         position: relative;

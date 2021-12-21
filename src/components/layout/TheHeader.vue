@@ -11,7 +11,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .header {
         display: flex;
         max-width: 110rem;
@@ -20,14 +20,13 @@ export default {
         padding: 0 10rem;
         justify-content: space-between;
         align-items: center;   
-        background-color: #fff;
+        background-color: $white;
         border-radius: 5px;
     }
     .header-logo {
         color: #000;
         font-size: 36px;
     }
-
     .header-search {
         height: 2rem;
         padding: 2rem;

@@ -13,9 +13,13 @@
 </template>
 
 <script>
+//components
 import TheHeader from './components/layout/TheHeader.vue';
 import TheFooter from './components/layout/TheFooter.vue';
 import PageMovies from './components/pages/list-movies/PageMovies.vue';
+
+//funtion
+import requestApi from './request/requestApi';
 
 export default {
   name: 'App',
@@ -33,12 +37,16 @@ export default {
     }
   },
 
-  async created() {
+  created() {
+    this.getListMoviesFromApi();
+  },
+
+  methods: {
+    async getListMoviesFromApi() {
       this.loader = true;
-      let response = await fetch('https://kinobd.ru/api/films');
-      let data = await response.json(); 
-      this.moviesList = await data.data; 
+      this.moviesList = await requestApi();
       this.loader = false; 
+    }
   },
 }
 </script>
