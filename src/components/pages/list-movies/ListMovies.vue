@@ -2,11 +2,11 @@
     <div class="list-movies">
         <div 
             class="list-movies__item"
-            v-for="item in activeListMovies"
+            v-for="item in activeMovies"
             :key="item.id"
         >            
             <img class="list-movies__poster" :src="item.small_poster"/>
-            <span class="list-movies__year">{{ item.year }}</span>        
+            <span class="list-movies__year">{{ item.year }}</span>
         </div> 
     </div>
     <div class="list-movies__paginations">
@@ -33,7 +33,7 @@ export default {
     name: 'ListMovies',
 
     props: {
-        moviesList: {
+        movies: {
             type: Array,
         }
     },
@@ -45,18 +45,36 @@ export default {
     },
 
     computed: {
-        activeListMovies() {
-            return this.moviesList.slice(this.filterStart, this.filterEnd);
+        isMobile() {
+            return this.$mq === 'xs' || this.$mq === 'sm';
+        },
+
+        activeMovies() {
+            return this.movies.slice(this.filterStart, this.filterEnd);
         },
 
         filterStart() {
-            const start = (this.page - 1) * 10;
-            return start;
+            if(this.isMobile) {
+                const start = (this.page - 1) * 4;
+                return start;
+            }
+
+            if(!this.isMobile) {
+                const start = (this.page - 1) * 10;
+                return start;
+            }
         },
 
         filterEnd() {
-            const end = this.page * 10;
-            return end
+            if(this.isMobile) {
+                const end = (this.page - 1) * 4;
+                return end;
+            }
+
+            if(!this.isMobile) {
+                const end = this.page * 10;
+                return end
+            }
         },
 
         isShowBtnPagePrev: function() {
@@ -90,10 +108,6 @@ export default {
             flex: 0 0 16%;
             margin-right: 1.5rem;
             margin-bottom: 1rem;
-
-            &:nth-child(5n) {
-                margin-right: 0;
-            }
         }
 
         &__poster {
@@ -114,10 +128,14 @@ export default {
         &__paginations {
             position: relative;
             width: 100%;
-            margin: 1rem 0 2rem;  
+            margin: 2rem 0 5rem;
             
             &-prev {
                 left: 36%;
+
+                @include respond-to(md) {
+                    left: 31%;
+                }
             }
 
             &-next {

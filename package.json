@@ -9,6 +9,7 @@
   "dependencies": {
     "normalize-scss": "^7.0.1",
     "vue": "^3.2.23",
+    "vue-mq": "^1.0.1",
     "vue-slider-component": "^4.0.0-beta.4"
   },
   "devDependencies": {

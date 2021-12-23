@@ -2,17 +2,21 @@
     <div class="loader"></div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
     .loader {
         position: relative;
         margin: 0 auto;
-        margin-top: 25%;
+        margin-top: calc(25% - 1rem);
         font-size: 2rem;
         width: 1em;
         height: 1em;
         border-radius: 50%;   
         animation: load5 1.1s infinite ease;        
         transform: translateZ(0);
+
+        @include respond-to(md) {
+            margin-top: calc(60% - 1rem);
+        }
     }
     @keyframes load5 {
         0%,
