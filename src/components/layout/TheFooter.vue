@@ -21,5 +21,10 @@
             max-width: 100%;
             margin: 0 10rem;
         }
+
+        @include respond-to(md) {    
+            margin: 0 2rem;
+            padding: 0 1rem;
+        }
     }
 </style>

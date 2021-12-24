@@ -1,15 +1,11 @@
-import Vue from 'vue';
-import VueMq from 'vue-mq';
-
-export default () => {
-    Vue.use(VueMq, {
+export const mqConfig = {
         breakpoints: {
-            xs: 768,
-            sm: 992,
-            md: 1440,
-            lg: 1920,
-            xl: Infinity,
+            zero: 0,
+            xs: 412,
+            sm: 768,
+            md: 1024,
+            lg: 1440,
+            xl: 1920,
         },
-        defaultBreakpoint: 'xl',
-    });
+        defaultBreakpoint: 'xl'
 };

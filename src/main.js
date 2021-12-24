@@ -1,4 +1,12 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from 'vue';
+import App from './App.vue';
 
-createApp(App).mount('#app')
+//plugins
+import { Vue3Mq } from "vue3-mq";
+import { mqConfig } from './config/plugins/vue-mq/';
+
+const app = createApp(App);
+
+app.use(Vue3Mq, mqConfig);
+
+app.mount('#app')

@@ -7,13 +7,13 @@
         >            
             <img class="list-movies__poster" :src="item.small_poster"/>
             <span class="list-movies__year">{{ item.year }}</span>
-        </div> 
+        </div>
     </div>
     <div class="list-movies__paginations">
         <button 
             class="list-movies__paginations-prev button"
             @click="page--" 
-            v-show="isShowBtnPagePrev"
+            v-show="!isShowBtnPagePrev"
         >
             prev
         </button>
@@ -32,6 +32,14 @@
 export default {
     name: 'ListMovies',
 
+    inject: ['mq'],
+
+    data() {
+        return {
+            
+        }
+    },
+
     props: {
         movies: {
             type: Array,
@@ -44,9 +52,14 @@ export default {
         }
     },
 
+
     computed: {
         isMobile() {
-            return this.$mq === 'xs' || this.$mq === 'sm';
+            const isScreenSizeSm = this.mq.current === 'sm';
+            const isScreenSizeXs = this.mq.current === 'xs';
+            const isScreenSizeZero = this.mq.current === 'zero';
+
+            return isScreenSizeSm || isScreenSizeXs || isScreenSizeZero;
         },
 
         activeMovies() {
@@ -55,43 +68,41 @@ export default {
 
         filterStart() {
             if(this.isMobile) {
-                const start = (this.page - 1) * 4;
-                return start;
+                const maxNumberCardOnPage = 4;
+                const startPaginationState = (this.page - 1) * maxNumberCardOnPage;      
+
+                return startPaginationState;
             }
 
             if(!this.isMobile) {
-                const start = (this.page - 1) * 10;
-                return start;
+                const maxNumberCardOnPage = 10;
+                const startPaginationState = (this.page - 1) * maxNumberCardOnPage;      
+
+                return startPaginationState;
             }
         },
 
         filterEnd() {
             if(this.isMobile) {
-                const end = (this.page - 1) * 4;
-                return end;
+                const maxNumberCardOnPage = 4;
+                const endPaginationState = this.page * maxNumberCardOnPage;
+                return endPaginationState;
             }
 
             if(!this.isMobile) {
-                const end = this.page * 10;
-                return end
+                const maxNumberCardOnPage = 10;
+                const endPaginationState = this.page * maxNumberCardOnPage;
+                return endPaginationState;
             }
         },
 
         isShowBtnPagePrev: function() {
-            if(this.page === 1) {                       
-                return false;
-            } else {
-                return true;
-            }  
+            return this.page === 1;
         },
 
         isShowBtnPageNext: function() {
             //подумать над решение если не знать количество страниц
-            if(this.page !== 5) {
-                return true;
-            } else {
-                return false;
-            }
+            return this.page !== 5;
         },
     }
 }
@@ -134,12 +145,24 @@ export default {
                 left: 36%;
 
                 @include respond-to(md) {
+                    left: 35%;
+                }
+
+                @include respond-to(sm) {
                     left: 31%;
+                }
+
+                @include respond-to(xs) {
+                    left: 14%;
                 }
             }
 
             &-next {
                 left: 55%;
+
+                @include respond-to(xs) {
+                    left: 62%;
+                }
             }
 
             &-page {

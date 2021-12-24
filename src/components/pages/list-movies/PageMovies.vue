@@ -50,7 +50,7 @@ export default {
         flex-direction: column;
         align-items: center;
         max-width: 110rem;
-        min-height: 70rem;
+        min-height: 61rem;
         height: auto;
         margin: 0 auto;
         margin-top: 10px;
@@ -62,6 +62,11 @@ export default {
         @include respond-to(lg) {
             max-width: 100%;
             margin: 10px 10rem;
+        }
+
+        @include respond-to(md) {
+            margin: 10px 2rem;
+            min-height: 35rem;
         }
     }
 </style>

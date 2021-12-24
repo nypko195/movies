@@ -6,7 +6,7 @@
     .loader {
         position: relative;
         margin: 0 auto;
-        margin-top: calc(25% - 1rem);
+        margin-top: 25%;
         font-size: 2rem;
         width: 1em;
         height: 1em;
@@ -15,7 +15,7 @@
         transform: translateZ(0);
 
         @include respond-to(md) {
-            margin-top: calc(60% - 1rem);
+            margin-top: 20%;
         }
     }
     @keyframes load5 {
