@@ -34,12 +34,6 @@ export default {
 
     inject: ['mq'],
 
-    data() {
-        return {
-            
-        }
-    },
-
     props: {
         movies: {
             type: Array,
@@ -49,6 +43,7 @@ export default {
     data() {
         return {
             page: 1,
+            isMovieSearch: null,
         }
     },
 
@@ -63,10 +58,16 @@ export default {
         },
 
         activeMovies() {
-            return this.movies.slice(this.filterStart, this.filterEnd);
+            if(this.getNameMovie) {    
+                this.checkingMovie(this.getNameMovie);
+            }
+
+            if(!this.getNameMovie) {
+                return this.movies.slice(this.numberCardMin, this.numberCardMax);
+            }   
         },
 
-        filterStart() {
+        numberCardMin() {
             if(this.isMobile) {
                 const maxNumberCardOnPage = 4;
                 const startPaginationState = (this.page - 1) * maxNumberCardOnPage;      
@@ -82,7 +83,7 @@ export default {
             }
         },
 
-        filterEnd() {
+        numberCardMax() {
             if(this.isMobile) {
                 const maxNumberCardOnPage = 4;
                 const endPaginationState = this.page * maxNumberCardOnPage;
@@ -104,6 +105,18 @@ export default {
             //подумать над решение если не знать количество страниц
             return this.page !== 5;
         },
+
+        getNameMovie() {
+            return this.$store.getters.nameMovies;
+        },   
+    },
+
+    methods: {
+        checkingMovie(searchMovie) {
+            this.movies.map(item => {
+                this.isMovieSearch = item.name_russian.includes(searchMovie);
+            });
+        }
     }
 }
 </script>
@@ -139,7 +152,8 @@ export default {
         &__paginations {
             position: relative;
             width: 100%;
-            margin: 2rem 0 5rem;
+            margin-top: auto;
+            margin-bottom:5rem;
             
             &-prev {
                 left: 36%;

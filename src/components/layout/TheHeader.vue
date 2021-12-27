@@ -2,8 +2,20 @@
     <div class="bg"></div>   
     <div class="header">       
         <a href="" class="header-logo">Movies</a>
-        <input class="header-search" placeholder="Введите название"/>
-        <span class="header-reset"></span>
+        <div class="header-search__box">
+            <input 
+                class="header-search__input"
+                type="text" 
+                placeholder="Введите на звание" 
+                v-model.trim="search"
+            />
+            <button 
+                class="header-search__button"
+                @click="writeDownNameMovies"
+            >                
+            </button>  
+        </div>      
+        <span class="header-reset" @click="resetInput"></span>
     </div>
 </template>
 
@@ -13,8 +25,26 @@ export default {
 
     data() {
         return {
-
+            search: '',
         }
+    },
+
+    methods: {
+        resetInput() {
+            this.search = '';
+
+            this.$store.commit('writeDownNameMovies', {
+                search: ''
+            });
+        }, 
+
+        writeDownNameMovies() {
+            this.$store.commit('writeDownNameMovies', {
+                search: this.search
+            });
+
+            this.search = '';
+        },
     }
 }
 </script>
@@ -69,11 +99,17 @@ export default {
         color: $logo;
         font-size: 36px;
     }
-    .header-search {
+
+    .header-search__box {
+        display: flex;
+        position: relative;
+    }
+    .header-search__input {
+        position: relative;
         height: 2rem;
         padding: 2rem;
         border: 1px solid #b0b1b4;
-        border-radius: 5px;
+        border-radius: 5px;    
 
         @include respond-to(md) {
             margin-right: 4rem;
@@ -82,6 +118,26 @@ export default {
         @include respond-to(sm) {
             margin: 2rem 0;
             width: 100%;
+        }       
+    }
+
+    .header-search__button {
+        position: absolute;
+        z-index: 2;
+        right: 1%;
+        width: 4rem;
+        height: 4rem; 
+        cursor: pointer;
+        
+        &:after {
+            content: '';
+            position: absolute;
+            top: 22%; 
+            left: 22%;
+            width: 60%;
+            height: 60%;
+            background-image: url('../../assets/search.svg');
+            background-repeat: no-repeat;
         }
     }
 
@@ -116,6 +172,8 @@ export default {
         }
 
         &:hover {
+            transform: scale(1.1);
+
             &:before {
                 content: '';
                 transform: rotate(135deg);
