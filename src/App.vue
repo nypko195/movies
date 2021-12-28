@@ -30,5 +30,13 @@ export default {
   .wrapper {
     background-color: $bg-main; 
     margin: 0 auto;
-  }  
+  }
+  
+  .title {
+    font-size: 2.8rem;
+  }
+
+  .text {
+    font-size: 1.6rem;
+  }
 </style>

@@ -6,22 +6,33 @@
             <input 
                 class="header-search__input"
                 type="text" 
-                placeholder="Введите на звание" 
+                placeholder="Введите название" 
                 v-model.trim="search"
+                @keyup.enter="writeDownNameMovies"
             />
             <button 
                 class="header-search__button"
                 @click="writeDownNameMovies"
             >                
             </button>  
-        </div>      
-        <span class="header-reset" @click="resetInput"></span>
+        </div> 
+
+        <ButtonClose 
+            class="header-reset" 
+            @click="resetInput"
+        />
     </div>
 </template>
 
 <script>
+import ButtonClose from '../ui/ButtonClose.vue'
+
 export default {
     name: 'TheHeader',
+
+    components: {
+        ButtonClose,
+    },
 
     data() {
         return {
@@ -108,7 +119,7 @@ export default {
         position: relative;
         height: 2rem;
         padding: 2rem;
-        border: 1px solid #b0b1b4;
+        border: 1px solid $border-main;
         border-radius: 5px;    
 
         @include respond-to(md) {
@@ -139,52 +150,5 @@ export default {
             background-image: url('../../assets/search.svg');
             background-repeat: no-repeat;
         }
-    }
-
-    .header-reset {
-        position: absolute;
-        z-index: 2;
-        top: 50%;
-        right: 0;
-        width: 4rem;
-        height: 4rem;
-
-        &:before,
-        &:after {
-            content: '';
-            position: absolute;    
-            height: 1px;
-            top: 0;
-            left: 0;
-            width: 2rem;
-            background-color: $icon-reset;
-            transition: all .5s ease-out;
-        }
-
-        &:before {
-            content: '';
-            transform: rotate(45deg);  
-        }
-
-        &:after {
-            content: '';
-            transform: rotate(135deg);        
-        }
-
-        &:hover {
-            transform: scale(1.1);
-
-            &:before {
-                content: '';
-                transform: rotate(135deg);
-                transition: all .5s ease-out;
-            }
-
-            &:after {
-                content: '';
-                transform: rotate(225deg);
-                transition: all .5s ease-out;
-            }
-        }
-    }
+    }    
 </style>

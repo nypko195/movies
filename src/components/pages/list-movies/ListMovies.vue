@@ -1,5 +1,8 @@
 <template>    
-    <div class="list-movies">
+    <div 
+        v-if="!getNameMovie"
+        class="list-movies"
+    >
         <div 
             class="list-movies__item"
             v-for="item in activeMovies"
@@ -9,7 +12,10 @@
             <span class="list-movies__year">{{ item.year }}</span>
         </div>
     </div>
-    <div class="list-movies__paginations">
+    <div 
+        v-if="!getNameMovie"
+        class="list-movies__paginations"
+    >
         <button 
             class="list-movies__paginations-prev button"
             @click="page--" 
@@ -25,14 +31,25 @@
         >
             next
         </button>
-    </div>   
+    </div>
+
+    <OutputMovies 
+        v-if="getNameMovie"
+        :active-movies="activeMovies"
+    />
 </template>
 
 <script>
+import  OutputMovies from './OutputMovies.vue'
+
 export default {
     name: 'ListMovies',
 
     inject: ['mq'],
+
+    components: {
+        OutputMovies,
+    },
 
     props: {
         movies: {
@@ -43,7 +60,6 @@ export default {
     data() {
         return {
             page: 1,
-            isMovieSearch: null,
         }
     },
 
@@ -58,13 +74,15 @@ export default {
         },
 
         activeMovies() {
-            if(this.getNameMovie) {    
-                this.checkingMovie(this.getNameMovie);
+            if (this.getNameMovie) {
+                return this.movies.filter(item => {                
+                    return item.name_russian.toLowerCase() === this.getNameMovie;
+                });
             }
 
-            if(!this.getNameMovie) {
+            if (!this.getNameMovie) {
                 return this.movies.slice(this.numberCardMin, this.numberCardMax);
-            }   
+            }    
         },
 
         numberCardMin() {
@@ -98,26 +116,18 @@ export default {
         },
 
         isShowBtnPagePrev: function() {
-            return this.page === 1;
+            return this.page === 1 || this.activeMovies.length < 10;
         },
 
         isShowBtnPageNext: function() {
             //подумать над решение если не знать количество страниц
-            return this.page !== 5;
+            return this.page !== 5 && this.activeMovies.length >= 10;
         },
 
         getNameMovie() {
-            return this.$store.getters.nameMovies;
+            return this.$store.getters.nameMovies.toLowerCase();
         },   
     },
-
-    methods: {
-        checkingMovie(searchMovie) {
-            this.movies.map(item => {
-                this.isMovieSearch = item.name_russian.includes(searchMovie);
-            });
-        }
-    }
 }
 </script>
 
