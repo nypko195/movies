@@ -8,7 +8,12 @@
             v-for="item in activeMovies"
             :key="item.id"
         >            
-            <img class="list-movies__poster" :src="item.small_poster"/>
+            <a  
+                class="list-movies__link"
+                href=""
+            >
+                <img class="list-movies__poster" :src="item.small_poster"/>
+            </a>
             <span class="list-movies__year">{{ item.year }}</span>
         </div>
     </div>
@@ -18,7 +23,7 @@
     >
         <button 
             class="list-movies__paginations-prev button"
-            @click="page--" 
+            @click="prevPage" 
             v-show="!isShowBtnPagePrev"
         >
             prev
@@ -26,7 +31,7 @@
         <span class="list-movies__paginations-page">{{ page }}</span>
         <button 
             class="list-movies__paginations-next button"  
-            @click="page++"
+            @click="nextPage"
             v-show="isShowBtnPageNext"
         >
             next
@@ -63,6 +68,10 @@ export default {
         }
     },
 
+    created() {
+        this.pushToUrl();
+        this.goToDesiredPage();
+    },
 
     computed: {
         isMobile() {
@@ -126,8 +135,30 @@ export default {
 
         getNameMovie() {
             return this.$store.getters.nameMovies.toLowerCase();
-        },   
+        },    
     },
+    
+    methods: {
+        pushToUrl() {
+            this.$router.push(`${this.$route.path}?page=${this.page}`);
+        },
+
+        nextPage() {
+            this.page++;
+            this.pushToUrl();
+        },
+
+        prevPage() {
+            this.page--;
+            this.pushToUrl();
+        },
+
+        goToDesiredPage() {
+            if (this.$route.query.page) {
+                this.page = this.$route.query.page;
+            }    
+        }
+    }
 }
 </script>
 
@@ -142,6 +173,37 @@ export default {
             flex: 0 0 16%;
             margin-right: 1.5rem;
             margin-bottom: 1rem;
+
+            &:hover {
+                box-shadow: 0px 5px 10px 2px rgba(74, 153, 153, 0.36);
+            }
+        }
+
+        &__link {
+
+            &:hover {
+                &:before {
+                    content: '';
+                    position: absolute;
+                    z-index: 1;
+                    top: calc(50% - 5rem);
+                    left: calc(50% - 5rem);
+                    width: 10rem;
+                    height: 10rem;
+                    border-radius: 50%;
+                    background-color: $green;
+                }
+
+                &:after {
+                    content: '';
+                    position: absolute;
+                    z-index: 1;
+                    top: calc(50% - 2rem);
+                    left: calc(50% - .5rem);
+                    border: 2rem solid transparent; 
+                    border-left: 2rem solid $white;
+                } 
+            }
         }
 
         &__poster {

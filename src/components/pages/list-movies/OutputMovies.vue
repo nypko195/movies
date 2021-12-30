@@ -49,7 +49,7 @@ export default {
 
     computed: {
         title() {
-            return this.activeMovies.length ? 'Найденные фильмы' : 'К сожалению мы не смогли найти для Вас фильм';
+            return this.activeMovies.length ? 'Найденные фильмы' : 'По вашему запросу фильмы не найдены';
         }
     },
 
