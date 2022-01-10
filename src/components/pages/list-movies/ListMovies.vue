@@ -5,18 +5,20 @@
     >
         <div 
             class="list-movies__item"
-            v-for="item in activeMovies"
-            :key="item.id"
+            v-for="movie in activeMovies"
+            :key="movie.id"
         >            
-            <a  
+            <router-link  
+                :to="pathCard"
                 class="list-movies__link"
-                href=""
+                @click.prevent="openCardMovie(movie.id)"
             >
-                <img class="list-movies__poster" :src="item.small_poster"/>
-            </a>
-            <span class="list-movies__year">{{ item.year }}</span>
+                <img class="list-movies__poster" :src="movie.small_poster"/>
+            </router-link>
+            <span class="list-movies__year">{{ movie.year }}</span>
         </div>
     </div>
+
     <div 
         v-if="!getNameMovie"
         class="list-movies__paginations"
@@ -45,7 +47,7 @@
 </template>
 
 <script>
-import  OutputMovies from './OutputMovies.vue'
+import OutputMovies from './OutputMovies.vue'
 
 export default {
     name: 'ListMovies',
@@ -65,6 +67,7 @@ export default {
     data() {
         return {
             page: 1,
+            movieId: '',
         }
     },
 
@@ -91,8 +94,9 @@ export default {
 
             if (!this.getNameMovie) {
                 return this.movies.slice(this.numberCardMin, this.numberCardMax);
-            }    
-        },
+            }
+            
+        },   
 
         numberCardMin() {
             if(this.isMobile) {
@@ -129,13 +133,19 @@ export default {
         },
 
         isShowBtnPageNext: function() {
-            //подумать над решение если не знать количество страниц
+            //подумать над решением если не знать количество страниц
             return this.page !== 5 && this.activeMovies.length >= 10;
         },
 
         getNameMovie() {
             return this.$store.getters.nameMovies.toLowerCase();
-        },    
+        }, 
+    
+        pathCard() {
+            return `?page=${this.page}` + '/movies/' + this.movieId;
+        },
+
+
     },
     
     methods: {
@@ -157,7 +167,19 @@ export default {
             if (this.$route.query.page) {
                 this.page = this.$route.query.page;
             }    
-        }
+        },
+
+        openCardMovie(id) {
+            this.movieId = id;
+
+            let cardMovie = this.activeMovies.filter(item => {
+                return item.id === id;
+            });
+
+            this.$store.commit('updateCardMovies', {
+                movie: cardMovie
+            });
+        },   
     }
 }
 </script>
@@ -180,16 +202,17 @@ export default {
         }
 
         &__link {
+            cursor: pointer;
 
             &:hover {
                 &:before {
                     content: '';
                     position: absolute;
                     z-index: 1;
-                    top: calc(50% - 5rem);
-                    left: calc(50% - 5rem);
-                    width: 10rem;
-                    height: 10rem;
+                    top: calc(50% - 3.5rem);
+                    left: calc(50% - 3.5rem);
+                    width: 7rem;
+                    height: 7rem;
                     border-radius: 50%;
                     background-color: $green;
                 }
