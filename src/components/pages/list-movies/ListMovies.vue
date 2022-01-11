@@ -9,9 +9,9 @@
             :key="movie.id"
         >            
             <router-link  
-                :to="pathCard"
+                :to="{ name: 'cardMovies', params: { id: movie.id } }"
                 class="list-movies__link"
-                @click.prevent="openCardMovie(movie.id)"
+                @click="openCardMovie(movie.id)"
             >
                 <img class="list-movies__poster" :src="movie.small_poster"/>
             </router-link>
@@ -140,12 +140,6 @@ export default {
         getNameMovie() {
             return this.$store.getters.nameMovies.toLowerCase();
         }, 
-    
-        pathCard() {
-            return `?page=${this.page}` + '/movies/' + this.movieId;
-        },
-
-
     },
     
     methods: {
