@@ -1,7 +1,7 @@
 <template>
     <div class="bg"></div>   
     <div class="header">       
-        <a href="" class="header-logo">Movies</a>
+        <router-link :to="{ name: 'pageMovies' }" class="header-logo">Movies</router-link>
         <div class="header-search__box">
             <input 
                 class="header-search__input"

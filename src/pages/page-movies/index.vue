@@ -3,16 +3,17 @@
         <Loader v-if="isShowLoader"/>
 
         <ListMovies v-if="!isShowLoader" :movies="movies.data"/>
+        <router-view />
     </div>
 </template>
 
 <script>
 //components
-import ListMovies from './ListMovies.vue';
-import Loader from '../../ui/Loader.vue';
+import ListMovies from '../../components/page-movies/ListMovies.vue';
+import Loader from '../../components/ui/Loader.vue';
 
 //function
-import { requestMovies }  from '../../../api/index';
+import { requestMovies }  from '../../api/index.js';
 
 export default {
     name: 'PageMovies',

@@ -1,8 +1,8 @@
 <template>
   <div class="wrapper">      
-    <TheHeader/>    
+    <TheHeader/>   
 
-    <PageMovies/>
+    <router-view />
 
     <TheFooter/>
   </div>
@@ -11,7 +11,6 @@
 <script>
 import TheHeader from './components/layout/TheHeader.vue';
 import TheFooter from './components/layout/TheFooter.vue';
-import PageMovies from './components/pages/list-movies/PageMovies.vue';
 
 export default {
   name: 'App',
@@ -19,7 +18,6 @@ export default {
   components: {
     TheHeader,    
     TheFooter,
-    PageMovies,
   },
 }
 </script>

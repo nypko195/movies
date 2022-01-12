@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import ButtonClose from '../../ui/ButtonClose.vue'
+import ButtonClose from '../ui/ButtonClose.vue'
 
 export default {
     name: 'OutputMovies',

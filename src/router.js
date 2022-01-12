@@ -1,12 +1,19 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import CardMovies from './components/pages/list-movies/CardMovies.vue';
+import PageMovies from './pages/page-movies/index.vue';
+import ListMovies from './components/page-movies/ListMovies.vue';
+import CardMovies from './pages/card-movies/CardMovies.vue';
 
 export const router = createRouter({
     history: createWebHistory(),
     routes: [
         { 
-            path: '/movies/:id', 
+            path: '', 
+            name: 'pageMovies',
+            component: PageMovies,
+        },
+        { 
+            path: '/film/:id', 
             name: 'cardMovies',
             component: CardMovies, 
         }
