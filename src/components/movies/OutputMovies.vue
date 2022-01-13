@@ -89,6 +89,7 @@ export default {
         display: flex;
         flex-direction: row;
         margin-top: 2rem;
+        margin-bottom: 2rem;
         height: auto;
         border: 1px solid $border-main;
         border-radius: 6px;

@@ -43,6 +43,14 @@ export default {
         background-color: $bg-block;
         border-radius: 5px;  
 
+        @include respond-to(lg) {
+            margin: 10px 10rem 10px;
+        }
+
+        @include respond-to(md) {
+            margin: 10px 2rem 10px;    
+        }
+
         &__row {
             display: flex;
             margin: 0 5rem;

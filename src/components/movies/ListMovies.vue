@@ -1,6 +1,8 @@
-<template>    
+<template>  
+    <Loader v-if="isShowLoader"/>
+
     <div 
-        v-if="!getNameMovie"
+        v-if="!isShowLoader && !getNameMovie"
         class="list-movies"
     >
         <div 
@@ -11,7 +13,7 @@
             <router-link  
                 :to="{ name: 'cardMovies', params: { id: movie.id } }"
                 class="list-movies__link"
-                @click="openCardMovie(movie.id)"
+                @click="getCardMoviesId(movie.id)"
             >
                 <img class="list-movies__poster" :src="movie.small_poster"/>
             </router-link>
@@ -47,7 +49,12 @@
 </template>
 
 <script>
+//components
+import Loader from '../ui/Loader.vue';
 import OutputMovies from './OutputMovies.vue'
+
+//function
+import { requestMovies }  from '../../api/index.js';
 
 export default {
     name: 'ListMovies',
@@ -55,23 +62,22 @@ export default {
     inject: ['mq'],
 
     components: {
+        Loader,
         OutputMovies,
-    },
-
-    props: {
-        movies: {
-            type: Array,
-        }
     },
 
     data() {
         return {
+            movies: [],
             page: 1,
-            movieId: '',
+            isShowLoader: false,
+            cardMovieId: '',
         }
     },
 
-    created() {
+    async created() {
+        await this.getMovies();
+
         this.pushToUrl();
         this.goToDesiredPage();
     },
@@ -92,7 +98,7 @@ export default {
                 });
             }
 
-            if (!this.getNameMovie) {
+            if (!this.getNameMovie) {               
                 return this.movies.slice(this.numberCardMin, this.numberCardMax);
             }
             
@@ -143,6 +149,13 @@ export default {
     },
     
     methods: {
+        async getMovies() {
+            this.isShowLoader = true;    
+            let movies = await requestMovies();
+            this.movies = movies.data;
+            this.isShowLoader = false; 
+        },
+
         pushToUrl() {
             this.$router.push(`${this.$route.path}?page=${this.page}`);
         },
@@ -163,8 +176,8 @@ export default {
             }    
         },
 
-        openCardMovie(id) {
-            this.movieId = id;
+        getCardMoviesId(id) {
+            this.cardMovieId = id;
 
             let cardMovie = this.activeMovies.filter(item => {
                 return item.id === id;

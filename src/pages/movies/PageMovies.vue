@@ -1,26 +1,24 @@
 <template>
     <div class="page-movies">
-        <Loader v-if="isShowLoader"/>
+        <!-- <Loader v-if="isShowLoader"/> -->
 
-        <ListMovies v-if="!isShowLoader" :movies="movies.data"/>
-        <router-view />
+        <ListMovies/>
     </div>
 </template>
 
 <script>
 //components
-import ListMovies from '../../components/page-movies/ListMovies.vue';
-import Loader from '../../components/ui/Loader.vue';
+import ListMovies from '../../components/movies/ListMovies.vue';
+// import Loader from '../../components/ui/Loader.vue';
 
 //function
-import { requestMovies }  from '../../api/index.js';
+// import { requestMovies }  from '../../api/index.js';
 
 export default {
     name: 'PageMovies',
     
     components: {
         ListMovies,
-        Loader,
     },
 
     data() {
@@ -30,17 +28,17 @@ export default {
         }
     },
 
-    async created() {
-        await this.getMovies();
-    },
+    // async created() {
+    //     await this.getMovies();
+    // },
 
-    methods: {
-        async getMovies() {
-            this.isShowLoader = true;
-            this.movies = await requestMovies();
-            this.isShowLoader = false; 
-        }
-    },
+    // methods: {
+    //     async getMovies() {
+    //         this.isShowLoader = true;
+    //         this.movies = await requestMovies();
+    //         this.isShowLoader = false; 
+    //     }
+    // },
 }
 </script>
 
