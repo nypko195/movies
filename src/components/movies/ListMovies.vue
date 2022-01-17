@@ -11,7 +11,7 @@
             :key="movie.id"
         >            
             <router-link  
-                :to="{ name: 'cardMovies', params: { id: movie.id } }"
+                :to="{ name: 'cardMovies', params: { id: movie.id} }"
                 class="list-movies__link"
                 @click="getCardMoviesId(movie.id)"
             >
@@ -77,8 +77,7 @@ export default {
 
     async created() {
         await this.getMovies();
-
-        this.pushToUrl();
+        
         this.goToDesiredPage();
     },
 
@@ -146,6 +145,10 @@ export default {
         getNameMovie() {
             return this.$store.getters.nameMovies.toLowerCase();
         }, 
+
+        pushToUrl() {
+            this.$router.push(`${this.$route.path}?page=${this.page}`);
+        },
     },
     
     methods: {
@@ -154,11 +157,7 @@ export default {
             let movies = await requestMovies();
             this.movies = movies.data;
             this.isShowLoader = false; 
-        },
-
-        pushToUrl() {
-            this.$router.push(`${this.$route.path}?page=${this.page}`);
-        },
+        },        
 
         nextPage() {
             this.page++;

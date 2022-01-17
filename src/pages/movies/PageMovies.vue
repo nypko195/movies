@@ -1,7 +1,5 @@
 <template>
     <div class="page-movies">
-        <!-- <Loader v-if="isShowLoader"/> -->
-
         <ListMovies/>
     </div>
 </template>
@@ -9,10 +7,6 @@
 <script>
 //components
 import ListMovies from '../../components/movies/ListMovies.vue';
-// import Loader from '../../components/ui/Loader.vue';
-
-//function
-// import { requestMovies }  from '../../api/index.js';
 
 export default {
     name: 'PageMovies',
@@ -20,25 +14,6 @@ export default {
     components: {
         ListMovies,
     },
-
-    data() {
-        return {
-            movies: [],
-            isShowLoader: null,
-        }
-    },
-
-    // async created() {
-    //     await this.getMovies();
-    // },
-
-    // methods: {
-    //     async getMovies() {
-    //         this.isShowLoader = true;
-    //         this.movies = await requestMovies();
-    //         this.isShowLoader = false; 
-    //     }
-    // },
 }
 </script>
 
