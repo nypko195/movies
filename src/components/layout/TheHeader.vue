@@ -149,6 +149,21 @@ export default {
             height: 60%;
             background-image: url('../../assets/search.svg');
             background-repeat: no-repeat;
+
+            @include respond-to(md) {
+                left: -72%;
+            }
+
+            @include respond-to(sm) {
+                top: 70%;
+                left: 20%;
+            }
         }
-    }    
+    }
+    
+    .header-reset {
+        @include respond-to(sm) {
+            top: 70%;
+        }
+    }
 </style>

@@ -1,4 +1,4 @@
-<template>  
+<template> 
     <Loader v-if="isShowLoader"/>
 
     <div 
@@ -11,14 +11,15 @@
             :key="movie.id"
         >            
             <router-link  
-                :to="{ name: 'cardMovies', params: { id: movie.id} }"
+                :to="{ path: `/movies/${movie.id}` }"
                 class="list-movies__link"
-                @click="getCardMoviesId(movie.id)"
+                @click="getAndSetCardMovie(movie)"
             >
                 <img class="list-movies__poster" :src="movie.small_poster"/>
             </router-link>
             <span class="list-movies__year">{{ movie.year }}</span>
         </div>
+        <router-view :card-movie="cardMovie"></router-view>
     </div>
 
     <div 
@@ -71,7 +72,7 @@ export default {
             movies: [],
             page: 1,
             isShowLoader: false,
-            cardMovieId: '',
+            cardMovie: {},
         }
     },
 
@@ -161,12 +162,12 @@ export default {
 
         nextPage() {
             this.page++;
-            this.pushToUrl();
+            this.$router.push(`${this.$route.path}?page=${this.page}`);
         },
 
         prevPage() {
             this.page--;
-            this.pushToUrl();
+            this.$router.push(`${this.$route.path}?page=${this.page}`);
         },
 
         goToDesiredPage() {
@@ -175,17 +176,11 @@ export default {
             }    
         },
 
-        getCardMoviesId(id) {
-            this.cardMovieId = id;
-
-            let cardMovie = this.activeMovies.filter(item => {
-                return item.id === id;
-            });
-
-            this.$store.commit('updateCardMovies', {
-                movie: cardMovie
-            });
-        },   
+        getAndSetCardMovie(movie) {    
+            console.log(movie);        
+            this.cardMovie = movie;
+            console.log(this.movie);
+        },
     }
 }
 </script>

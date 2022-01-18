@@ -19,7 +19,6 @@ export const router = createRouter({
             path: '/movies/:id', 
             name: 'cardMovies',
             component: CardMovies,
-            props: true,
         }
     ]
 });

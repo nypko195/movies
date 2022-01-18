@@ -2,17 +2,17 @@
     <div class="container">
         <div 
             class="card-movies"
-            v-for="card in getCardMovie"
-            :key="card.id"
+            v-for="mov in cardMovie"
+            :key="mov.id"
         >
             <div class="card-movies__row">
-                <img class="card-movies__poster" :src="card.small_poster" alt="">
+                <img class="card-movies__poster" :src="mov.small_poster" alt="">
                 <div class="card-movies__info">
-                    <h3 class="card-movies__title">{{ card.name_russian }} ({{ card.year }}) смотреть онлайн</h3>
-                    <p class="card-movies__name text">Название: {{ card.name_russian }}</p>
-                    <p class="card-movies__country text">Страна: {{ card.country_ru }}</p>
-                    <p class="card-movies__year text">Год выхода: {{ card.year }}</p>                    
-                    <p class="card-movies__description text">Описание: {{ card.description }}</p>
+                    <h3 class="card-movies__title">{{ mov.name_russian }} ({{ mov.year }}) смотреть онлайн</h3>
+                    <p class="card-movies__name text">Название: {{ mov.name_russian }}</p>
+                    <p class="card-movies__country text">Страна: {{ mov.country_ru }}</p>
+                    <p class="card-movies__year text">Год выхода: {{ mov.year }}</p>                    
+                    <p class="card-movies__description text">Описание: {{ mov.description }}</p>
             </div>
         </div>
         </div>
@@ -23,11 +23,7 @@
 export default {
     name: 'CardMovies',
 
-    computed: {
-        getCardMovie() {
-            return this.$store.getters.cardMovies;
-        }
-    }
+    props: ['cardMovie'],
 }
 </script>
 

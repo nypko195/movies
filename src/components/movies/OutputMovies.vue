@@ -9,10 +9,11 @@
             />
         </div>
         <div class="output-list">        
-            <div 
+            <router-link 
                 class="output-item"
                 v-for="item in activeMovies"
                 :key="item.id"
+                :to="{ path: `/movies/${item.id}` }"
             >
                 <img class="output-item__poster" :src="item.small_poster" alt="">
                 <div class="output-item__info">
@@ -26,7 +27,7 @@
                         Описание: {{ item.description }}
                     </p>                
                 </div>
-            </div>        
+            </router-link>        
         </div>
     </div>
 </template>
