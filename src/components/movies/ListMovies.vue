@@ -11,15 +11,13 @@
             :key="movie.id"
         >            
             <router-link  
-                :to="{ path: `/movies/${movie.id}` }"
+                :to="{ name: 'сardMovies', params: { id: movie.id, movie: JSON.stringify(movie) } }"
                 class="list-movies__link"
-                @click="getAndSetCardMovie(movie)"
             >
                 <img class="list-movies__poster" :src="movie.small_poster"/>
             </router-link>
             <span class="list-movies__year">{{ movie.year }}</span>
         </div>
-        <router-view :card-movie="cardMovie"></router-view>
     </div>
 
     <div 
@@ -50,139 +48,134 @@
 </template>
 
 <script>
-//components
-import Loader from '../ui/Loader.vue';
-import OutputMovies from './OutputMovies.vue'
+    //components
+    import Loader from '../ui/Loader.vue';
+    import OutputMovies from './OutputMovies.vue'
 
-//function
-import { requestMovies }  from '../../api/index.js';
+    //function
+    import { requestMovies }  from '../../api/index.js';
 
-export default {
-    name: 'ListMovies',
+    export default {
+        name: 'ListMovies',
 
-    inject: ['mq'],
+        inject: ['mq'],
 
-    components: {
-        Loader,
-        OutputMovies,
-    },
+        components: {
+            Loader,
+            OutputMovies,
+        },
 
-    data() {
-        return {
-            movies: [],
-            page: 1,
-            isShowLoader: false,
-            cardMovie: {},
+        data() {
+            return {
+                movies: [],
+                page: 1,
+                isShowLoader: false,
+                cardMovie: {},
+            }
+        },
+
+        async created() {
+            await this.getMovies();
+
+            this.goToDesiredPage();
+        },
+
+        computed: {
+            isMobile() {
+                const isScreenSizeSm = this.mq.current === 'sm';
+                const isScreenSizeXs = this.mq.current === 'xs';
+                const isScreenSizeZero = this.mq.current === 'zero';
+
+                return isScreenSizeSm || isScreenSizeXs || isScreenSizeZero;
+            },
+
+            activeMovies() {
+                if (this.getNameMovie && !this.isMobile) {
+                    return this.movies.filter(item => {
+                        return item.name_russian.toLowerCase() === this.getNameMovie;
+                    });
+                }
+
+                if (!this.getNameMovie && !this.isMobile) {               
+                    return this.movies.slice(this.numberCardMin, this.numberCardMax);
+                }
+
+                return this.movies;    
+            },
+
+            numberCardMin() {
+                // if(this.isMobile) {
+                //     const maxNumberCardOnPage = 4;
+                //     const startPaginationState = (this.page - 1) * maxNumberCardOnPage;      
+
+                //     return startPaginationState;
+                // }
+
+                if(!this.isMobile) {
+                    const maxNumberCardOnPage = 10;
+                    const startPaginationState = (this.page - 1) * maxNumberCardOnPage;      
+
+                    return startPaginationState;
+                }
+            },
+
+            numberCardMax() {
+                // if(this.isMobile) {
+                //     const maxNumberCardOnPage = 4;
+                //     const endPaginationState = this.page * maxNumberCardOnPage;
+                //     return endPaginationState;
+                // }
+
+                if(!this.isMobile) {
+                    const maxNumberCardOnPage = 10;
+                    const endPaginationState = this.page * maxNumberCardOnPage;
+                    return endPaginationState;
+                }
+            },
+
+            isShowBtnPagePrev: function() {
+                return this.page === 1 || this.activeMovies.length < 10;
+            },
+
+            isShowBtnPageNext: function() {
+                //подумать над решением если не знать количество страниц
+                return this.page !== 5 && this.activeMovies.length >= 10;
+            },
+
+            getNameMovie() {
+                return this.$store.getters.nameMovies.toLowerCase();
+            },
+
+            pushToUrl() {
+                this.$router.push(`${this.$route.path}?page=${this.page}`);
+            },
+        },
+
+        methods: {
+            async getMovies() {
+                this.isShowLoader = true;
+                let movies = await requestMovies();
+                this.movies = movies.data;
+                this.isShowLoader = false;
+            },
+
+            nextPage() {
+                this.page++;
+                this.$router.push(`${this.$route.path}?page=${this.page}`);
+            },
+
+            prevPage() {
+                this.page--;
+                this.$router.push(`${this.$route.path}?page=${this.page}`);
+            },
+
+            goToDesiredPage() {
+                if (this.$route.query.page) {
+                    this.page = this.$route.query.page;
+                }
+            },
         }
-    },
-
-    async created() {
-        await this.getMovies();
-        
-        this.goToDesiredPage();
-    },
-
-    computed: {
-        isMobile() {
-            const isScreenSizeSm = this.mq.current === 'sm';
-            const isScreenSizeXs = this.mq.current === 'xs';
-            const isScreenSizeZero = this.mq.current === 'zero';
-
-            return isScreenSizeSm || isScreenSizeXs || isScreenSizeZero;
-        },
-
-        activeMovies() {
-            if (this.getNameMovie) {
-                return this.movies.filter(item => {                
-                    return item.name_russian.toLowerCase() === this.getNameMovie;
-                });
-            }
-
-            if (!this.getNameMovie) {               
-                return this.movies.slice(this.numberCardMin, this.numberCardMax);
-            }
-            
-        },   
-
-        numberCardMin() {
-            if(this.isMobile) {
-                const maxNumberCardOnPage = 4;
-                const startPaginationState = (this.page - 1) * maxNumberCardOnPage;      
-
-                return startPaginationState;
-            }
-
-            if(!this.isMobile) {
-                const maxNumberCardOnPage = 10;
-                const startPaginationState = (this.page - 1) * maxNumberCardOnPage;      
-
-                return startPaginationState;
-            }
-        },
-
-        numberCardMax() {
-            if(this.isMobile) {
-                const maxNumberCardOnPage = 4;
-                const endPaginationState = this.page * maxNumberCardOnPage;
-                return endPaginationState;
-            }
-
-            if(!this.isMobile) {
-                const maxNumberCardOnPage = 10;
-                const endPaginationState = this.page * maxNumberCardOnPage;
-                return endPaginationState;
-            }
-        },
-
-        isShowBtnPagePrev: function() {
-            return this.page === 1 || this.activeMovies.length < 10;
-        },
-
-        isShowBtnPageNext: function() {
-            //подумать над решением если не знать количество страниц
-            return this.page !== 5 && this.activeMovies.length >= 10;
-        },
-
-        getNameMovie() {
-            return this.$store.getters.nameMovies.toLowerCase();
-        }, 
-
-        pushToUrl() {
-            this.$router.push(`${this.$route.path}?page=${this.page}`);
-        },
-    },
-    
-    methods: {
-        async getMovies() {
-            this.isShowLoader = true;    
-            let movies = await requestMovies();
-            this.movies = movies.data;
-            this.isShowLoader = false; 
-        },        
-
-        nextPage() {
-            this.page++;
-            this.$router.push(`${this.$route.path}?page=${this.page}`);
-        },
-
-        prevPage() {
-            this.page--;
-            this.$router.push(`${this.$route.path}?page=${this.page}`);
-        },
-
-        goToDesiredPage() {
-            if (this.$route.query.page) {
-                this.page = this.$route.query.page;
-            }    
-        },
-
-        getAndSetCardMovie(movie) {    
-            console.log(movie);        
-            this.cardMovie = movie;
-            console.log(this.movie);
-        },
     }
-}
 </script>
 
 <style lang="scss" scoped>
@@ -190,6 +183,10 @@ export default {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
+
+        @include respond-to(sm) {
+            flex-wrap: nowrap;
+        }
 
         &__item {
             position: relative;
@@ -199,6 +196,11 @@ export default {
 
             &:hover {
                 box-shadow: 0px 5px 10px 2px rgba(74, 153, 153, 0.36);
+            }
+
+            @include respond-to(sm) {
+                flex: unset;
+                width: 15%;
             }
         }
 
@@ -250,6 +252,10 @@ export default {
             width: 100%;
             margin-top: auto;
             margin-bottom:5rem;
+
+            @include respond-to(sm) {
+                display: none;
+            }
             
             &-prev {
                 left: 36%;

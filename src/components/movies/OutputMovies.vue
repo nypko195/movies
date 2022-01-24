@@ -11,20 +11,20 @@
         <div class="output-list">        
             <router-link 
                 class="output-item"
-                v-for="item in activeMovies"
-                :key="item.id"
-                :to="{ path: `/movies/${item.id}` }"
+                v-for="movie in activeMovies"
+                :key="movie.id"
+                :to="{ name: 'сardMovies', params: { id: movie.id, movie: JSON.stringify(movie) } }"
             >
-                <img class="output-item__poster" :src="item.small_poster" alt="">
+                <img class="output-item__poster" :src="movie.small_poster" alt="">
                 <div class="output-item__info">
                     <h3 class="output-item__name title">
-                        {{ item.name_russian }}
+                        {{ movie.name_russian }}
                     </h3>
                     <p class="output-item__year text">
-                        Год выхода: {{ item.year}}
+                        Год выхода: {{ movie.year}}
                     </p>
                     <p class="output-item__description text">
-                        Описание: {{ item.description }}
+                        Описание: {{ movie.description }}
                     </p>                
                 </div>
             </router-link>        
@@ -33,35 +33,35 @@
 </template>
 
 <script>
-import ButtonClose from '../ui/ButtonClose.vue'
+    import ButtonClose from '../ui/ButtonClose.vue'
 
-export default {
-    name: 'OutputMovies',
+    export default {
+        name: 'OutputMovies',
 
-    components: {
-        ButtonClose,
-    },
+        components: {
+            ButtonClose,
+        },
 
-    props: {
-        activeMovies: {
-            type: Array,
-        }
-    },
+        props: {
+            activeMovies: {
+                type: Array,
+            }
+        },
 
-    computed: {
-        title() {
-            return this.activeMovies.length ? 'Найденные фильмы' : 'По вашему запросу фильмы не найдены';
-        }
-    },
+        computed: {
+            title() {
+                return this.activeMovies.length ? 'Найденные фильмы' : 'По вашему запросу фильмы не найдены';
+            }
+        },
 
-    methods: {
-        close() {
-            this.$store.commit('writeDownNameMovies', {
-                search: ''
-            });
+        methods: {
+            close() {
+                this.$store.commit('writeDownNameMovies', {
+                    search: ''
+                });
+            }
         }
     }
-}
 </script>
 
 <style lang="scss" scoped>

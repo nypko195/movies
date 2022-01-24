@@ -5,16 +5,16 @@
 </template>
 
 <script>
-//components
-import ListMovies from '../../components/movies/ListMovies.vue';
+    //components
+    import ListMovies from '../../components/movies/ListMovies.vue';
 
-export default {
-    name: 'PageMovies',
-    
-    components: {
-        ListMovies,
-    },
-}
+    export default {
+        name: 'PageMovies',
+
+        components: {
+            ListMovies,
+        },
+    }
 </script>
 
 <style lang="scss">
@@ -39,6 +39,7 @@ export default {
         }
 
         @include respond-to(md) {
+            overflow-x: auto;
             margin: 10px 2rem;
             min-height: 35rem;
         }

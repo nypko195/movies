@@ -9,17 +9,17 @@
 </template>
 
 <script>
-import TheHeader from './components/layout/TheHeader.vue';
-import TheFooter from './components/layout/TheFooter.vue';
+  import TheHeader from './components/layout/TheHeader.vue';
+  import TheFooter from './components/layout/TheFooter.vue';
 
-export default {
-  name: 'App',
+  export default {
+    name: 'App',
 
-  components: {
-    TheHeader,    
-    TheFooter,
-  },
-}
+    components: {
+      TheHeader,
+      TheFooter,
+    },
+  }
 </script>
 
 <style lang="scss">

@@ -3,16 +3,16 @@
 </template>
 
 <script>
-export default {
-    name: 'Close',
-}
+    export default {
+        name: 'Close',
+    }
 </script>
 
 <style lang="scss" scoped>
     .close {
         position: absolute;
         z-index: 2;
-        top: 50%;
+        top: 0;
         right: 0;
         width: 4rem;
         height: 4rem;

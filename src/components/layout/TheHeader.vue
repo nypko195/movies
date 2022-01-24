@@ -15,49 +15,49 @@
                 @click="writeDownNameMovies"
             >                
             </button>  
-        </div> 
 
-        <ButtonClose 
-            class="header-reset" 
-            @click="resetInput"
-        />
+            <ButtonClose
+                class="header-reset"
+                @click="resetInput"
+            />
+        </div>
     </div>
 </template>
 
 <script>
-import ButtonClose from '../ui/ButtonClose.vue'
+    import ButtonClose from '../ui/ButtonClose.vue'
 
-export default {
-    name: 'TheHeader',
+    export default {
+        name: 'TheHeader',
 
-    components: {
-        ButtonClose,
-    },
-
-    data() {
-        return {
-            search: '',
-        }
-    },
-
-    methods: {
-        resetInput() {
-            this.search = '';
-
-            this.$store.commit('writeDownNameMovies', {
-                search: ''
-            });
-        }, 
-
-        writeDownNameMovies() {
-            this.$store.commit('writeDownNameMovies', {
-                search: this.search
-            });
-
-            this.search = '';
+        components: {
+            ButtonClose,
         },
+
+        data() {
+            return {
+                search: '',
+            }
+        },
+
+        methods: {
+            resetInput() {
+                this.search = '';
+
+                this.$store.commit('writeDownNameMovies', {
+                    search: ''
+                });
+            }, 
+
+            writeDownNameMovies() {
+                this.$store.commit('writeDownNameMovies', {
+                    search: this.search
+                });
+
+                this.search = '';
+            },
+        }
     }
-}
 </script>
 
 <style lang="scss" scoped>
@@ -122,10 +122,6 @@ export default {
         border: 1px solid $border-main;
         border-radius: 5px;    
 
-        @include respond-to(md) {
-            margin-right: 4rem;
-        }
-
         @include respond-to(sm) {
             margin: 2rem 0;
             width: 100%;
@@ -135,7 +131,7 @@ export default {
     .header-search__button {
         position: absolute;
         z-index: 2;
-        right: 1%;
+        right: 10%;
         width: 4rem;
         height: 4rem; 
         cursor: pointer;
@@ -151,7 +147,7 @@ export default {
             background-repeat: no-repeat;
 
             @include respond-to(md) {
-                left: -72%;
+                left: 15%;
             }
 
             @include respond-to(sm) {
@@ -162,8 +158,7 @@ export default {
     }
     
     .header-reset {
-        @include respond-to(sm) {
-            top: 70%;
-        }
+        top: 50%;
+        right: -1rem; 
     }
 </style>
