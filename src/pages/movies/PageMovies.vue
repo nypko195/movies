@@ -43,5 +43,9 @@
             margin: 10px 2rem;
             min-height: 35rem;
         }
+
+        @include respond-to(sm) {
+            min-height: 30rem;
+        }
     }
 </style>

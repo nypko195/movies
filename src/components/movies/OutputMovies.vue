@@ -11,7 +11,7 @@
         <div class="output-list">        
             <router-link 
                 class="output-item"
-                v-for="movie in activeMovies"
+                v-for="movie in foundMovie"
                 :key="movie.id"
                 :to="{ name: 'сardMovies', params: { id: movie.id, movie: JSON.stringify(movie) } }"
             >
@@ -43,14 +43,14 @@
         },
 
         props: {
-            activeMovies: {
+            foundMovie: {
                 type: Array,
             }
         },
 
         computed: {
             title() {
-                return this.activeMovies.length ? 'Найденные фильмы' : 'По вашему запросу фильмы не найдены';
+                return this.foundMovie.length ? 'Найденные фильмы' : 'По вашему запросу фильмы не найдены';
             }
         },
 
@@ -81,6 +81,7 @@
 
     .output-close {
         position: absolute;
+        top: 3rem;
     }
     .output-list {
         display: flex;

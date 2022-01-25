@@ -7,10 +7,18 @@
                 <img class="card-movies__poster" :src="cardMovie.small_poster" alt="">
                 <div class="card-movies__info">
                     <h3 class="card-movies__title">{{ cardMovie.name_russian }} ({{ cardMovie.year }}) смотреть онлайн</h3>
-                    <p class="card-movies__name text">Название: {{ cardMovie.name_russian }}</p>
-                    <p class="card-movies__country text">Страна: {{ cardMovie.country_ru }}</p>
-                    <p class="card-movies__year text">Год выхода: {{ cardMovie.year }}</p>                    
-                    <p class="card-movies__description text">Описание: {{ cardMovie.description }}</p>
+                    <p class="card-movies__name text">
+                        <span class="card-movies__subtitle">Название:</span> {{ cardMovie.name_russian }}
+                    </p>
+                    <p class="card-movies__country text">
+                        <span class="card-movies__subtitle">Страна:</span> {{ cardMovie.country_ru }}
+                    </p>
+                    <p class="card-movies__year text">
+                        <span class="card-movies__subtitle">Год выхода:</span> {{ cardMovie.year }}
+                    </p>                    
+                    <p class="card-movies__description text">
+                        <span class="card-movies__subtitle">Описание:</span> {{ cardMovie.description }}
+                    </p>
                 </div>
 
                 <ButtonClose 
@@ -72,29 +80,60 @@
             margin: 10px 2rem 10px;    
         }
 
+        @include respond-to(sm) {
+            padding-bottom: 2rem;    
+        }
+
         &__row {
             display: flex;
             position: relative;
             margin: 0 5rem;
+
+            @include respond-to(sm) {
+                flex-direction: column; 
+                margin: 0 2rem;
+            }
         }
 
         &__poster {
             height: 40rem;
+
+            @include respond-to(sm) {
+                width: 15rem;
+                height: 20rem;   
+                margin: 0 auto;
+            }
         }
 
         &__info {
             margin-left: 3rem;
+
+            @include respond-to(sm) {
+                margin-left: 0;
+            }
         }
 
         &__title {
             margin-bottom: 5rem;
             font-size: 3rem;
             text-align: center;
+
+            @include respond-to(sm) {
+                margin-bottom: 1rem; 
+            }
+        }
+
+        &__subtitle {
+            text-decoration: underline;
         }
 
         &__close {
             top: 20px;
             right: -4rem;
+
+            @include respond-to(sm) {
+                right: 0;
+            }
         }
 
         .text {

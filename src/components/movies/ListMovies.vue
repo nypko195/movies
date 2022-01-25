@@ -2,12 +2,12 @@
     <Loader v-if="isShowLoader"/>
 
     <div 
-        v-if="!isShowLoader && !getNameMovie"
+        v-if="!isShowLoader && !getNameMovieFromSearch"
         class="list-movies"
     >
         <div 
             class="list-movies__item"
-            v-for="movie in activeMovies"
+            v-for="movie in sortToDisplayMovies"
             :key="movie.id"
         >            
             <router-link  
@@ -21,7 +21,7 @@
     </div>
 
     <div 
-        v-if="!getNameMovie"
+        v-if="!getNameMovieFromSearch"
         class="list-movies__paginations"
     >
         <button 
@@ -41,10 +41,10 @@
         </button>
     </div>
 
-    <OutputMovies 
-        v-if="getNameMovie"
-        :active-movies="activeMovies"
-    />
+    <!-- <OutputMovies 
+        v-if="getNameMovieFromSearch"
+        :found-movie="sortToDisplayMovies"
+    /> -->
 </template>
 
 <script>
@@ -82,21 +82,26 @@
 
         computed: {
             isMobile() {
-                const isScreenSizeSm = this.mq.current === 'sm';
                 const isScreenSizeXs = this.mq.current === 'xs';
                 const isScreenSizeZero = this.mq.current === 'zero';
 
-                return isScreenSizeSm || isScreenSizeXs || isScreenSizeZero;
+                return isScreenSizeXs || isScreenSizeZero;
             },
 
-            activeMovies() {
-                if (this.getNameMovie && !this.isMobile) {
+            // isTablet() {
+            //     const isScreenSizeSm = this.mq.current === 'sm';
+
+            //     return isScreenSizeSm
+            // },
+
+            sortToDisplayMovies() {
+                if (this.getNameMovieFromSearch && !this.isMobile) {
                     return this.movies.filter(item => {
-                        return item.name_russian.toLowerCase() === this.getNameMovie;
+                        return item.name_russian.toLowerCase() === this.getNameMovieFromSearch;
                     });
                 }
 
-                if (!this.getNameMovie && !this.isMobile) {               
+                if (!this.getNameMovieFromSearch && !this.isMobile) {               
                     return this.movies.slice(this.numberCardMin, this.numberCardMax);
                 }
 
@@ -104,49 +109,33 @@
             },
 
             numberCardMin() {
-                // if(this.isMobile) {
-                //     const maxNumberCardOnPage = 4;
-                //     const startPaginationState = (this.page - 1) * maxNumberCardOnPage;      
+                const maxNumberCardOnPage = 10;
+                const startPaginationState = (this.page - 1) * maxNumberCardOnPage;
 
-                //     return startPaginationState;
-                // }
-
-                if(!this.isMobile) {
-                    const maxNumberCardOnPage = 10;
-                    const startPaginationState = (this.page - 1) * maxNumberCardOnPage;      
-
-                    return startPaginationState;
-                }
+                return startPaginationState;
             },
 
             numberCardMax() {
-                // if(this.isMobile) {
-                //     const maxNumberCardOnPage = 4;
-                //     const endPaginationState = this.page * maxNumberCardOnPage;
-                //     return endPaginationState;
-                // }
+                const maxNumberCardOnPage = 10;
+                const endPaginationState = this.page * maxNumberCardOnPage;
 
-                if(!this.isMobile) {
-                    const maxNumberCardOnPage = 10;
-                    const endPaginationState = this.page * maxNumberCardOnPage;
-                    return endPaginationState;
-                }
+                return endPaginationState;
             },
 
             isShowBtnPagePrev: function() {
-                return this.page === 1 || this.activeMovies.length < 10;
+                return this.page === 1 || this.sortToDisplayMovies.length < 10;
             },
 
             isShowBtnPageNext: function() {
                 //подумать над решением если не знать количество страниц
-                return this.page !== 5 && this.activeMovies.length >= 10;
+                return this.page !== 5 && this.sortToDisplayMovies.length >= 10;
             },
 
-            getNameMovie() {
+            getNameMovieFromSearch() {
                 return this.$store.getters.nameMovies.toLowerCase();
             },
 
-            pushToUrl() {
+            pushToUrlNumberPageMovies() {
                 this.$router.push(`${this.$route.path}?page=${this.page}`);
             },
         },
@@ -195,6 +184,7 @@
             margin-bottom: 1rem;
 
             &:hover {
+                top: -2px;
                 box-shadow: 0px 5px 10px 2px rgba(74, 153, 153, 0.36);
             }
 
@@ -286,6 +276,7 @@
                 left: 50%;
                 font-size: 1.6rem;
                 font-weight: 700;
+                cursor: default;
             }     
         }
     }
@@ -299,5 +290,9 @@
         font-size: 1.6rem;
         font-weight: 700;
         text-transform: uppercase;
+
+        &:hover {
+            top: -2px;
+        }
     } 
 </style>

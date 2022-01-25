@@ -41,6 +41,7 @@
         },
 
         methods: {
+            //избавиться от vuex!!!
             resetInput() {
                 this.search = '';
 
