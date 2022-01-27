@@ -2,16 +2,16 @@
     <Loader v-if="isShowLoader"/>
 
     <div 
-        v-if="!isShowLoader && !getNameMovieFromSearch"
+        v-if="!isShowLoader"
         class="list-movies"
     >
         <div 
             class="list-movies__item"
-            v-for="movie in sortToDisplayMovies"
+            v-for="movie in showPageMovies"
             :key="movie.id"
         >            
             <router-link  
-                :to="{ name: 'сardMovies', params: { id: movie.id, movie: JSON.stringify(movie) } }"
+                :to="{ name: 'сardMovies', params: { id: movie.id, movie: convertsToStringJson(movie) } }"
                 class="list-movies__link"
             >
                 <img class="list-movies__poster" :src="movie.small_poster"/>
@@ -20,10 +20,7 @@
         </div>
     </div>
 
-    <div 
-        v-if="!getNameMovieFromSearch"
-        class="list-movies__paginations"
-    >
+    <div class="list-movies__paginations">
         <button 
             class="list-movies__paginations-prev button"
             @click="prevPage" 
@@ -40,20 +37,14 @@
             next
         </button>
     </div>
-
-    <!-- <OutputMovies 
-        v-if="getNameMovieFromSearch"
-        :found-movie="sortToDisplayMovies"
-    /> -->
 </template>
 
 <script>
     //components
     import Loader from '../ui/Loader.vue';
-    import OutputMovies from './OutputMovies.vue'
 
     //function
-    import { requestMovies }  from '../../api/index.js';
+    import { getMovies }  from '../../api/index.js';
 
     export default {
         name: 'ListMovies',
@@ -62,7 +53,12 @@
 
         components: {
             Loader,
-            OutputMovies,
+        },
+
+        props: {
+            nameMovie: {
+                type: String,
+            }
         },
 
         data() {
@@ -77,7 +73,7 @@
         async created() {
             await this.getMovies();
 
-            this.goToDesiredPage();
+            this.openDesiredPageMovies();
         },
 
         computed: {
@@ -94,28 +90,22 @@
             //     return isScreenSizeSm
             // },
 
-            sortToDisplayMovies() {
-                if (this.getNameMovieFromSearch && !this.isMobile) {
-                    return this.movies.filter(item => {
-                        return item.name_russian.toLowerCase() === this.getNameMovieFromSearch;
-                    });
-                }
-
-                if (!this.getNameMovieFromSearch && !this.isMobile) {               
-                    return this.movies.slice(this.numberCardMin, this.numberCardMax);
+            showPageMovies() {      
+                if (!this.isMobile) {               
+                    return this.movies.slice(this.minCountCards, this.maxCountCards);
                 }
 
                 return this.movies;    
             },
 
-            numberCardMin() {
+            minCountCards() {
                 const maxNumberCardOnPage = 10;
                 const startPaginationState = (this.page - 1) * maxNumberCardOnPage;
 
                 return startPaginationState;
             },
 
-            numberCardMax() {
+            maxCountCards() {
                 const maxNumberCardOnPage = 10;
                 const endPaginationState = this.page * maxNumberCardOnPage;
 
@@ -123,16 +113,12 @@
             },
 
             isShowBtnPagePrev: function() {
-                return this.page === 1 || this.sortToDisplayMovies.length < 10;
+                return this.page === 1 || this.showPageMovies.length < 10;
             },
 
             isShowBtnPageNext: function() {
                 //подумать над решением если не знать количество страниц
-                return this.page !== 5 && this.sortToDisplayMovies.length >= 10;
-            },
-
-            getNameMovieFromSearch() {
-                return this.$store.getters.nameMovies.toLowerCase();
+                return this.page !== 5 && this.showPageMovies.length >= 10;
             },
 
             pushToUrlNumberPageMovies() {
@@ -143,7 +129,7 @@
         methods: {
             async getMovies() {
                 this.isShowLoader = true;
-                let movies = await requestMovies();
+                let movies = await getMovies();
                 this.movies = movies.data;
                 this.isShowLoader = false;
             },
@@ -158,10 +144,14 @@
                 this.$router.push(`${this.$route.path}?page=${this.page}`);
             },
 
-            goToDesiredPage() {
+            openDesiredPageMovies() {
                 if (this.$route.query.page) {
                     this.page = this.$route.query.page;
                 }
+            },
+
+            convertsToStringJson(movie) {
+                return JSON.stringify(movie);
             },
         }
     }

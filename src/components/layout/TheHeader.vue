@@ -8,11 +8,11 @@
                 type="text" 
                 placeholder="Введите название" 
                 v-model.trim="search"
-                @keyup.enter="writeDownNameMovies"
+                @keyup.enter="emitsTitleMovie"
             />
             <button 
                 class="header-search__button"
-                @click="writeDownNameMovies"
+                @click="emitsTitleMovie"
             >                
             </button>  
 
@@ -41,20 +41,12 @@
         },
 
         methods: {
-            //избавиться от vuex!!!
             resetInput() {
                 this.search = '';
-
-                this.$store.commit('writeDownNameMovies', {
-                    search: ''
-                });
             }, 
 
-            writeDownNameMovies() {
-                this.$store.commit('writeDownNameMovies', {
-                    search: this.search
-                });
-
+            emitsTitleMovie() {
+                this.$emit('search', this.search);
                 this.search = '';
             },
         }

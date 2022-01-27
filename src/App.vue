@@ -1,8 +1,8 @@
 <template>
   <div class="wrapper">      
-    <TheHeader/>   
+    <TheHeader @search="getAndSetNameMovie($event)"/>   
 
-    <router-view />
+    <router-view :nameMovie="nameMovie" />
 
     <TheFooter/>
   </div>
@@ -19,6 +19,18 @@
       TheHeader,
       TheFooter,
     },
+
+    data() {
+      return {
+        nameMovie: '',
+      }
+    },
+
+    methods: {
+      getAndSetNameMovie(name) {
+        this.nameMovie = name; 
+      }
+    }
   }
 </script>
 

@@ -22,7 +22,7 @@
                 </div>
 
                 <ButtonClose 
-                    @click="goToMainPage"
+                    @click="backMainPage"
                     class="card-movies__close"
                 />            
             </div>
@@ -53,7 +53,7 @@
         },
 
         methods: {
-            goToMainPage() {
+            backMainPage() {
                 this.$router.push({ name: 'pageMovies'});
             }
         }
@@ -114,6 +114,7 @@
         }
 
         &__title {
+            max-width: 55rem;
             margin-bottom: 5rem;
             font-size: 3rem;
             text-align: center;

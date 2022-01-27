@@ -1,6 +1,6 @@
 <template>
     <div class="page-movies">
-        <ListMovies/>
+        <ListMovies :nameMovie="nameMovie"/>
     </div>
 </template>
 
@@ -13,6 +13,12 @@
 
         components: {
             ListMovies,
+        },
+
+        props: {
+            nameMovie: {
+                type: String,
+            }
         },
     }
 </script>
