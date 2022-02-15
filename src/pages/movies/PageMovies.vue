@@ -45,7 +45,6 @@
         }
 
         @include respond-to(md) {
-            overflow-x: auto;
             margin: 10px 2rem;
             min-height: 35rem;
         }

@@ -18,6 +18,9 @@
             </router-link>
             <span class="list-movies__year">{{ movie.year }}</span>
         </div>
+
+        <div v-if="isMobile && isTablet || sliderIndex !== 0" class="list-movies__slider-prev"  @click="prevSlide">&#10094;</div>
+        <div v-if="isMobile && isTablet || maxCountSlides !== sliderIndex" class="list-movies__slider-next" @click="nextSlide">&#10095;</div>
     </div>
 
     <div class="list-movies__paginations">
@@ -67,6 +70,8 @@
                 page: 1,
                 isShowLoader: false,
                 cardMovie: {},
+                sliderIndex: 0,
+                maxCountSlides: 0,
             }
         },
 
@@ -74,6 +79,10 @@
             await this.getMovies();
 
             this.openDesiredPageMovies();
+
+            if (!this.isShowLoader) {
+                this.showSlides(this.sliderIndex);  
+            }
         },
 
         computed: {
@@ -84,14 +93,14 @@
                 return isScreenSizeXs || isScreenSizeZero;
             },
 
-            // isTablet() {
-            //     const isScreenSizeSm = this.mq.current === 'sm';
+            isTablet() {
+                const isScreenSizeSm = this.mq.current === 'sm';
 
-            //     return isScreenSizeSm
-            // },
+                return isScreenSizeSm
+            },
 
             showPageMovies() {      
-                if (!this.isMobile) {               
+                if (!this.isMobile && !this.isTablet) {               
                     return this.movies.slice(this.minCountCards, this.maxCountCards);
                 }
 
@@ -112,11 +121,11 @@
                 return endPaginationState;
             },
 
-            isShowBtnPagePrev: function() {
+            isShowBtnPagePrev() {
                 return this.page === 1 || this.showPageMovies.length < 10;
             },
 
-            isShowBtnPageNext: function() {
+            isShowBtnPageNext() {
                 //подумать над решением если не знать количество страниц
                 return this.page !== 5 && this.showPageMovies.length >= 10;
             },
@@ -144,6 +153,40 @@
                 this.$router.push(`${this.$route.path}?page=${this.page}`);
             },
 
+            nextSlide() {
+                this.sliderIndex++;
+                this.showSlides();
+            },
+
+            prevSlide() {
+                this.sliderIndex--;
+                this.showSlides();
+            },
+
+            showSlides() {   
+                if (!this.isTablet && !this.isMobile) return;
+
+                let slides = document.getElementsByClassName('list-movies__item');
+
+                for (let i = 0; i < slides.length; i++) {
+                    slides[i].style.display = 'none';
+                }
+
+                if (this.isTablet) {
+                    slides[this.sliderIndex].style.display = 'block';
+                    slides[this.sliderIndex + 1].style.display = 'block';
+                    slides[this.sliderIndex + 2].style.display = 'block';
+
+                    this.maxCountSlides = slides.length - 3;
+
+                    return;
+                } else {
+                    slides[this.sliderIndex].style.display = 'block';
+
+                    this.maxCountSlides = slides.length;
+                }
+            },
+
             openDesiredPageMovies() {
                 if (this.$route.query.page) {
                     this.page = this.$route.query.page;
@@ -165,6 +208,8 @@
 
         @include respond-to(sm) {
             flex-wrap: nowrap;
+            max-width: 90%;
+            position: relative;
         }
 
         &__item {
@@ -179,9 +224,24 @@
             }
 
             @include respond-to(sm) {
-                flex: unset;
-                width: 15%;
+                width: 100%;
             }
+        }
+
+        &__slider-prev, &__slider-next {
+            position: absolute;
+            top: calc(50% - 1.3rem);
+            z-index: 1;
+            color: $green;
+            font-size: 2.6rem;
+        }
+
+        &__slider-next {           
+            right: -5rem;
+        }
+
+        &__slider-prev {
+            left: -5rem;
         }
 
         &__link {
