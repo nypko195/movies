@@ -127,6 +127,7 @@
 
             isShowBtnPageNext() {
                 //подумать над решением если не знать количество страниц
+                //проверка гит
                 return this.page !== 5 && this.showPageMovies.length >= 10;
             },
 
