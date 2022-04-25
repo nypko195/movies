@@ -1,50 +1,56 @@
 <template> 
     <Loader v-if="isShowLoader"/>
 
-    <div 
-        v-if="!isShowLoader"
-        class="list-movies"
-    >
-        <div 
-            class="list-movies__item"
-            v-for="movie in showPageMovies"
-            :key="movie.id"
-        >            
-            <router-link  
-                :to="{ name: 'сardMovies', params: { id: movie.id, movie: convertsToStringJson(movie) } }"
-                class="list-movies__link"
+        <div
+            v-if="!isShowLoader && !isOpenCardMovie"
+            class="list-movies"
+        >
+            <div
+                class="list-movies__item"
+                v-for="movie in showPageMovies"
+                :key="movie.id"
+                @click="openCardMovie(movie.id)"
             >
                 <img class="list-movies__poster" :src="movie.small_poster"/>
-            </router-link>
-            <span class="list-movies__year">{{ movie.year }}</span>
+                <span class="list-movies__year">{{ movie.year }}</span>
+            </div>
+
+            <div v-if="isMobile && isTablet || sliderIndex !== 0" class="list-movies__slider-prev"  @click="prevSlide">&#10094;</div>
+            <div v-if="isMobile && isTablet || maxCountSlides !== sliderIndex" class="list-movies__slider-next" @click="nextSlide">&#10095;</div>
         </div>
 
-        <div v-if="isMobile && isTablet || sliderIndex !== 0" class="list-movies__slider-prev"  @click="prevSlide">&#10094;</div>
-        <div v-if="isMobile && isTablet || maxCountSlides !== sliderIndex" class="list-movies__slider-next" @click="nextSlide">&#10095;</div>
-    </div>
+        <div v-if="!isOpenCardMovie" class="list-movies__paginations">
+            <button
+                class="list-movies__paginations-prev button"
+                :class="{'_disabled': isShowLoader}"
+                @click="prevPage"
+                v-show="!isShowBtnPagePrev"
+            >
+                prev
+            </button>
+            <span class="list-movies__paginations-page">{{ page }}</span>
+            <button
+                class="list-movies__paginations-next button"
+                :class="{'_disabled': isShowLoader}"
+                @click="nextPage"
+                v-show="isShowBtnPageNext"
+            >
+                next
+            </button>
+        </div>
 
-    <div class="list-movies__paginations">
-        <button 
-            class="list-movies__paginations-prev button"
-            @click="prevPage" 
-            v-show="!isShowBtnPagePrev"
-        >
-            prev
-        </button>
-        <span class="list-movies__paginations-page">{{ page }}</span>
-        <button 
-            class="list-movies__paginations-next button"  
-            @click="nextPage"
-            v-show="isShowBtnPageNext"
-        >
-            next
-        </button>
-    </div>
+    <CardMovies
+        v-if="!isShowLoader && isOpenCardMovie"
+        :movie="cardMovie"
+        @close="close()"
+    >                
+    </CardMovies>
 </template>
 
 <script>
     //components
     import Loader from '../ui/Loader.vue';
+    import CardMovies from './CardMovies.vue';
 
     //function
     import { getMovies }  from '../../api/index.js';
@@ -56,12 +62,14 @@
 
         components: {
             Loader,
+            CardMovies,
         },
 
         props: {
             nameMovie: {
                 type: String,
-            }
+                default: '',
+            },
         },
 
         data() {
@@ -72,6 +80,9 @@
                 cardMovie: {},
                 sliderIndex: 0,
                 maxCountSlides: 0,
+                requestPage: 2,
+                isOpenCardMovie: false,
+                requestCount: 0,
             }
         },
 
@@ -83,6 +94,16 @@
             if (!this.isShowLoader) {
                 this.showSlides(this.sliderIndex);  
             }
+
+            if (this.page > 5) {
+                await this.getNewMovies();
+            }
+        },
+
+        mounted() {
+            this.page = this.$route.query?.page || 1;
+
+            this.loadMovies();
         },
 
         computed: {
@@ -128,7 +149,8 @@
             isShowBtnPageNext() {
                 //подумать над решением если не знать количество страниц
                 //проверка гит
-                return this.page !== 5 && this.showPageMovies.length >= 10;
+                // return this.page !== 5 && this.showPageMovies.length >= 10;
+                return this.showPageMovies.length >= 10;
             },
 
             pushToUrlNumberPageMovies() {
@@ -136,11 +158,58 @@
             },
         },
 
+        watch: {
+            page() {
+                let numberDisplayedCards = 10;
+                let endArray = this.movies.length / numberDisplayedCards === this.page;
+
+                if (endArray) {
+                    this.getNewMovies();
+                }
+            }
+        },
+
         methods: {
+            openCardMovie(id) {
+                this.isOpenCardMovie = true
+                console.log(id);
+
+                this.cardMovie = this.movies.filter(item => item.id === id);
+            },
+
+            close() {
+                this.isOpenCardMovie = false;
+                this.requestPage = 2;
+                this.requestCount = 0;
+            },
+
+            async loadMovies() {
+                let count = Math.floor(this.page / 5);
+
+                if (count !== this.requestCount) {
+                    await this.getNewMovies();
+                    this.loadMovies();                    
+
+                    this.requestCount++;
+                } else {
+                    return;
+                }
+            },
+
             async getMovies() {
                 this.isShowLoader = true;
                 let movies = await getMovies();
                 this.movies = movies.data;
+                this.isShowLoader = false;
+            },
+
+            async getNewMovies() {
+                this.isShowLoader = true;
+                let resp = await fetch(`https://kinobd.ru/api/films?page=${this.requestPage}`);
+                let newMovies = await resp.json();
+
+                this.movies = [...this.movies, ...newMovies.data];
+                this.requestPage++;
                 this.isShowLoader = false;
             },
 
@@ -193,10 +262,6 @@
                     this.page = this.$route.query.page;
                 }
             },
-
-            convertsToStringJson(movie) {
-                return JSON.stringify(movie);
-            },
         }
     }
 </script>
@@ -218,10 +283,33 @@
             flex: 0 0 16%;
             margin-right: 1.5rem;
             margin-bottom: 1rem;
+            cursor: pointer;
 
             &:hover {
                 top: -2px;
                 box-shadow: 0px 5px 10px 2px rgba(74, 153, 153, 0.36);
+
+                &:before {
+                    content: '';
+                    position: absolute;
+                    z-index: 1;
+                    top: calc(50% - 3.5rem);
+                    left: calc(50% - 3.5rem);
+                    width: 7rem;
+                    height: 7rem;
+                    border-radius: 50%;
+                    background-color: $green;
+                }
+
+                &:after {
+                    content: '';
+                    position: absolute;
+                    z-index: 1;
+                    top: calc(50% - 2rem);
+                    left: calc(50% - .5rem);
+                    border: 2rem solid transparent; 
+                    border-left: 2rem solid $white;
+                }
             }
 
             @include respond-to(sm) {
@@ -246,31 +334,7 @@
         }
 
         &__link {
-            cursor: pointer;
-
-            &:hover {
-                &:before {
-                    content: '';
-                    position: absolute;
-                    z-index: 1;
-                    top: calc(50% - 3.5rem);
-                    left: calc(50% - 3.5rem);
-                    width: 7rem;
-                    height: 7rem;
-                    border-radius: 50%;
-                    background-color: $green;
-                }
-
-                &:after {
-                    content: '';
-                    position: absolute;
-                    z-index: 1;
-                    top: calc(50% - 2rem);
-                    left: calc(50% - .5rem);
-                    border: 2rem solid transparent; 
-                    border-left: 2rem solid $white;
-                } 
-            }
+           
         }
 
         &__poster {
@@ -297,7 +361,7 @@
             @include respond-to(sm) {
                 display: none;
             }
-            
+
             &-prev {
                 left: 36%;
 
@@ -312,6 +376,11 @@
                 @include respond-to(xs) {
                     left: 14%;
                 }
+
+                &._disabled {
+                    pointer-events: none;
+                    opacity: .4;
+                }
             }
 
             &-next {
@@ -319,6 +388,11 @@
 
                 @include respond-to(xs) {
                     left: 62%;
+                }
+
+                &._disabled {
+                    pointer-events: none;
+                    opacity: .4;
                 }
             }
 

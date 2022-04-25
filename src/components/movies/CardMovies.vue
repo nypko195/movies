@@ -1,8 +1,6 @@
 <template>
-    <div class="container">
-        <div 
-            class="card-movies"
-        >
+    <div class="card-movies">
+        <div class="container">
             <div class="card-movies__row">
                 <img class="card-movies__poster" :src="cardMovie.small_poster" alt="">
                 <div class="card-movies__info">
@@ -22,7 +20,7 @@
                 </div>
 
                 <ButtonClose 
-                    @click="backMainPage"
+                    @click="$emit('close')"
                     class="card-movies__close"
                 />            
             </div>
@@ -42,21 +40,15 @@
 
         props: {
             movie: {
-                type: String,
+                type: Array,
             }
         },
 
         computed: {
             cardMovie() {
-                return JSON.parse(this.movie);
+                return this.movie[0];
             }
         },
-
-        methods: {
-            backMainPage() {
-                this.$router.push({ name: 'pageMovies'});
-            }
-        }
     }
 </script>
 

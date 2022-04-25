@@ -15,11 +15,11 @@ export const router = createRouter({
             name: 'pageMovies',
             component: PageMovies,
         },
-        { 
-            path: '/movie/:id', 
-            name: 'сardMovies',
-            component: CardMovies,
-            props: true
-        }
+        // { 
+        //     path: '/movies/:id', 
+        //     name: 'сardMovies',
+        //     component: CardMovies,
+        //     props: true
+        // }
     ]
 });
