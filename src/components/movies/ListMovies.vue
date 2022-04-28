@@ -2,14 +2,14 @@
     <Loader v-if="isShowLoader"/>
 
         <div
-            v-if="!isShowLoader && !isOpenCardMovie"
+            v-if="!isShowLoader && !isOpenMoviePage"
             class="list-movies"
         >
             <div
                 class="list-movies__item"
                 v-for="movie in showPageMovies"
                 :key="movie.id"
-                @click="openCardMovie(movie.id)"
+                @click="openMoviePage(movie.id)"
             >
                 <img class="list-movies__poster" :src="movie.small_poster"/>
                 <span class="list-movies__year">{{ movie.year }}</span>
@@ -19,7 +19,7 @@
             <div v-if="isMobile && isTablet || maxCountSlides !== sliderIndex" class="list-movies__slider-next" @click="nextSlide">&#10095;</div>
         </div>
 
-        <div v-if="!isOpenCardMovie" class="list-movies__paginations">
+        <div v-if="!isOpenMoviePage" class="list-movies__paginations">
             <button
                 class="list-movies__paginations-prev button"
                 :class="{'_disabled': isShowLoader}"
@@ -40,7 +40,7 @@
         </div>
 
     <CardMovies
-        v-if="!isShowLoader && isOpenCardMovie"
+        v-if="!isShowLoader && isOpenMoviePage"
         :movie="cardMovie"
         @close="close()"
     >                
@@ -80,30 +80,29 @@
                 cardMovie: {},
                 sliderIndex: 0,
                 maxCountSlides: 0,
-                requestPage: 2,
-                isOpenCardMovie: false,
-                requestCount: 0,
+                requestedPageNumber: 2,
+                isOpenMoviePage: false,
+                numberRequests: 0,
             }
         },
 
         async created() {
-            await this.getMovies();
+            this.page = this.$route.query?.page || 1;
+            
+            if (this.page < 5) {
+                await this.getMovies();
+            } else {
+                await this.getMovies();
+                await this.addNewMovies();               
+            }
 
-            this.openDesiredPageMovies();
+            if (this.$route.query?.movie) {
+                this.openMoviePage(Number(this.$route.query.movie));
+            }
 
             if (!this.isShowLoader) {
                 this.showSlides(this.sliderIndex);  
             }
-
-            if (this.page > 5) {
-                await this.getNewMovies();
-            }
-        },
-
-        mounted() {
-            this.page = this.$route.query?.page || 1;
-
-            this.loadMovies();
         },
 
         computed: {
@@ -152,48 +151,35 @@
                 // return this.page !== 5 && this.showPageMovies.length >= 10;
                 return this.showPageMovies.length >= 10;
             },
-
-            pushToUrlNumberPageMovies() {
-                this.$router.push(`${this.$route.path}?page=${this.page}`);
-            },
         },
 
         watch: {
-            page() {
-                let numberDisplayedCards = 10;
-                let endArray = this.movies.length / numberDisplayedCards === this.page;
+            async page() {
+                let numberDisplayedMovies = 10;
+                let endMovieList = this.page === (this.movies.length / numberDisplayedMovies);
 
-                if (endArray) {
-                    this.getNewMovies();
+                if (endMovieList) {
+                    this.isShowLoader = true;
+                    await this.getNewMovies();
+                    this.isShowLoader = false;
                 }
             }
         },
 
         methods: {
-            openCardMovie(id) {
-                this.isOpenCardMovie = true
-                console.log(id);
-
-                this.cardMovie = this.movies.filter(item => item.id === id);
-            },
-
-            close() {
-                this.isOpenCardMovie = false;
-                this.requestPage = 2;
-                this.requestCount = 0;
-            },
-
-            async loadMovies() {
+            async addNewMovies() {
                 let count = Math.floor(this.page / 5);
 
-                if (count !== this.requestCount) {
+                this.isShowLoader = true;
+                if (count !== this.numberRequests) {                    
                     await this.getNewMovies();
-                    this.loadMovies();                    
+                    this.addNewMovies();                    
 
-                    this.requestCount++;
+                    this.numberRequests++;
                 } else {
                     return;
                 }
+                this.isShowLoader = false;
             },
 
             async getMovies() {
@@ -203,23 +189,36 @@
                 this.isShowLoader = false;
             },
 
-            async getNewMovies() {
-                this.isShowLoader = true;
-                let resp = await fetch(`https://kinobd.ru/api/films?page=${this.requestPage}`);
-                let newMovies = await resp.json();
+            async getNewMovies() {                
+                let resp = await fetch(`https://kinobd.ru/api/films?page=${this.requestedPageNumber}`);
+                let newMovies = await resp.json();             
 
                 this.movies = [...this.movies, ...newMovies.data];
-                this.requestPage++;
-                this.isShowLoader = false;
+                this.requestedPageNumber++;                
+            },
+
+            openMoviePage(id) {
+                this.isOpenMoviePage = true;
+                this.cardMovie = this.movies.filter(item => item.id === id);
+                this.$router.push(`${this.$route.path}?page=${this.page}&movie=${id}`);
+            },
+
+            close() {
+                this.isOpenMoviePage = false;
+                this.requestedPageNumber = 2;
+                this.numberRequests = 0;
+                this.$router.push(`${this.$route.path}?page=${this.page}`);
             },
 
             nextPage() {
                 this.page++;
+                this.numberRequests = 0;
                 this.$router.push(`${this.$route.path}?page=${this.page}`);
             },
 
             prevPage() {
                 this.page--;
+                this.numberRequests = 0;
                 this.$router.push(`${this.$route.path}?page=${this.page}`);
             },
 
@@ -255,13 +254,7 @@
 
                     this.maxCountSlides = slides.length;
                 }
-            },
-
-            openDesiredPageMovies() {
-                if (this.$route.query.page) {
-                    this.page = this.$route.query.page;
-                }
-            },
+            },           
         }
     }
 </script>
@@ -333,12 +326,10 @@
             left: -5rem;
         }
 
-        &__link {
-           
-        }
-
         &__poster {
-            width: 17rem;
+            max-width: 19rem;
+            min-width: 17rem;
+            width: 100%;
             height: 25rem;
         }
 

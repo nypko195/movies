@@ -1,6 +1,6 @@
 <template>
     <div class="page-movies">
-        <ListMovies :nameMovie="nameMovie"/>
+        <ListMovies />
     </div>
 </template>
 

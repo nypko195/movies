@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import PageMovies from './pages/movies/PageMovies.vue';
-import CardMovies from './components/movies/CardMovies.vue';
+// import CardMovies from './components/movies/CardMovies.vue';
 
 export const router = createRouter({
     history: createWebHistory(),

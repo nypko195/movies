@@ -10,7 +10,7 @@
         max-width: 110rem;
         height: 6.5rem;
         margin: 0 auto;
-        padding: 0 10rem;
+        padding: 0 5rem;
         justify-content: space-between;
         align-items: center; 
         color: $title-footer;  

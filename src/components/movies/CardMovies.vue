@@ -53,42 +53,36 @@
 </script>
 
 <style lang="scss" scoped>
-    .card-movies {    
-        max-width: 110rem;
-        min-height: 61rem;
-        height: auto;
-        margin: 0 auto;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        padding-top: 20px;
+    .card-movies {
+        padding: 0 5rem;
         background-color: $bg-block;
         border-radius: 5px;  
 
         @include respond-to(lg) {
-            margin: 10px 10rem 10px;
+            // margin: 10px 10rem 10px;
         }
 
         @include respond-to(md) {
-            margin: 10px 2rem 10px;    
+            // margin: 10px 2rem 10px;    
         }
 
         @include respond-to(sm) {
-            padding-bottom: 2rem;    
+            // padding-bottom: 2rem;    
         }
 
         &__row {
             display: flex;
             position: relative;
-            margin: 0 5rem;
+            // margin: 0 5rem;
 
             @include respond-to(sm) {
                 flex-direction: column; 
-                margin: 0 2rem;
+                // margin: 0 2rem;
             }
         }
 
         &__poster {
-            height: 40rem;
+            height: 30rem;
 
             @include respond-to(sm) {
                 width: 15rem;
@@ -106,9 +100,9 @@
         }
 
         &__title {
-            max-width: 55rem;
-            margin-bottom: 5rem;
-            font-size: 3rem;
+            display: flex;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
             text-align: center;
 
             @include respond-to(sm) {
@@ -121,8 +115,8 @@
         }
 
         &__close {
-            top: 20px;
-            right: -4rem;
+            top: 10px;
+            right: -20px;
 
             @include respond-to(sm) {
                 right: 0;
