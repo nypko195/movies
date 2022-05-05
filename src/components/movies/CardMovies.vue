@@ -40,7 +40,8 @@
 
         props: {
             movie: {
-                type: Array,
+                type: Object,
+                default: () => ({}),
             }
         },
 
@@ -54,7 +55,8 @@
 
 <style lang="scss" scoped>
     .card-movies {
-        padding: 0 5rem;
+        width: 100%;
+        padding: 1rem 5rem;
         background-color: $bg-block;
         border-radius: 5px;  
 

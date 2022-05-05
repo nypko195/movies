@@ -2,29 +2,30 @@
     <Loader v-if="isShowLoader"/>
 
         <div
-            v-if="!isShowLoader && !isOpenMoviePage"
+            v-if="!isShowLoader"
             class="list-movies"
         >
-            <div
+            <router-link
                 class="list-movies__item"
                 v-for="movie in showPageMovies"
                 :key="movie.id"
+                :to="{name: 'сardMovies', params: {id: movie.id}}"
                 @click="openMoviePage(movie.id)"
             >
                 <img class="list-movies__poster" :src="movie.small_poster"/>
                 <span class="list-movies__year">{{ movie.year }}</span>
-            </div>
+            </router-link>
 
             <div v-if="isMobile && isTablet || sliderIndex !== 0" class="list-movies__slider-prev"  @click="prevSlide">&#10094;</div>
             <div v-if="isMobile && isTablet || maxCountSlides !== sliderIndex" class="list-movies__slider-next" @click="nextSlide">&#10095;</div>
         </div>
 
-        <div v-if="!isOpenMoviePage" class="list-movies__paginations">
+        <div class="list-movies__paginations">
             <button
                 class="list-movies__paginations-prev button"
                 :class="{'_disabled': isShowLoader}"
                 @click="prevPage"
-                v-show="!isShowBtnPagePrev"
+                v-show="isShowBtnPagePrev"
             >
                 prev
             </button>
@@ -39,21 +40,21 @@
             </button>
         </div>
 
-    <CardMovies
+    <!-- <CardMovies
         v-if="!isShowLoader && isOpenMoviePage"
         :movie="cardMovie"
         @close="close()"
     >                
-    </CardMovies>
+    </CardMovies> -->
 </template>
 
 <script>
     //components
     import Loader from '../ui/Loader.vue';
-    import CardMovies from './CardMovies.vue';
+    // import CardMovies from './CardMovies.vue';
 
     //function
-    import { getMovies }  from '../../api/index.js';
+    // import { getMovies }  from '../../api/index.js';
 
     export default {
         name: 'ListMovies',
@@ -62,26 +63,26 @@
 
         components: {
             Loader,
-            CardMovies,
+            // CardMovies,
         },
 
         props: {
-            nameMovie: {
-                type: String,
-                default: '',
-            },
+            movies: {
+                type: Array,
+                default: () => [],
+            }
         },
 
         data() {
             return {
-                movies: [],
+                // movies: [],
                 page: 1,
                 isShowLoader: false,
                 cardMovie: {},
                 sliderIndex: 0,
                 maxCountSlides: 0,
                 requestedPageNumber: 2,
-                isOpenMoviePage: false,
+                // isOpenMoviePage: false,
                 numberRequests: 0,
             }
         },
@@ -89,20 +90,20 @@
         async created() {
             this.page = this.$route.query?.page || 1;
             
-            if (this.page < 5) {
-                await this.getMovies();
-            } else {
-                await this.getMovies();
-                await this.addNewMovies();               
-            }
+            // if (this.page < 5) {
+            //     await this.getMovies();
+            // } else {
+            //     await this.getMovies();
+            //     await this.addNewMovies();               
+            // }
 
-            if (this.$route.query?.movie) {
-                this.openMoviePage(Number(this.$route.query.movie));
-            }
+            // if (this.$route.query?.movie) {
+            //     this.openMoviePage(Number(this.$route.query.movie));
+            // }
 
-            if (!this.isShowLoader) {
-                this.showSlides(this.sliderIndex);  
-            }
+            // if (!this.isShowLoader) {
+            //     this.showSlides(this.sliderIndex);  
+            // }
         },
 
         computed: {
@@ -142,7 +143,7 @@
             },
 
             isShowBtnPagePrev() {
-                return this.page === 1 || this.showPageMovies.length < 10;
+                return this.page !== 1 || this.showPageMovies.length < 10 && this.showPageMovies.length > 1;
             },
 
             isShowBtnPageNext() {
@@ -154,57 +155,62 @@
         },
 
         watch: {
-            async page() {
-                let numberDisplayedMovies = 10;
-                let endMovieList = this.page === (this.movies.length / numberDisplayedMovies);
-
-                if (endMovieList) {
-                    this.isShowLoader = true;
-                    await this.getNewMovies();
-                    this.isShowLoader = false;
-                }
+            page() {
+                this.$emit('page', this.page);
             }
         },
 
         methods: {
-            async addNewMovies() {
-                let count = Math.floor(this.page / 5);
+            // async addNewMovies() {
+            //     let count = Math.floor(this.page / 5);
 
-                this.isShowLoader = true;
-                if (count !== this.numberRequests) {                    
-                    await this.getNewMovies();
-                    this.addNewMovies();                    
+            //     this.isShowLoader = true;
+            //     if (count !== this.numberRequests) {                    
+            //         await this.getNewMovies();
+            //         this.addNewMovies();                    
 
-                    this.numberRequests++;
-                } else {
-                    return;
-                }
-                this.isShowLoader = false;
-            },
+            //         this.numberRequests++;
+            //     } else {
+            //         return;
+            //     }
+            //     this.isShowLoader = false;
+            // },
 
-            async getMovies() {
-                this.isShowLoader = true;
-                let movies = await getMovies();
-                this.movies = movies.data;
-                this.isShowLoader = false;
-            },
+            // async getMovies() {
+            //     this.isShowLoader = true;
+            //     // let movies = await getMovies();
+            //     // this.movies = movies.data;
 
-            async getNewMovies() {                
-                let resp = await fetch(`https://kinobd.ru/api/films?page=${this.requestedPageNumber}`);
-                let newMovies = await resp.json();             
+            //     getMovies().then(data => this.movies = data);
+            //     this.isShowLoader = false;
+            // },
 
-                this.movies = [...this.movies, ...newMovies.data];
-                this.requestedPageNumber++;                
-            },
+            // async getNewMovies() {                
+            //     // let resp = await fetch(`https://kinobd.ru/api/films?page=${this.requestedPageNumber}`);
+            //     let resp = Promise.resolve({
+            //         name_russian: 'Шрэк',
+            //         year: 2019,
+            //         country_ru: 'Russian',
+            //         description: 'Интересный мультик про зеленных обезьянок.'
+            //     }).then(data => this.movies = data);
+            //     // let newMovies = await resp.json();             
+
+            //     // this.movies = [...this.movies, ...newMovies.data]; 
+
+            //     this.requestedPageNumber++;                
+            // },
 
             openMoviePage(id) {
-                this.isOpenMoviePage = true;
-                this.cardMovie = this.movies.filter(item => item.id === id);
-                this.$router.push(`${this.$route.path}?page=${this.page}&movie=${id}`);
+                this.$emit('is-card', true);
+                let cardMovie = this.movies.filter(item => item.id === id);
+                this.$emit('cardMovie', cardMovie[0]);
+                console.log(cardMovie[0]);
+
+                // this.$router.push(`${this.$route.path}?page=${this.page}&movie=${id}`);
             },
 
             close() {
-                this.isOpenMoviePage = false;
+                // this.isOpenMoviePage = false;
                 this.requestedPageNumber = 2;
                 this.numberRequests = 0;
                 this.$router.push(`${this.$route.path}?page=${this.page}`);
