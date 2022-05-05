@@ -33,85 +33,86 @@
 </template>
 
 <script>
-    import ButtonClose from '../ui/ButtonClose.vue'
+import ButtonClose from '../ui/ButtonClose.vue'
 
-    export default {
-        name: 'OutputMovies',
+export default {
+    name: 'OutputMovies',
 
-        components: {
-            ButtonClose,
-        },
+    components: {
+        ButtonClose,
+    },
 
-        props: {
-            foundMovie: {
-                type: Array,
-            }
-        },
+    props: {
+        foundMovie: {
+            type: Array,
+        }
+    },
 
-        computed: {
-            title() {
-                return this.foundMovie.length ? 'Найденные фильмы' : 'По вашему запросу фильмы не найдены';
-            }
-        },
+    computed: {
+        title() {
+            return this.foundMovie.length ? 'Найденные фильмы' : 'По вашему запросу фильмы не найдены';
+        }
+    },
 
-        methods: {
-            close() {
-                this.$store.commit('writeDownNameMovies', {
-                    search: ''
-                });
-            }
+    methods: {
+        close() {
+            this.$store.commit('writeDownNameMovies', {
+                search: ''
+            });
         }
     }
+}
 </script>
 
 <style lang="scss" scoped>
-    .container {
-        width: 100%;
-        padding: 0 5rem;
-    }
-    .output-result { 
-        position: relative;
-        width: 100%;
-        padding: 1rem 0;
-        margin-bottom: 2rem;
-        text-align: center;
-        border: 1px solid $border-main;
-        border-radius: 6px;
+.container {
+    width: 100%;
+    padding: 0 5rem;
+}
+
+.output-result { 
+    position: relative;
+    width: 100%;
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+    text-align: center;
+    border: 1px solid $border-main;
+    border-radius: 6px;
+}
+
+.output-close {
+    position: absolute;
+    top: 3rem;
+}
+.output-list {
+    display: flex;
+    justify-content: start;
+}
+.output-item {
+    display: flex;
+    flex-direction: row;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    height: auto;
+    border: 1px solid $border-main;
+    border-radius: 6px;
+
+    &:first-child {
+        margin-top: 0;
     }
 
-    .output-close {
-        position: absolute;
-        top: 3rem;
+    &__poster {
+        height: 25rem;
     }
-    .output-list {
+
+    &__info {
         display: flex;
-        justify-content: start;
+        flex-direction: column;
+        margin: 0 3rem;            
     }
-    .output-item {
-        display: flex;
-        flex-direction: row;
-        margin-top: 2rem;
+
+    &__name {
         margin-bottom: 2rem;
-        height: auto;
-        border: 1px solid $border-main;
-        border-radius: 6px;
-
-        &:first-child {
-            margin-top: 0;
-        }
-
-        &__poster {
-            height: 25rem;
-        }
-
-        &__info {
-            display: flex;
-            flex-direction: column;
-            margin: 0 3rem;            
-        }
-
-        &__name {
-            margin-bottom: 2rem;
-        }
     }
+}
 </style>

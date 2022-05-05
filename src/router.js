@@ -16,10 +16,10 @@ export const router = createRouter({
             component: PageMovies,
         },
         { 
-            path: '/movies/:id', 
+            path: '/movies/?page=:page/:id/',
             name: 'сardMovies',
             component: CardMovies,
-            props: true
+            props: true,
         }
     ]
 });
