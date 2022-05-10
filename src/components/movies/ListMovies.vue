@@ -41,47 +41,42 @@
 </template>
 
 <script>
-//components
+// components
 import Loader from '../ui/Loader.vue';
-
-//function
-import { getMovies }  from '../../api/index.js';
 
 export default {
     name: 'ListMovies',
 
     inject: ['mq'],
 
+    emits: ['need-films'],
+
     components: {
         Loader,
     },
 
+    props: {
+        movies: {
+            type: Array,
+            default: [],
+        },
+
+        isShowLoader: {
+            type: Boolean, 
+            default: false,
+        }
+    },
+
     data() {
         return {
-            movies: [],
             page: 1,
-            isShowLoader: false,
-            cardMovie: {},
             sliderIndex: 0,
             maxCountSlides: 0,
-            requestedPageNumber: 2,
-            numberRequests: 0,
         };
     },
 
-    async created() {
+    created() {
         this.page = this.$route.query?.page || 1;
-
-        if (this.page < 5) {
-            await this.getMovies();
-        } else {
-            await this.getMovies();
-            await this.addNewMovies();               
-        }
-
-        // if (!this.isShowLoader) {
-        //     this.showSlides(this.sliderIndex);  
-        // }
     },
 
     computed: {
@@ -138,54 +133,19 @@ export default {
             let endMovieList = this.page === (this.movies.length / numberDisplayedMovies);
 
             if (endMovieList) {
-                this.isShowLoader = true;
-                await this.getNewMovies();
-                this.isShowLoader = false;
+                this.$emit('need-films');
             }
         }
     },
 
     methods: {
-        async addNewMovies() {
-            let count = Math.floor(this.page / 5);
-
-            this.isShowLoader = true;
-            if (count !== this.numberRequests) {                    
-                await this.getNewMovies();
-                this.addNewMovies();                    
-
-                this.numberRequests++;
-            } else {
-                return;
-            }
-            this.isShowLoader = false;
-        },
-
-        async getMovies() {
-            this.isShowLoader = true;
-            let movies = await getMovies();
-            this.movies = movies.data;
-
-            this.isShowLoader = false;
-        },
-
-        async getNewMovies() {                
-            let resp = await fetch(`https://kinobd.ru/api/films?page=${this.requestedPageNumber}`);
-            let newMovies = await resp.json();             
-
-            this.movies = [...this.movies, ...newMovies.data]; 
-            this.requestedPageNumber++;                
-        },
-
         nextPage() {
             this.page++;
-            this.numberRequests = 0;
             this.$router.push(`${this.$route.path}?page=${this.page}`);
         },
 
         prevPage() {
             this.page--;
-            this.numberRequests = 0;
             this.$router.push(`${this.$route.path}?page=${this.page}`);
         },
 

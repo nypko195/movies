@@ -10,11 +10,12 @@
                 v-model.trim="search"
                 @keyup.enter="emitsTitleMovie"
             />
-            <button 
+
+            <div 
                 class="header-search__button"
                 @click="emitsTitleMovie"
             >                
-            </button>  
+            </div> 
 
             <ButtonClose
                 class="header-reset"
@@ -25,6 +26,7 @@
 </template>
 
 <script>
+// components
 import ButtonClose from '../ui/ButtonClose.vue'
 
 export default {
@@ -42,12 +44,21 @@ export default {
         };
     },
 
+    computed: {
+        isNameMovieLength() {
+            return this.search.length;
+        }
+    },
+
     methods: {
         resetInput() {
             this.search = '';
         }, 
 
         emitsTitleMovie() {
+            if (!isNameMovieLength) return;
+
+            this.$router.push({ name: 'outputMovies' });
             this.$emit('search', this.search);
             this.search = '';
         },

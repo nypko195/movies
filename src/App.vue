@@ -1,13 +1,17 @@
 <template>
     <div class="wrapper">
-        <TheHeader @search="getAndSetNameMovie($event)"/>
-        <router-view :nameMovie="nameMovie" />
+        <TheHeader @search="getAndSetNameFilm(nameFilm = $event)"/>
+
+        <PageFilms :name-film="nameFilm"/>
+
         <TheFooter/>
     </div>
 </template>
 
 <script>
+// components
 import TheHeader from './components/layout/TheHeader.vue';
+import PageFilms from './pages/films/PageFilms.vue';
 import TheFooter from './components/layout/TheFooter.vue';
 
 export default {
@@ -15,20 +19,15 @@ export default {
 
     components: {
         TheHeader,
+        PageFilms,
         TheFooter,
     },
 
     data() {
         return {
-            nameMovie: '',
+            nameFilm: '',
         };
     },
-
-    methods: {
-        getAndSetNameMovie(name) {
-            this.nameMovie = name;
-        }
-    }
 }
 </script>
 

@@ -26,10 +26,11 @@
 </template>
 
 <script>
+// components
 import ButtonClose from '../ui/ButtonClose.vue';
 
 export default {
-    name: 'CardMovies',
+    name: 'CardMovie',
 
     components: {
         ButtonClose,
