@@ -1,42 +1,31 @@
 <template>
-    <div class="bg"></div>   
+    <div class="bg"></div>
+
     <div class="header">       
-        <router-link :to="{ name: 'pageMovies' }" class="header-logo">Movies</router-link>
+        <router-link :to="{ name: 'listFilms' }" class="header-logo">Films</router-link>
         <div class="header-search__box">
             <input 
                 class="header-search__input"
                 type="text" 
                 placeholder="Введите название" 
                 v-model.trim="search"
-                @keyup.enter="emitsTitleMovie"
+                @keyup.enter="emitsTitleFilm"
             />
 
             <div 
                 class="header-search__button"
-                @click="emitsTitleMovie"
+                @click="emitsTitleFilm"
             >                
             </div> 
-
-            <ButtonClose
-                class="header-reset"
-                @click="resetInput"
-            />
         </div>
     </div>
 </template>
 
 <script>
-// components
-import ButtonClose from '../ui/ButtonClose.vue'
-
 export default {
     name: 'TheHeader',
 
     emits: ['search'],
-
-    components: {
-        ButtonClose,
-    },
 
     data() {
         return {
@@ -45,20 +34,16 @@ export default {
     },
 
     computed: {
-        isNameMovieLength() {
+        isNameFilmLength() {
             return this.search.length;
         }
     },
 
     methods: {
-        resetInput() {
-            this.search = '';
-        }, 
+        emitsTitleFilm() {
+            if (!this.isNameFilmLength) return;
 
-        emitsTitleMovie() {
-            if (!isNameMovieLength) return;
-
-            this.$router.push({ name: 'outputMovies' });
+            this.$router.push({ name: 'outputFilms' });
             this.$emit('search', this.search);
             this.search = '';
         },
@@ -112,62 +97,70 @@ export default {
         flex-direction: column;
         justify-content: center;
     }
-}
 
-.header-logo {
-    color: $logo;
-    font-size: 36px;
-}
+    &-logo {
+        color: $logo;
+        font-size: 36px;
+        font-weight: 700;
+        transition: all 0.3s ease;
 
-.header-search__box {
-    display: flex;
-    position: relative;
-}
-
-.header-search__input {
-    position: relative;
-    height: 2rem;
-    padding: 2rem;
-    border: 1px solid $border-main;
-    border-radius: 5px;    
-
-    @include respond-to(sm) {
-        margin: 2rem 0;
-        width: 100%;
-    }       
-}
-
-.header-search__button {
-    position: absolute;
-    z-index: 2;
-    right: 10%;
-    width: 4rem;
-    height: 4rem; 
-    cursor: pointer;
-    
-    &:after {
-        content: '';
-        position: absolute;
-        top: 22%; 
-        left: 22%;
-        width: 60%;
-        height: 60%;
-        background-image: url('../../assets/search.svg');
-        background-repeat: no-repeat;
-
-        @include respond-to(md) {
-            left: 15%;
-        }
-
-        @include respond-to(sm) {
-            top: 70%;
-            left: 20%;
+        &:hover {
+            transform: scale(1.1);
         }
     }
-}
 
-.header-reset {
-    top: 50%;
-    right: -1rem; 
+    &-search {
+        &__box {
+            display: flex;
+            position: relative;
+        }
+
+        &__input {
+            position: relative;
+            height: 2rem;
+            padding: 2rem;
+            border: 1px solid $border-main;
+            border-radius: 5px;
+            transition: all .5s ease;
+            
+            &:hover {
+                border-radius: 24px;
+            }
+
+            @include respond-to(sm) {
+                margin: 2rem 0;
+                width: 100%;
+            }       
+        }
+
+        &__button {
+            position: absolute;
+            z-index: 2;
+            right: 10%;
+            width: 4rem;
+            height: 4rem; 
+            cursor: pointer;
+            
+            &:after {
+                content: '';
+                position: absolute;
+                top: 22%; 
+                left: 78%;
+                width: 60%;
+                height: 60%;
+                background-image: url('../../assets/search.svg');
+                background-repeat: no-repeat;
+
+                @include respond-to(md) {
+                    left: 15%;
+                }
+
+                @include respond-to(sm) {
+                    top: 70%;
+                    left: 20%;
+                }
+            }
+        }
+    }
 }
 </style>

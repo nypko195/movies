@@ -1,9 +1,9 @@
 <template>
-    <div class="page-movies">
+    <div class="page-films">
         <router-view
             :is-show-loader="isShowLoader"
-            :movies="movies"
-            :nameMovie="nameMovie" 
+            :films="films"
+            :name-film="nameFilm" 
             @need-films="needFilms"
         />
     </div>
@@ -11,60 +11,60 @@
 
 <script>
 // function
-import { getMovies }  from '../../api/index.js';
+import { getFilms }  from '../../api/index.js';
 import { api } from '../../api/constants.js';
 
 export default {
-    name: 'PageMovies',
+    name: 'PageFilms',
 
     props: {
-        nameMovie: {
+        nameFilm: {
             type: String,
         }
     },
 
     data() {
         return {
-            movies: [],
+            films: [],
             requestedPageNumber: 2,
             isShowLoader: false,
         };
     },
 
     async mounted() {
-        await this.getMovies();
+        await this.getFilms();
     },
 
     methods: {
-        async getMovies(isNeedFilms) {
+        async getFilms(isNeedFilms) {
             this.isShowLoader = true;
 
             if (isNeedFilms) {
-                let resp = await fetch(`${api.urlMoviesPageApi}${this.requestedPageNumber}`);
-                let newMovies = await resp.json();
+                let resp = await fetch(`${api.urlFilmsPageApi}${this.requestedPageNumber}`);
+                let newFilms = await resp.json();
 
-                this.movies = [...this.movies, ...newMovies.data]; 
+                this.films = [...this.films, ...newFilms.data]; 
                 this.requestedPageNumber++;
 
                 this.isShowLoader = false;
                 return;
             }
 
-            let movies = await getMovies();
-            this.movies = movies.data;
+            let films = await getFilms();
+            this.films = films.data;
 
             this.isShowLoader = false;
         },
 
         async needFilms() {
-            await this.getMovies(true);
+            await this.getfilms(true);
         },
     }
 }
 </script>
 
 <style lang="scss">
-.page-movies{
+.page-films{
     display: flex;
     position: relative;
     flex-direction: column;

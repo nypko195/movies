@@ -1,7 +1,7 @@
 import { api } from './constants';
 
-export async function getMovies() {
-    let response =  await fetch(api.urlMoviesApi);
+export async function getFilms() {
+    let response =  await fetch(api.urlFilmsApi);
 
     return await response.json();
 }

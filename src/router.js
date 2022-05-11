@@ -1,34 +1,44 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import ListMovies from './components/movies/ListMovies.vue';
-import CardMovie from './components/movies/CardMovie.vue';
-import FoundMovies from './components/search-movie/FoundMovies.vue';
+//page
+import ListFilms from './components/films/ListFilms.vue';
+import CardFilm from './components/films/CardFilm.vue';
+import FoundFilms from './components/search-films/FoundFilms.vue';
+
+//error
+import NotFound from './pages/error/NotFound.vue';
+
 
 export const router = createRouter({
     history: createWebHistory(),
     routes: [
         { 
             path: '', 
-            redirect: { name: 'ListMovies'},
+            redirect: { name: 'listFilms'},
         },
 
         { 
-            path: '/movies/', 
-            name: 'pageMovies',
-            component: ListMovies,
+            path: '/films/', 
+            name: 'listFilms',
+            component: ListFilms,
         },
 
         { 
-            path: '/movies/?page=:page/:id/',
-            name: 'сardMovies',
-            component: CardMovie,
+            path: '/films/?page=:page/:id/',
+            name: 'сardFilm',
+            component: CardFilm,
             props: true,
         },
 
         {
-            path: '/movies/search/',
-            name: 'outputMovies',
-            component: FoundMovies,
+            path: '/films/search/',
+            name: 'outputFilms',
+            component: FoundFilms,
+        },
+
+        {
+            path: '/:pathMatch(.*)*', 
+            component: NotFound,
         }
     ]
 });

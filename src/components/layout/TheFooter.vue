@@ -1,6 +1,6 @@
 <template>
     <div class="footer">
-        <h2 class="title">by Sviridov.A.</h2>
+        <a href="https://t.me/nypko195" class="footer__title title" target="_blank">by Sviridov.A.</a>
     </div>
 </template>
 
@@ -25,6 +25,15 @@
     @include respond-to(md) {    
         margin: 0 2rem;
         padding: 0 1rem;
+    }
+
+    &__title {
+        font-weight: 700;
+        transition: all 0.3s ease;
+
+        &:hover {
+            transform: scale(1.1);
+        }
     }
 }
 </style>

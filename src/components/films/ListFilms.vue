@@ -3,34 +3,34 @@
 
         <div
             v-if="!isShowLoader"
-            class="list-movies"
+            class="list-films"
         >
             <router-link
-                class="list-movies__item"
-                v-for="movie in showPageMovies"
-                :key="movie.id"
-                :to="{ name: 'сardMovies', params: { page: page, id: movie.id, movie: JSON.stringify(movie) }}"
+                class="list-films__item"
+                v-for="film in showPagefilms"
+                :key="film.id"
+                :to="{ name: 'сardFilm', params: { page: page, id: film.id, film: JSON.stringify(film) }}"
             >
-                <img class="list-movies__poster" :src="movie.small_poster"/>
-                <span class="list-movies__year">{{ movie.year }}</span>
+                <img class="list-films__poster" :src="film.small_poster"/>
+                <span class="list-films__year">{{ film.year }}</span>
             </router-link>
 
-            <div v-if="isMobile && isTablet || sliderIndex !== 0" class="list-movies__slider-prev"  @click="prevSlide">&#10094;</div>
-            <div v-if="isMobile && isTablet || maxCountSlides !== sliderIndex" class="list-movies__slider-next" @click="nextSlide">&#10095;</div>
+            <div v-if="isMobile && isTablet || sliderIndex !== 0" class="list-films__slider-prev"  @click="prevSlide">&#10094;</div>
+            <div v-if="isMobile && isTablet || maxCountSlides !== sliderIndex" class="list-films__slider-next" @click="nextSlide">&#10095;</div>
         </div>
 
-        <div class="list-movies__paginations">
+        <div class="list-films__paginations">
             <button
-                class="list-movies__paginations-prev button"
+                class="list-films__paginations-prev button-pagination"
                 :class="{'_disabled': isShowLoader}"
                 @click="prevPage"
                 v-show="isShowBtnPagePrev"
             >
                 prev
             </button>
-            <span class="list-movies__paginations-page">{{ page }}</span>
+            <span class="list-films__paginations-page">{{ page }}</span>
             <button
-                class="list-movies__paginations-next button"
+                class="list-films__paginations-next button-pagination"
                 :class="{'_disabled': isShowLoader}"
                 @click="nextPage"
                 v-show="isShowBtnPageNext"
@@ -45,7 +45,7 @@
 import Loader from '../ui/Loader.vue';
 
 export default {
-    name: 'ListMovies',
+    name: 'ListFilms',
 
     inject: ['mq'],
 
@@ -56,7 +56,7 @@ export default {
     },
 
     props: {
-        movies: {
+        films: {
             type: Array,
             default: [],
         },
@@ -93,12 +93,12 @@ export default {
             return isScreenSizeSm
         },
 
-        showPageMovies() {      
+        showPagefilms() {      
             if (!this.isMobile && !this.isTablet) {               
-                return this.movies.slice(this.minCountCards, this.maxCountCards);
+                return this.films.slice(this.minCountCards, this.maxCountCards);
             }
 
-            return this.movies;    
+            return this.films;    
         },
 
         minCountCards() {
@@ -116,23 +116,23 @@ export default {
         },
 
         isShowBtnPagePrev() {
-            return this.page !== 1 || this.showPageMovies.length < 10 && this.showPageMovies.length > 1;
+            return this.page !== 1 || this.showPagefilms.length < 10 && this.showPagefilms.length > 1;
         },
 
         isShowBtnPageNext() {
             //подумать над решением если не знать количество страниц
             //проверка гит
-            // return this.page !== 5 && this.showPageMovies.length >= 10;
-            return this.showPageMovies.length >= 10;
+            // return this.page !== 5 && this.showPagefilms.length >= 10;
+            return this.showPagefilms.length >= 10;
         },
     },
 
     watch: {
         async page() {
-            let numberDisplayedMovies = 10;
-            let endMovieList = this.page === (this.movies.length / numberDisplayedMovies);
+            let numberDisplayedfilms = 10;
+            let endfilmList = this.page === (this.films.length / numberDisplayedfilms);
 
-            if (endMovieList) {
+            if (endfilmList) {
                 this.$emit('need-films');
             }
         }
@@ -162,7 +162,7 @@ export default {
         showSlides() {   
             if (!this.isTablet && !this.isMobile) return;
 
-            let slides = document.getElementsByClassName('list-movies__item');
+            let slides = document.getElementsByClassName('list-films__item');
 
             for (let i = 0; i < slides.length; i++) {
                 slides[i].style.display = 'none';
@@ -187,7 +187,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.list-movies {
+.list-films {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -268,6 +268,7 @@ export default {
         background-color: $green;    
         color: $white;
         font-size: 1.6rem;
+        font-weight: 700;
     }
 
     &__paginations {
@@ -275,6 +276,7 @@ export default {
         width: 100%;
         margin-top: auto;
         margin-bottom:5rem;
+        font-weight: 700;
 
         @include respond-to(sm) {
             display: none;
@@ -323,20 +325,4 @@ export default {
         }     
     }
 }
-
-.button {
-    position: absolute;
-    width: 10rem;
-    height: 3rem;
-    background-color: $green; 
-    border: none; 
-    color: $white;
-    font-size: 1.6rem;
-    font-weight: 700;
-    text-transform: uppercase;
-
-    &:hover {
-        top: -2px;
-    }
-} 
 </style>
