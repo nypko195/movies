@@ -17,19 +17,19 @@
                 v-for="film in foundFilms"
                 :key="film.id"
                 class="found-film"
-                :to="{ name: 'сardFilm', params: { page: 1, id: 1, film: JSON.stringify(film) } }"
+                :to="{ name: 'сardFilm', params: { page: 1, id: film.id, film: JSON.stringify(film) } }"
             >
                 <img 
-                    v-if="film.small_poster"
+                    v-if="film.small_poster !== 'https://kinobd.ru'"
                     class="found-film__poster" 
                     :src="film.small_poster" 
-                    alt=""
+                    :alt="film.name_russian"
                 >
                 <img 
                     v-else
                     class="found-film__poster" 
-                    src="../../assets/images/found-movies/no-foto.png" 
-                    alt=""
+                    src="../../assets/images/found-films/no-foto.png" 
+                    :alt="film.name_russian"
                 >
 
                 <div class="found-film__info">
@@ -65,7 +65,7 @@ export default {
     },
 
     props: {
-        nameFilm: {
+        searchNameFilm: {
             type: String,
             default: '',
         },
@@ -81,6 +81,10 @@ export default {
     computed: {
         title() {
             return Object.keys(this.foundFilms).length ? 'Найденные фильмы:' : 'К сожалению, по вашему запросу ничего не найдено...';
+        },
+
+        isPoster() {
+            return 
         }
     },
 
@@ -90,21 +94,18 @@ export default {
 
     methods: {
         async getFoundFilms() {
+            if (!this.searchNameFilm) return;
             this.isShowLoader = true;
-            if (!this.nameFilm) {
-                this.isShowLoader = false;
-                return;
-            }
 
-            let resp = await fetch(`${api.urlFilmsSearchApi}${this.normalizedNameFilm()}`);
+            let resp = await fetch(`${api.urlFilmsSearchApi}${this.normalizedSearchNameFilm()}`);
             let foundFilms = await resp.json(); 
 
             this.foundFilms = foundFilms.data;
             this.isShowLoader = false;
         },
 
-        normalizedNameFilm() {
-            return this.nameFilm.toLowerCase().trim();
+        normalizedSearchNameFilm() {
+            return this.searchNameFilm.toLowerCase().trim();
         }, 
     }
 }

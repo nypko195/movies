@@ -1,10 +1,10 @@
 <template>
-    <div class="page-films">
+    <div class="p-films">
         <router-view
             :is-show-loader="isShowLoader"
             :films="films"
-            :name-film="nameFilm" 
-            @need-films="needFilms"
+            :search-name-film="searchNameFilm"
+            @get-films="getMoreFilms"
         />
     </div>
 </template>
@@ -18,7 +18,7 @@ export default {
     name: 'PageFilms',
 
     props: {
-        nameFilm: {
+        searchNameFilm: {
             type: String,
         }
     },
@@ -26,7 +26,7 @@ export default {
     data() {
         return {
             films: [],
-            requestedPageNumber: 2,
+            currentPage: 2,
             isShowLoader: false,
         };
     },
@@ -40,31 +40,30 @@ export default {
             this.isShowLoader = true;
 
             if (isNeedFilms) {
-                let resp = await fetch(`${api.urlFilmsPageApi}${this.requestedPageNumber}`);
-                let newFilms = await resp.json();
+                let resp = await fetch(`${api.urlFilmsPageApi}${this.currentPage}`);
+                const { data } = await resp.json();
 
-                this.films = [...this.films, ...newFilms.data]; 
-                this.requestedPageNumber++;
+                this.films = [...this.films, ...data]; 
+                this.currentPage++;
 
                 this.isShowLoader = false;
                 return;
             }
 
-            let films = await getFilms();
-            this.films = films.data;
+            this.films = await getFilms();
 
             this.isShowLoader = false;
         },
 
-        async needFilms() {
-            await this.getfilms(true);
+        async getMoreFilms() {
+            await this.getFilms(true);
         },
     }
 }
 </script>
 
 <style lang="scss">
-.page-films{
+.p-films{
     display: flex;
     position: relative;
     flex-direction: column;

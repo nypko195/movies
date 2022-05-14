@@ -32,7 +32,7 @@ export const router = createRouter({
 
         {
             path: '/films/search/',
-            name: 'outputFilms',
+            name: 'foundFilms',
             component: FoundFilms,
         },
 

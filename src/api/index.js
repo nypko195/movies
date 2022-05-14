@@ -3,5 +3,7 @@ import { api } from './constants';
 export async function getFilms() {
     let response =  await fetch(api.urlFilmsApi);
 
-    return await response.json();
+    let { data } = await response.json();
+    console.log(data);
+    return data;
 }

@@ -2,12 +2,6 @@
     <span class="close"></span>
 </template>
 
-<script>
-    export default {
-        name: 'Close',
-    }
-</script>
-
 <style lang="scss" scoped>
     .close {
         position: absolute;

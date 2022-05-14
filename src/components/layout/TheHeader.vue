@@ -1,23 +1,25 @@
 <template>
-    <div class="bg"></div>
+    <div class="header">
+        <div class="header__picture"></div>
 
-    <div class="header">       
-        <router-link :to="{ name: 'listFilms' }" class="header-logo">Films</router-link>
-        <div class="header-search__box">
-            <input 
-                class="header-search__input"
-                type="text" 
-                placeholder="Введите название" 
-                v-model.trim="search"
-                @keyup.enter="emitsTitleFilm"
-            />
+        <section class="header__content">
+            <router-link :to="{ name: 'listFilms' }" class="header__logo">Films</router-link>
+            <div class="header-search__box">
+                <input 
+                    class="header-search__input"
+                    type="text" 
+                    placeholder="Введите название" 
+                    v-model.trim="searchNameFilm"
+                    @keyup.enter="emitTitleFilm"
+                />
 
-            <div 
-                class="header-search__button"
-                @click="emitsTitleFilm"
-            >                
-            </div> 
-        </div>
+                <div 
+                    class="header-search__button"
+                    @click="emitTitleFilm"
+                >                
+                </div> 
+            </div>
+        </section>
     </div>
 </template>
 
@@ -29,76 +31,78 @@ export default {
 
     data() {
         return {
-            search: '',
+            searchNameFilm: '',
         };
     },
 
     computed: {
         isNameFilmLength() {
-            return this.search.length;
+            return this.searchNameFilm.length;
         }
     },
 
     methods: {
-        emitsTitleFilm() {
+        emitTitleFilm() {
             if (!this.isNameFilmLength) return;
 
-            this.$router.push({ name: 'outputFilms' });
-            this.$emit('search', this.search);
-            this.search = '';
+            this.$router.push({ name: 'foundFilms' });
+            this.$emit('search', this.searchNameFilm);
+            this.searchNameFilm = '';
         },
     }
 }
 </script>
 
 <style lang="scss" scoped>
-.bg {
-    display: block;
-    height: 28rem;
-    background-image: url('../../assets/bg-main/bg.jpg');
-    background-repeat: no-repeat;
-    background-position: top;
-
-    @include respond-to(lg) {
-        background-size: cover;
-        margin: 0 10rem;
-    }
-
-    @include respond-to(md) {
-        display: none;
-        margin: 0;
-    }
-}
-
 .header {
-    display: flex;
-    position: relative;
-    max-width: 110rem;
-    height: 6.5rem;
-    margin: 0 auto;
-    padding: 0 5rem;
-    justify-content: space-between;
-    align-items: center;   
-    background-color: $white;
-    border-radius: 5px;
+    &__picture {
+        display: block;
+        height: 28rem;
+        background-image: url('../../assets/bg-main/bg.jpg');
+        background-repeat: no-repeat;
+        background-position: top;
 
-    @include respond-to(lg) {
-        max-width: 100%;
-        margin: 0 10rem;
+        @include respond-to(lg) {
+            background-size: cover;
+            margin: 0 10rem;
+        }
+
+        @include respond-to(md) {
+            display: none;
+            margin: 0;
+        }
     }
 
-    @include respond-to(md) {
-        margin: 0 2rem;
-        padding: 0 1rem;    
+    &__content {
+        display: flex;
+        position: relative;
+        max-width: 110rem;
+        height: 6.5rem;
+        margin: 0 auto;
+        padding: 0 5rem;
+        justify-content: space-between;
+        align-items: center;   
+        background-color: $white;
+        border-radius: 5px;
+
+        @include respond-to(lg) {
+            max-width: 100%;
+            margin: 0 10rem;
+        }
+
+        @include respond-to(md) {
+            margin: 0 2rem;
+            padding: 0 1rem;    
+        }
+
+        @include respond-to(sm) {
+            height: auto;
+            flex-direction: column;
+            justify-content: center;
+        }
     }
 
-    @include respond-to(sm) {
-        height: auto;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    &-logo {
+    &__logo {
         color: $logo;
         font-size: 36px;
         font-weight: 700;

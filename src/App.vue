@@ -1,8 +1,8 @@
 <template>
     <div class="wrapper">
-        <TheHeader @search="nameFilm = $event"/>
+        <TheHeader @search="getFilmName"/>
 
-        <PageFilms :name-film="nameFilm"/>
+        <PageFilms :search-name-film="searchNameFilm"/>
 
         <TheFooter/>
     </div>
@@ -25,9 +25,15 @@ export default {
 
     data() {
         return {
-            nameFilm: '',
+            searchNameFilm: '',
         };
     },
+
+    methods: {
+        getFilmName(name) {
+            this.searchNameFilm = name;
+        }
+    }
 }
 </script>
 

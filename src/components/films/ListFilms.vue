@@ -2,7 +2,7 @@
     <Loader v-if="isShowLoader"/>
 
         <div
-            v-if="!isShowLoader"
+            v-else
             class="list-films"
         >
             <router-link
@@ -49,7 +49,7 @@ export default {
 
     inject: ['mq'],
 
-    emits: ['need-films'],
+    emits: ['get-films'],
 
     components: {
         Loader,
@@ -133,7 +133,7 @@ export default {
             let endfilmList = this.page === (this.films.length / numberDisplayedfilms);
 
             if (endfilmList) {
-                this.$emit('need-films');
+                this.$emit('get-films');
             }
         }
     },
