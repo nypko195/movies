@@ -1,43 +1,40 @@
 <template> 
     <Loader v-if="isShowLoader"/>
 
-        <div
-            v-else
-            class="list-films"
+    <div v-else class="list-films">
+        <router-link
+            class="list-films__item"
+            v-for="film in showPagefilms"
+            :key="film.id"
+            :to="{ name: 'сardFilm', params: { page: page, id: film.id, film: JSON.stringify(film) }}"
         >
-            <router-link
-                class="list-films__item"
-                v-for="film in showPagefilms"
-                :key="film.id"
-                :to="{ name: 'сardFilm', params: { page: page, id: film.id, film: JSON.stringify(film) }}"
-            >
-                <img class="list-films__poster" :src="film.small_poster"/>
-                <span class="list-films__year">{{ film.year }}</span>
-            </router-link>
+            <img class="list-films__poster" :src="film.small_poster"/>
+            <span class="list-films__year">{{ film.year }}</span>
+        </router-link>
 
-            <div v-if="isMobile && isTablet || sliderIndex !== 0" class="list-films__slider-prev"  @click="prevSlide">&#10094;</div>
-            <div v-if="isMobile && isTablet || maxCountSlides !== sliderIndex" class="list-films__slider-next" @click="nextSlide">&#10095;</div>
-        </div>
+        <!-- <div v-if="isMobile && isTablet || sliderIndex !== 0" class="list-films__slider-prev"  @click="prevSlide">&#10094;</div>
+        <div v-if="isMobile && isTablet || maxCountSlides !== sliderIndex" class="list-films__slider-next" @click="nextSlide">&#10095;</div> -->
+    </div>
 
-        <div class="list-films__paginations">
-            <button
-                class="list-films__paginations-prev button-pagination"
-                :class="{'_disabled': isShowLoader}"
-                @click="prevPage"
-                v-show="isShowBtnPagePrev"
-            >
-                prev
-            </button>
-            <span class="list-films__paginations-page">{{ page }}</span>
-            <button
-                class="list-films__paginations-next button-pagination"
-                :class="{'_disabled': isShowLoader}"
-                @click="nextPage"
-                v-show="isShowBtnPageNext"
-            >
-                next
-            </button>
-        </div>
+    <div class="list-films__paginations">
+        <button
+            class="list-films__paginations-prev button-pagination"
+            :class="{'_disabled': isShowLoader}"
+            @click="prevPage"
+            v-show="isShowBtnPagePrev"
+        >
+            prev
+        </button>
+        <span class="list-films__paginations-page">{{ page }}</span>
+        <button
+            class="list-films__paginations-next button-pagination"
+            :class="{'_disabled': isShowLoader}"
+            @click="nextPage"
+            v-show="isShowBtnPageNext"
+        >
+            next
+        </button>
+    </div>
 </template>
 
 <script>
@@ -45,8 +42,6 @@
 import Loader from '../ui/Loader.vue';
 
 export default {
-    name: 'ListFilms',
-
     inject: ['mq'],
 
     emits: ['get-films'],
@@ -102,15 +97,15 @@ export default {
         },
 
         minCountCards() {
-            const maxNumberCardOnPage = 10;
-            const startPaginationState = (this.page - 1) * maxNumberCardOnPage;
+            const MAX_NUMBER_CARD_ON_PAGE = 10;
+            const startPaginationState = (this.page - 1) * MAX_NUMBER_CARD_ON_PAGE;
 
             return startPaginationState;
         },
 
         maxCountCards() {
-            const maxNumberCardOnPage = 10;
-            const endPaginationState = this.page * maxNumberCardOnPage;
+            const MAX_NUMBER_CARD_ON_PAGE = 10;
+            const endPaginationState = this.page * MAX_NUMBER_CARD_ON_PAGE;
 
             return endPaginationState;
         },

@@ -54,7 +54,7 @@ import Loader from '../ui/Loader.vue';
 import ButtonClose from '../ui/ButtonClose.vue'
 
 // function
-import { api } from '../../api/constants.js';
+import { getFoundFilms }  from '../../api/index.js';
 
 export default {
     name: 'foundFilms',
@@ -82,10 +82,6 @@ export default {
         title() {
             return Object.keys(this.foundFilms).length ? 'Найденные фильмы:' : 'К сожалению, по вашему запросу ничего не найдено...';
         },
-
-        isPoster() {
-            return 
-        }
     },
 
     async mounted() {
@@ -97,14 +93,12 @@ export default {
             if (!this.searchNameFilm) return;
             this.isShowLoader = true;
 
-            let resp = await fetch(`${api.urlFilmsSearchApi}${this.normalizedSearchNameFilm()}`);
-            let foundFilms = await resp.json(); 
+            this.foundFilms = await getFoundFilms(this.normalizeSearchNameFilm());
 
-            this.foundFilms = foundFilms.data;
             this.isShowLoader = false;
         },
 
-        normalizedSearchNameFilm() {
+        normalizeSearchNameFilm() {
             return this.searchNameFilm.toLowerCase().trim();
         }, 
     }

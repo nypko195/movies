@@ -11,8 +11,7 @@
 
 <script>
 // function
-import { getFilms }  from '../../api/index.js';
-import { api } from '../../api/constants.js';
+import { getFilms, getFilmsByPage }  from '../../api/index.js';
 
 export default {
     name: 'PageFilms',
@@ -39,11 +38,8 @@ export default {
         async getFilms(isNeedFilms) {
             this.isShowLoader = true;
 
-            if (isNeedFilms) {
-                let resp = await fetch(`${api.urlFilmsPageApi}${this.currentPage}`);
-                const { data } = await resp.json();
-
-                this.films = [...this.films, ...data]; 
+            if (isNeedFilms) {              
+                this.films = [...this.films, ...await getFilmsByPage(this.currentPage)]; 
                 this.currentPage++;
 
                 this.isShowLoader = false;
