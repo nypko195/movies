@@ -66,9 +66,9 @@ export default {
     //     min-height: 35rem;
     // }
 
-    // @include respond-to(sm) {
-    //     min-height: 30rem;
-    // }
+    @include respond-to(sm) {
+        overflow-y: auto;
+    }
 
     &__row {
         display: flex;
@@ -85,9 +85,8 @@ export default {
         height: 30rem;
 
         @include respond-to(sm) {
-            width: 15rem;
-            height: 20rem;   
-            margin: 0 auto;
+            width: 33rem;
+            height: 45rem;   
         }
     }
 
@@ -95,6 +94,7 @@ export default {
         margin-left: 3rem;
 
         @include respond-to(sm) {
+            margin-top: 2rem;
             margin-left: 0;
         }
     }

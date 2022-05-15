@@ -1,8 +1,8 @@
 <template>
     <div class="wrapper">
-        <TheHeader @search="getFilmName"/>
+        <TheHeader @search="getFilmName" @to-first-page="goToFirstPage"/>
 
-        <PageFilms :search-name-film="searchNameFilm"/>
+        <PageFilms :search-name-film="searchNameFilm" :to-first-page="isGoToFirstPage"/>
 
         <TheFooter/>
     </div>
@@ -26,12 +26,19 @@ export default {
     data() {
         return {
             searchNameFilm: '',
+            isGoToFirstPage: false,
         };
     },
 
     methods: {
         getFilmName(name) {
             this.searchNameFilm = name;
+        },
+
+        goToFirstPage() {
+            this.isGoToFirstPage = true;
+
+            setTimeout(() => this.isGoToFirstPage = false, 100);
         }
     }
 }

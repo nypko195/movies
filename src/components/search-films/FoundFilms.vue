@@ -122,11 +122,9 @@ export default {
     //     padding: 0 1rem;    
     // }
 
-    // @include respond-to(sm) {
-    //     height: auto;
-    //     flex-direction: column;
-    //     justify-content: center;
-    // }
+    @include respond-to(sm) {
+        overflow-y: auto;
+    }
 
     &-result { 
         display: flex;

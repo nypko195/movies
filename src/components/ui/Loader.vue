@@ -17,6 +17,11 @@
         @include respond-to(md) {
             margin-top: 20%;
         }
+
+        @include respond-to(sm) {
+            margin-top: 50%;
+            margin-bottom: 54.5%;
+        }
     }
     @keyframes load5 {
         0%,

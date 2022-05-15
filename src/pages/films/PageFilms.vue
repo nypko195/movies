@@ -4,6 +4,7 @@
             :is-show-loader="isShowLoader"
             :films="films"
             :search-name-film="searchNameFilm"
+            :to-first-page="toFirstPage"
             @get-films="getMoreFilms"
         />
     </div>
@@ -19,6 +20,11 @@ export default {
     props: {
         searchNameFilm: {
             type: String,
+        },
+
+        toFirstPage: {
+            type: Boolean,
+            default: false,
         }
     },
 
@@ -85,7 +91,8 @@ export default {
     }
 
     @include respond-to(sm) {
-        min-height: 30rem;
+        max-height: 85rem;
+        height: 85rem;
     }
 }
 </style>

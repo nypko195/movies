@@ -1,7 +1,11 @@
 <template> 
     <Loader v-if="isShowLoader"/>
 
-    <div v-else class="list-films">
+    <div 
+        v-else
+        ref="list"
+        class="list-films"
+    >
         <router-link
             class="list-films__item"
             v-for="film in showPagefilms"
@@ -59,7 +63,12 @@ export default {
         isShowLoader: {
             type: Boolean, 
             default: false,
-        }
+        },
+
+        toFirstPage: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
@@ -89,7 +98,7 @@ export default {
         },
 
         showPagefilms() {      
-            if (!this.isMobile && !this.isTablet) {               
+            if (!this.isMobile) {               
                 return this.films.slice(this.minCountCards, this.maxCountCards);
             }
 
@@ -130,6 +139,12 @@ export default {
             if (endfilmList) {
                 this.$emit('get-films');
             }
+        },
+
+        toFirstPage() {
+            this.page = 1;
+
+            this.scrollBlockToTop();
         }
     },
 
@@ -137,11 +152,19 @@ export default {
         nextPage() {
             this.page++;
             this.$router.push(`${this.$route.path}?page=${this.page}`);
+
+            if(this.isTablet) {
+                this.scrollBlockToTop();
+            }
         },
 
         prevPage() {
             this.page--;
             this.$router.push(`${this.$route.path}?page=${this.page}`);
+
+            if(this.isTablet) {
+                this.scrollBlockToTop();
+            }
         },
 
         nextSlide() {
@@ -176,7 +199,13 @@ export default {
 
                 this.maxCountSlides = slides.length;
             }
-        },           
+        }, 
+
+        scrollBlockToTop() {
+            this.$refs.list.scrollTo({
+                top: 0,
+            })
+        }
     }
 }
 </script>
@@ -188,9 +217,10 @@ export default {
     justify-content: center;
 
     @include respond-to(sm) {
-        flex-wrap: nowrap;
-        max-width: 90%;
         position: relative;
+        height: 100%;
+        padding: 0 1rem;
+        overflow-x: auto;
     }
 
     &__item {
@@ -253,6 +283,11 @@ export default {
         min-width: 17rem;
         width: 100%;
         height: 25rem;
+
+        @include respond-to(sm) {
+            min-width: 33rem;
+            height: 45rem;
+        }
     }
 
     &__year {
@@ -274,7 +309,7 @@ export default {
         font-weight: 700;
 
         @include respond-to(sm) {
-            display: none;
+            margin: 1rem 0 4rem;
         }
 
         &-prev {
