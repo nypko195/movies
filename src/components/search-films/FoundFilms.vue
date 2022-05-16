@@ -110,18 +110,6 @@ export default {
     width: 100%;
     padding: 1rem 5rem;
 
-    // @include respond-to(lg) {
-    //     max-width: 100%;
-    //     margin: 0 10rem;
-    //     margin-top: 10px;
-    //     margin-bottom: 10px;
-    // }
-
-    // @include respond-to(md) {
-    //     margin: 0 2rem;
-    //     padding: 0 1rem;    
-    // }
-
     @include respond-to(sm) {
         overflow-y: auto;
     }

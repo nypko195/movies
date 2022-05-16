@@ -56,28 +56,20 @@ export default {
     width: 100%;
     padding: 1rem 5rem;
 
-    // @include respond-to(lg) {
-    //     max-width: 100%;
-    //     margin: 10px 10rem;
-    // }
-
-    // @include respond-to(md) {
-    //     margin: 10px 2rem;
-    //     min-height: 35rem;
-    // }
-
     @include respond-to(sm) {
         overflow-y: auto;
+    }
+
+    @include respond-to(xs) {
+        padding: 1rem 1rem;
     }
 
     &__row {
         display: flex;
         position: relative;
-        // margin: 0 5rem;
 
         @include respond-to(sm) {
             flex-direction: column; 
-            // margin: 0 2rem;
         }
     }
 
@@ -120,6 +112,11 @@ export default {
 
         @include respond-to(sm) {
             right: 0;
+        }
+
+        @include respond-to(xs) {
+            top: 1px;
+            right: 1px;
         }
     }
 }

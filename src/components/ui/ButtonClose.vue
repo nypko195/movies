@@ -8,19 +8,21 @@
         z-index: 2;
         top: 0;
         right: 0;
-        width: 4rem;
-        height: 4rem;
+        width: 5rem;
+        height: 5rem;
         cursor: pointer;
+        background-color: $green;
+        border-radius: 50%;
 
         &:before,
         &:after {
             content: '';
             position: absolute;    
-            height: 1px;
-            top: 0;
-            left: 0;
-            width: 2rem;
-            background-color: $icon-reset;
+            height: 3px;
+            top: 23px;
+            left: 10px;
+            width: 3rem;
+            background-color: $white;
             transition: all .5s ease-out;
         }
 

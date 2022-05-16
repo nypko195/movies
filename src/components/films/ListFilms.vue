@@ -97,12 +97,8 @@ export default {
             return isScreenSizeSm
         },
 
-        showPagefilms() {      
-            if (!this.isMobile) {               
-                return this.films.slice(this.minCountCards, this.maxCountCards);
-            }
-
-            return this.films;    
+        showPagefilms() {
+            return this.films.slice(this.minCountCards, this.maxCountCards);
         },
 
         minCountCards() {
@@ -153,7 +149,7 @@ export default {
             this.page++;
             this.$router.push(`${this.$route.path}?page=${this.page}`);
 
-            if(this.isTablet) {
+            if(this.isTablet || this.isMobile) {
                 this.scrollBlockToTop();
             }
         },
@@ -162,7 +158,7 @@ export default {
             this.page--;
             this.$router.push(`${this.$route.path}?page=${this.page}`);
 
-            if(this.isTablet) {
+            if(this.isTablet || this.isMobile) {
                 this.scrollBlockToTop();
             }
         },
@@ -223,11 +219,15 @@ export default {
         overflow-x: auto;
     }
 
+    @include respond-to(xs) {
+        padding: 0 .5rem;
+    }
+
     &__item {
         position: relative;
         flex: 0 0 16%;
         margin-right: 1.5rem;
-        margin-bottom: 1rem;
+        // margin-bottom: 1rem;
         cursor: pointer;
 
         &:hover {
@@ -257,8 +257,32 @@ export default {
             }
         }
 
+        &:nth-child(5) {
+            margin-right: 0;
+        }
+
+        &:nth-child(10) {
+            margin-right: 0;
+        }
+
+        &:nth-child(n + 6) {
+            margin-top: 1rem;
+        }
+
         @include respond-to(sm) {
             width: 100%;
+
+            &:nth-child(5) {
+                margin-right: 1.5rem;
+            }
+
+            &:nth-child(even) {
+                margin-right: 0;
+            }
+
+            &:nth-child(n + 3) {
+                margin-top: 1rem;
+            }
         }
     }
 
@@ -287,6 +311,11 @@ export default {
         @include respond-to(sm) {
             min-width: 33rem;
             height: 45rem;
+        }
+
+        @include respond-to(xs) {
+            min-width: 15rem;
+            height: 25rem;
         }
     }
 

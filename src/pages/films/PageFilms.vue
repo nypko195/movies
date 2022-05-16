@@ -94,5 +94,10 @@ export default {
         max-height: 85rem;
         height: 85rem;
     }
+
+    @include respond-to(sm) {
+        max-height: 85rem;
+        height: 67rem;
+    }
 }
 </style>
