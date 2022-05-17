@@ -87,17 +87,11 @@ export default {
 
     @include respond-to(md) {
         margin: 10px 2rem;
-        min-height: 35rem;
+        min-height: 40rem;
     }
 
     @include respond-to(sm) {
-        max-height: 85rem;
-        height: 85rem;
-    }
-
-    @include respond-to(sm) {
-        max-height: 85rem;
-        height: 67rem;
+        max-height: 100%;
     }
 }
 </style>

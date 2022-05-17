@@ -149,7 +149,7 @@ export default {
             this.page++;
             this.$router.push(`${this.$route.path}?page=${this.page}`);
 
-            if(this.isTablet || this.isMobile) {
+            if (this.isTablet || this.isMobile) {
                 this.scrollBlockToTop();
             }
         },
@@ -158,7 +158,7 @@ export default {
             this.page--;
             this.$router.push(`${this.$route.path}?page=${this.page}`);
 
-            if(this.isTablet || this.isMobile) {
+            if (this.isTablet || this.isMobile) {
                 this.scrollBlockToTop();
             }
         },
@@ -198,9 +198,13 @@ export default {
         }, 
 
         scrollBlockToTop() {
-            this.$refs.list.scrollTo({
-                top: 0,
-            })
+            let el = this.$refs.list;
+            let scroll = el.getBoundingClientRect().top + pageYOffset;
+
+            window.scrollTo({
+                top: scroll,
+                behavior: 'smooth'
+            });
         }
     }
 }
@@ -216,7 +220,6 @@ export default {
         position: relative;
         height: 100%;
         padding: 0 1rem;
-        overflow-x: auto;
     }
 
     @include respond-to(xs) {
@@ -227,7 +230,6 @@ export default {
         position: relative;
         flex: 0 0 16%;
         margin-right: 1.5rem;
-        // margin-bottom: 1rem;
         cursor: pointer;
 
         &:hover {
