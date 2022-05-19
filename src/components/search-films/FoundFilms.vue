@@ -123,8 +123,13 @@ export default {
     }
 
     &-close {
-        top: 10px;
+        top: -22px;
         right: -20px;
+
+        @include respond-to(md) {
+            top: -28px;
+            right: -47px;
+        }
 
         @include respond-to(sm) {
             right: 0;

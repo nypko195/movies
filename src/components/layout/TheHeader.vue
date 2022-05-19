@@ -158,12 +158,11 @@ export default {
                 background-repeat: no-repeat;
 
                 @include respond-to(md) {
-                    left: 15%;
+                    left: 80%;
                 }
 
                 @include respond-to(sm) {
                     top: 70%;
-                    left: 20%;
                 }
             }
         }

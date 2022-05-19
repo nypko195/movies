@@ -12,9 +12,7 @@
             :key="film.id"
             :to="{ name: 'сardFilm', params: { page: page, id: film.id, film: JSON.stringify(film) }}"
         >
-            <!-- <img v-if="film.small_poster" class="list-films__poster" :src="film.small_poster"/>
-            <img v-else src="../../assets/placeholder.png" > -->
-            <img class="list-films__poster _placeholder" src="../../assets/placeholder.png" >
+            <img v-if="film.small_poster" class="list-films__poster" :src="film.small_poster"/>
             <span class="list-films__year">{{ film.year }}</span>
         </router-link>
 
@@ -143,7 +141,7 @@ export default {
             this.page = 1;
 
             this.scrollBlockToTop();
-        }
+        },
     },
 
     methods: {
@@ -311,6 +309,8 @@ export default {
         min-width: 17rem;
         width: 100%;
         height: 25rem;
+        background-image: url('../../assets/placeholder.png');
+        background-size: contain;
 
         @include respond-to(sm) {
             min-width: 33rem;
@@ -344,6 +344,10 @@ export default {
         margin-top: auto;
         margin-bottom:5rem;
         font-weight: 700;
+
+        @include respond-to(md) {
+            margin-top: 2rem;
+        }
 
         @include respond-to(sm) {
             margin: 1rem 0 4rem;

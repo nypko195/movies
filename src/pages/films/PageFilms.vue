@@ -38,6 +38,7 @@ export default {
 
     async mounted() {
         await this.getFilms();
+        await this.checkingUrl();
     },
 
     methods: {
@@ -60,6 +61,17 @@ export default {
         async getMoreFilms() {
             await this.getFilms(true);
         },
+
+        checkingUrl() {
+            if (!this.films.length) return;
+            
+            let DISPLAYED_CARDS_COUNT = 10;
+            let pageNumber = this.$route.query?.page;
+
+            if (this.films.length / DISPLAYED_CARDS_COUNT < pageNumber) {
+                this.$router.push({ name: 'notFound'});
+            }
+        }
     }
 }
 </script>
