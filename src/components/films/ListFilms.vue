@@ -12,7 +12,9 @@
             :key="film.id"
             :to="{ name: 'сardFilm', params: { page: page, id: film.id, film: JSON.stringify(film) }}"
         >
-            <img class="list-films__poster" :src="film.small_poster"/>
+            <!-- <img v-if="film.small_poster" class="list-films__poster" :src="film.small_poster"/>
+            <img v-else src="../../assets/placeholder.png" > -->
+            <img class="list-films__poster _placeholder" src="../../assets/placeholder.png" >
             <span class="list-films__year">{{ film.year }}</span>
         </router-link>
 
@@ -316,6 +318,10 @@ export default {
         @include respond-to(xs) {
             min-width: 15rem;
             height: 25rem;
+        }
+
+        &._placeholder {
+            border: 2px solid $green;
         }
     }
 

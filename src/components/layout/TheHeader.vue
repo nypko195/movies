@@ -62,7 +62,7 @@ export default {
     &__picture {
         display: block;
         height: 28rem;
-        background-image: url('../../assets/bg-main/bg.jpg');
+        background-image: url('../../assets/header-bg/bg.jpg');
         background-repeat: no-repeat;
         background-position: top;
 
