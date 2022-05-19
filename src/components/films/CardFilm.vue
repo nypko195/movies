@@ -77,8 +77,14 @@ export default {
         height: 30rem;
 
         @include respond-to(sm) {
-            width: 33rem;
-            height: 45rem;   
+            width: 50%;
+            height: 35rem;  
+        }
+
+        @include respond-to(xs) {
+            width: 100%;
+            padding: 0 4rem;
+            height: 35rem;  
         }
     }
 
@@ -111,12 +117,13 @@ export default {
         right: -20px;
 
         @include respond-to(sm) {
-            right: 0;
+            top: -20px;
+            right: -30px;
         }
 
         @include respond-to(xs) {
-            top: 1px;
-            right: 1px;
+            top: -25px;
+            right: -7px;
         }
     }
 }
