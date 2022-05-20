@@ -232,17 +232,19 @@ export default {
     }
 
     &-burger {
-        display: flex;
+        display: none;
         align-items: center;
         width: 30px;
         height: 30px;
 
+        @include respond-to(sm) {
+            display: flex;
+        }
+
         &__button {
-            display: none;
             position: relative;
             
             @include respond-to(sm) {
-                display: block;
                 height: 2px;
                 width: 30px;
                 background-color: $black;
