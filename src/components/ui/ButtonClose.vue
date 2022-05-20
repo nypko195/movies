@@ -5,7 +5,7 @@
 <style lang="scss" scoped>
     .close {
         position: absolute;
-        z-index: 2;
+        z-index: 1;
         top: 0;
         right: 0;
         width: 4rem;

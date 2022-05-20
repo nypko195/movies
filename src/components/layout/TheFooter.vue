@@ -27,6 +27,10 @@
         padding: 0 1rem;
     }
 
+    @include respond-to(xs) {
+        justify-content: center;
+    }
+
     &__title {
         font-weight: 700;
         transition: all 0.3s ease;

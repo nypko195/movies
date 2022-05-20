@@ -19,7 +19,37 @@
                 >                
                 </div> 
             </div>
+
+            <div class="header-burger">
+                <div 
+                    class="header-burger__button"
+                    :class="{'_active': openBurgerMenu}"
+                    @click="openBurgerMenu = !openBurgerMenu"
+                >
+                </div>
+            </div>
         </section>
+
+        <div 
+            class="header__menu"
+            :class="{'_active': openBurgerMenu}"
+        >
+            <div class="header-search__box _menu">
+                <input 
+                    class="header-search__input"
+                    type="text" 
+                    placeholder="Введите название" 
+                    v-model.trim="searchNameFilm"
+                    @keyup.enter="emitTitleFilm"
+                />
+
+                <div 
+                    class="header-search__button"
+                    @click="emitTitleFilm"
+                >                
+                </div> 
+            </div>
+        </div>
     </div>
 </template>
 
@@ -32,6 +62,7 @@ export default {
     data() {
         return {
             searchNameFilm: '',
+            openBurgerMenu: false,
         };
     },
 
@@ -48,6 +79,7 @@ export default {
             this.$router.push({ name: 'foundFilms' });
             this.$emit('search', this.searchNameFilm);
             this.searchNameFilm = '';
+            this.openBurgerMenu = false;
         },
 
         goToFirstPage() {
@@ -59,6 +91,8 @@ export default {
 
 <style lang="scss" scoped>
 .header {
+    position: relative;
+
     &__picture {
         display: block;
         height: 28rem;
@@ -80,6 +114,7 @@ export default {
     &__content {
         display: flex;
         position: relative;
+        z-index: 3;
         max-width: 110rem;
         height: 6.5rem;
         margin: 0 auto;
@@ -115,10 +150,37 @@ export default {
         }
     }
 
+    &__menu {
+        position: fixed;
+        width: 100%;
+        height: 110%;
+        z-index: 2;
+        padding: 12rem 2rem 0;
+        background: $green;
+        transform: translateY(+150%);
+        transition: transform .5s ease;
+
+        @include respond-to(xs) {
+            padding: 8rem 2rem 0;
+        }
+
+        &._active {
+            transform: translateY(-10%);
+        }
+    }
+
     &-search {
         &__box {
             display: flex;
             position: relative;
+
+            @include respond-to(sm) {
+                display: none;
+
+                &._menu {
+                    display: block;
+                }
+            }
         }
 
         &__input {
@@ -142,6 +204,7 @@ export default {
         &__button {
             position: absolute;
             z-index: 2;
+            top: 0;
             right: 10%;
             width: 4rem;
             height: 4rem; 
@@ -163,6 +226,59 @@ export default {
 
                 @include respond-to(sm) {
                     top: 70%;
+                }
+            }
+        }
+    }
+
+    &-burger {
+        display: flex;
+        align-items: center;
+        width: 30px;
+        height: 30px;
+
+        &__button {
+            display: none;
+            position: relative;
+            
+            @include respond-to(sm) {
+                display: block;
+                height: 2px;
+                width: 30px;
+                background-color: $black;
+
+                &:before,
+                &:after {
+                    content: '';
+                    position: absolute;
+                    height: 2px;
+                    width: 30px;
+                    background-color: $black;
+                }
+
+                &:before {
+                    top: -7px;
+                }
+
+                &:after {
+                    top: 7px;
+                }
+
+                &._active {
+                    height: 0;
+
+                    &:before,
+                    &:after {
+                        top: 0;
+                    }
+
+                    &:before {
+                        transform: rotate(45deg);
+                    }
+
+                    &:after {
+                        transform: rotate(-45deg);
+                    }
                 }
             }
         }

@@ -1,26 +1,24 @@
 <template>
     <div class="card-film">
-        <div class="container">
-            <div class="card-film__row">
-                <img class="card-film__poster" :src="cardFilm.small_poster" alt="">
-                <div class="card-film__info">
-                    <h3 class="card-film__title">{{ cardFilm.name_russian }} ({{ cardFilm.year }}) смотреть онлайн</h3>
-                    <p class="card-film__name text">
-                        <span class="card-film__subtitle">Название:</span> {{ cardFilm.name_russian }}
-                    </p>
-                    <p class="card-film__country text">
-                        <span class="card-film__subtitle">Страна:</span> {{ cardFilm.country_ru }}
-                    </p>
-                    <p class="card-film__year text">
-                        <span class="card-film__subtitle">Год выхода:</span> {{ cardFilm.year }}
-                    </p>                    
-                    <p class="card-film__description text">
-                        <span class="card-film__subtitle">Описание:</span> {{ cardFilm.description }}
-                    </p>
-                </div>
-
-                <ButtonClose @click="$router.go(-1)" class="card-film__close" /> 
+        <div class="card-film__row">
+            <img class="card-film__poster" :src="cardFilm.small_poster" alt="">
+            <div class="card-film__info">
+                <h3 class="card-film__title">{{ cardFilm.name_russian }} ({{ cardFilm.year }}) смотреть онлайн</h3>
+                <p class="card-film__name text">
+                    <span class="card-film__subtitle"><span>Название</span>:</span> {{ cardFilm.name_russian }}
+                </p>
+                <p class="card-film__country text">
+                    <span class="card-film__subtitle"><span>Страна</span>:</span> {{ cardFilm.country_ru }}
+                </p>
+                <p class="card-film__year text">
+                    <span class="card-film__subtitle"><span>Год выхода</span>:</span> {{ cardFilm.year }}
+                </p>                    
+                <p v-if="cardFilm.description" class="card-film__description text">
+                    <span class="card-film__subtitle"><span>Описание</span>:</span> {{ cardFilm.description }}
+                </p>
             </div>
+
+            <ButtonClose @click="$router.go(-1)" class="card-film__close" /> 
         </div>
     </div>
 </template>
@@ -54,14 +52,14 @@ export default {
 <style lang="scss" scoped>
 .card-film {
     width: 100%;
-    padding: 1rem 5rem;
+    padding: 1rem 5rem 3rem;
 
     @include respond-to(sm) {
         overflow-y: auto;
     }
 
     @include respond-to(xs) {
-        padding: 1rem 1rem;
+        padding: 1rem 1rem 2rem;
     }
 
     &__row {
@@ -95,6 +93,10 @@ export default {
             margin-top: 2rem;
             margin-left: 0;
         }
+
+        @include respond-to(xs) {
+            padding: 0 1rem 1rem;
+        }
     }
 
     &__title {
@@ -109,7 +111,9 @@ export default {
     }
 
     &__subtitle {
-        text-decoration: underline;
+        & > span {
+            text-decoration: underline;
+        }
     }
 
     &__close {
@@ -122,8 +126,7 @@ export default {
         }
 
         @include respond-to(sm) {
-            top: -20px;
-            right: -30px;
+            top: -25px;
         }
 
         @include respond-to(xs) {
