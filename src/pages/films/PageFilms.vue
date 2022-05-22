@@ -3,8 +3,7 @@
         <router-view
             :is-show-loader="isShowLoader"
             :films="films"
-            :search-name-film="searchNameFilm"
-            :to-first-page="toFirstPage"
+            :search-name-film="searchNameFilm"            
             @get-films="getMoreFilms"
         />
     </div>
@@ -20,12 +19,8 @@ export default {
     props: {
         searchNameFilm: {
             type: String,
+            default: ''
         },
-
-        toFirstPage: {
-            type: Boolean,
-            default: false,
-        }
     },
 
     data() {
@@ -64,11 +59,20 @@ export default {
 
         checkingUrl() {
             if (!this.films.length) return;
-            
+
             let DISPLAYED_CARDS_COUNT = 10;
             let pageNumber = this.$route.query?.page;
 
-            if (this.films.length / DISPLAYED_CARDS_COUNT < pageNumber) {
+            let numberOfQueryParams = pageNumber.split('/');
+            let film = this.films.filter(film => {
+                return film.id === Number(numberOfQueryParams[1]);
+            });
+
+            if (!!film[0] && numberOfQueryParams.length === 2) {
+                this.$router.push({ name: 'сardFilm', params: { page: numberOfQueryParams[0], id: film[0]?.id, film: JSON.stringify(film[0]) }});
+            } else if ((this.films.length / DISPLAYED_CARDS_COUNT) >= Number(pageNumber)) {
+                this.$router.push({ name: 'listFilms' });
+            } else {
                 this.$router.push({ name: 'notFound'});
             }
         }

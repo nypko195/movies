@@ -1,7 +1,7 @@
 import { urlForGetFilm, urlForGetFilmsByPage, urlForFilmsSearch } from './constants';
 
 export async function getFilms() {
-    let response =  await fetch(urlForGetFilm);
+    const response =  await fetch(urlForGetFilm);
 
     let { data } = await response.json();
 
@@ -9,7 +9,7 @@ export async function getFilms() {
 }
 
 export async function getFilmsByPage(page) {
-    let response = await fetch(`${urlForGetFilmsByPage + page}`);
+    const response = await fetch(`${urlForGetFilmsByPage + page}`);
 
     let { data } = await response.json();
 
@@ -17,7 +17,7 @@ export async function getFilmsByPage(page) {
 }
 
 export async function getFoundFilms(searchNameFilm) {
-    let response = await fetch(`${urlForFilmsSearch + searchNameFilm}`);
+    const response = await fetch(`${urlForFilmsSearch + searchNameFilm}`);
 
     let { data } = await response.json()
 

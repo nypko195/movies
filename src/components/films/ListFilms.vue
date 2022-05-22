@@ -10,7 +10,7 @@
             class="list-films__item"
             v-for="film in showPagefilms"
             :key="film.id"
-            :to="{ name: 'сardFilm', params: { page: page, id: film.id, film: JSON.stringify(film) }}"
+            :to="{ name: 'сardFilm', params: { page: page, id: film.id, film: JSON.stringify(film), isListFilms }}"
         >
             <img v-if="film.small_poster" class="list-films__poster" :src="film.small_poster"/>
             <span class="list-films__year">{{ film.year }}</span>
@@ -63,12 +63,7 @@ export default {
         isShowLoader: {
             type: Boolean, 
             default: false,
-        },
-
-        toFirstPage: {
-            type: Boolean,
-            default: false,
-        },
+        }
     },
 
     data() {
@@ -81,6 +76,13 @@ export default {
 
     created() {
         this.page = this.$route.query?.page || 1;
+        this.$router.push(`${this.$route.path}?page=${this.page}`);
+
+        this.$router.beforeEach((to) => {
+            if (to.fullPath === '/films/?page=1') {
+                this.page = 1;
+            }
+        });
     },
 
     computed: {
@@ -135,12 +137,6 @@ export default {
             if (endfilmList) {
                 this.$emit('get-films');
             }
-        },
-
-        toFirstPage() {
-            this.page = 1;
-
-            this.scrollBlockToTop();
         },
     },
 

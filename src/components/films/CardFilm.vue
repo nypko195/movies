@@ -18,7 +18,7 @@
                 </p>
             </div>
 
-            <ButtonClose @click="$router.go(-1)" class="card-film__close" /> 
+            <ButtonClose @click="close" class="card-film__close" /> 
         </div>
     </div>
 </template>
@@ -38,6 +38,11 @@ export default {
         film: {
             type: String,
             default: '',
+        },
+
+        isListFilms: {
+            type: Boolean,
+            default: false,
         }
     },
 
@@ -46,6 +51,16 @@ export default {
             return JSON.parse(this.film);
         }
     },
+
+    methods: {
+        close() {
+            if (this.isListFilms) {
+                this.$router.go(-1);
+            } else {
+                this.$router.push({ path: '/films/?page=1'});
+            }
+        }
+    }
 }
 </script>
 

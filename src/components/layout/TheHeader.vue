@@ -3,7 +3,7 @@
         <div class="header__picture"></div>
 
         <section class="header__content">
-            <router-link :to="{ name: 'listFilms' }" class="header__logo" @click="goToFirstPage">Films</router-link>
+            <router-link to="/films/?page=1" class="header__logo">Films</router-link>
             <div class="header-search__box">
                 <input 
                     class="header-search__input"
@@ -57,7 +57,7 @@
 export default {
     name: 'TheHeader',
 
-    emits: ['search', 'to-first-page'],
+    emits: ['search'],
 
     data() {
         return {
@@ -80,10 +80,6 @@ export default {
             this.$emit('search', this.searchNameFilm);
             this.searchNameFilm = '';
             this.openBurgerMenu = false;
-        },
-
-        goToFirstPage() {
-            this.$emit('to-first-page');
         },
     }
 }

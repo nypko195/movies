@@ -24,7 +24,7 @@ export const router = createRouter({
         },
 
         { 
-            path: '/films/?page=:page/:id/',
+            path: '/films/?page=:page/:id',
             name: 'сardFilm',
             component: CardFilm,
             props: true,
