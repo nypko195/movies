@@ -88,7 +88,7 @@ export default {
     align-items: center;
     max-width: 110rem;
     min-height: 61rem;
-    height: auto;
+    height: 100%;
     margin: 0 auto;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -99,11 +99,13 @@ export default {
     @include respond-to(lg) {
         max-width: 100%;
         margin: 10px 10rem;
+        min-height: 80%;
+        height: auto;
     }
 
     @include respond-to(md) {
         margin: 10px 2rem;
-        min-height: 40rem;
+        min-height: 87%;
     }
 
     @include respond-to(sm) {

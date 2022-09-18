@@ -23,8 +23,8 @@
             <div class="header-burger">
                 <div 
                     class="header-burger__button"
-                    :class="{'_active': openBurgerMenu}"
-                    @click="openBurgerMenu = !openBurgerMenu"
+                    :class="{'_active': isOpenBurgerMenu}"
+                    @click="openBurgerMenu"
                 >
                 </div>
             </div>
@@ -32,7 +32,7 @@
 
         <div 
             class="header__menu"
-            :class="{'_active': openBurgerMenu}"
+            :class="{'_active': isOpenBurgerMenu}"
         >
             <div class="header-search__box _menu">
                 <input 
@@ -62,7 +62,7 @@ export default {
     data() {
         return {
             searchNameFilm: '',
-            openBurgerMenu: false,
+            isOpenBurgerMenu: false,
         };
     },
 
@@ -79,7 +79,22 @@ export default {
             this.$router.push({ name: 'foundFilms' });
             this.$emit('search', this.searchNameFilm);
             this.searchNameFilm = '';
-            this.openBurgerMenu = false;
+            this.isOpenBurgerMenu = false;
+            this.lockedScrollBody();
+        },
+
+        openBurgerMenu() {
+            this.isOpenBurgerMenu = !this.isOpenBurgerMenu;
+
+            this.lockedScrollBody();
+        },
+
+        lockedScrollBody() {
+            if (this.isOpenBurgerMenu) {
+                document.body.classList.add('_locked');
+            } else {
+                document.body.classList.remove('_locked');
+            }
         },
     }
 }
@@ -205,6 +220,10 @@ export default {
             width: 4rem;
             height: 4rem; 
             cursor: pointer;
+
+            @include respond-to(sm) {
+                right: 4%;
+            }
             
             &:after {
                 content: '';
@@ -252,6 +271,7 @@ export default {
                     height: 2px;
                     width: 30px;
                     background-color: $black;
+                    transition: all .3s ease;
                 }
 
                 &:before {

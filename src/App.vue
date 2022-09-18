@@ -49,6 +49,10 @@ html {
     letter-spacing: -0.01em;
 }
 
+body {
+    height: 100vh;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -142,5 +146,9 @@ button {
         border-radius: 24px;
         opacity: 1;
     }
+}
+
+._locked {
+    overflow: hidden;
 }
 </style>

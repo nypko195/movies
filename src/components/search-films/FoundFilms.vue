@@ -20,7 +20,7 @@
                 :to="{ name: 'сardFilm', params: { page: 1, id: film.id, film: JSON.stringify(film) } }"
             >
                 <img 
-                    v-if="film.small_poster !== 'https://kinobd.ru'"
+                    v-if="film.small_poster"
                     class="found-film__poster" 
                     :src="film.small_poster" 
                     :alt="film.name_russian"
@@ -42,7 +42,8 @@
                         Год выхода: {{ film.year}}
                     </p>
                     <p v-if="film.description" class="found-film__description text">
-                        Описание: {{ film.description }}
+                        Описание: {{ normalizeDescription(film.description) }}
+                        <span v-if="mq.current === 'sm' && film.description.length > 300">посмотреть полное описание</span>
                     </p>                
                 </div>
             </router-link>        
@@ -61,6 +62,8 @@ import { getFoundFilms }  from '../../api/index.js';
 export default {
     name: 'foundFilms',
 
+    inject: ['mq'],
+
     components: {
         Loader,
         ButtonClose,
@@ -76,7 +79,7 @@ export default {
     data() {
         return {
             foundFilms: [],
-            isShowLoader: false,
+            isShowLoader: false, 
         };
     },
 
@@ -103,6 +106,14 @@ export default {
         normalizeSearchNameFilm() {
             return this.searchNameFilm.toLowerCase().trim();
         }, 
+
+        normalizeDescription(description) {
+            if (this.mq.current === 'sm' && description.length > 300) {
+                return `${description.substring(0, 300)}...`; 
+            } else {
+                return description; 
+            }            
+        },
     }
 }
 </script>
@@ -130,12 +141,12 @@ export default {
     }
 
     &-close {
-        top: -22px;
-        right: -20px;
+        top: -12px;
+        right: 30px;
 
         @include respond-to(md) {
-            top: -28px;
-            right: -47px;
+            top: -12px;
+            right: 3px;
         }
 
         @include respond-to(sm) {
@@ -184,10 +195,11 @@ export default {
         &__poster {
             min-width: 25rem;
             width: 25rem;
+            min-height: 35rem;
+            max-height: 35rem;
 
             @include respond-to(xs) {
                 width: 100%;
-                height: 35rem;
             }
         }
 
@@ -208,7 +220,7 @@ export default {
                 display: block;
                 position: absolute;
                 bottom: 5%;
-                left: 5%;
+                left: 25px;
                 padding: 5px;
                 background-color: $green;    
                 color: $white;
@@ -218,8 +230,17 @@ export default {
         }
 
         &__description {
+            @include respond-to(sm) {
+                // max-height: 4rem;
+                // overflow: hidden;
+            }
+
             @include respond-to(xs) {
                 display: none;
+            }
+
+            & > span {
+                color: #4a9999;
             }
         }
     }

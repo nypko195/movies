@@ -118,16 +118,10 @@ export default {
         display: flex;
         margin-bottom: 2rem;
         font-size: 2.5rem;
-        text-align: center;
+        text-align: left;
 
         @include respond-to(sm) {
             margin-bottom: 1rem; 
-        }
-    }
-
-    &__subtitle {
-        & > span {
-            text-decoration: underline;
         }
     }
 
