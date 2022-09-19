@@ -3,7 +3,7 @@
         <div class="header__picture"></div>
 
         <section class="header__content">
-            <router-link to="/films/?page=1" class="header__logo">Films</router-link>
+            <router-link to="/films/?page=1" class="header__logo" @click="animateFilmsList">Films</router-link>
             <div class="header-search__box">
                 <input 
                     class="header-search__input"
@@ -95,6 +95,18 @@ export default {
             } else {
                 document.body.classList.remove('_locked');
             }
+        },
+
+        animateFilmsList() {
+            let el = document.getElementById('films-list');
+
+            el.style.opacity = 0;
+            el.style.transition = 'none';
+
+            setTimeout(() => {
+                el.style.opacity = 1;
+                el.style.transition = 'opacity .4s';
+            }, 400);
         },
     }
 }
@@ -223,6 +235,10 @@ export default {
 
             @include respond-to(sm) {
                 right: 4%;
+            }
+
+            @include respond-to(xs) {
+                right: 7.5%;
             }
             
             &:after {

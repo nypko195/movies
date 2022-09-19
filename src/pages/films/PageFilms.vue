@@ -1,11 +1,13 @@
 <template>
-    <div class="p-films">
-        <router-view
-            :is-show-loader="isShowLoader"
-            :films="films"
-            :search-name-film="searchNameFilm"            
-            @get-films="getMoreFilms"
-        />
+    <div id="films-list" class="p-films">
+        <transition name="fade">
+            <router-view
+                :is-show-loader="isShowLoader"
+                :films="films"
+                :search-name-film="searchNameFilm"
+                @get-films="getMoreFilms"
+            />
+        </transition>      
     </div>
 </template>
 
@@ -94,22 +96,31 @@ export default {
     margin-bottom: 10px;
     padding-top: 20px;
     background-color: $bg-block;
-    border-radius: 5px;   
+    border-radius: 5px;
 
     @include respond-to(lg) {
         max-width: 100%;
         margin: 10px 10rem;
-        min-height: 80%;
         height: auto;
     }
 
     @include respond-to(md) {
         margin: 10px 2rem;
-        min-height: 87%;
+        min-height: calc(100vh - 15rem);
     }
 
     @include respond-to(sm) {
-        max-height: 100%;
+        min-height: calc(100vh - 13.3rem);
     }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity .5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
 }
 </style>

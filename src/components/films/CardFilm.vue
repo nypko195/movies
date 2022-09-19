@@ -30,6 +30,8 @@ import ButtonClose from '../ui/ButtonClose.vue';
 export default {
     name: 'CardFilm',
 
+    inject: ['mq'],
+
     components: {
         ButtonClose,
     },
@@ -49,6 +51,16 @@ export default {
     computed: {
         cardFilm() {
             return JSON.parse(this.film);
+        },
+
+        isMobile() {
+            return this.mq.current === 'zero';
+        }
+    },
+
+    mounted() {
+        if (this.isMobile) {
+            this.scrollToTop();
         }
     },
 
@@ -59,7 +71,14 @@ export default {
             } else {
                 this.$router.push({ path: '/films/?page=1'});
             }
-        }
+        },
+
+        scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+        },
     }
 }
 </script>
