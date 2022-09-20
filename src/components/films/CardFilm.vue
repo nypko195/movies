@@ -1,25 +1,23 @@
 <template>
     <div class="card-film">
-        <div class="card-film__row">
-            <img class="card-film__poster" :src="cardFilm.small_poster" alt="">
-            <div class="card-film__info">
-                <h3 class="card-film__title">{{ cardFilm.name_russian }} ({{ cardFilm.year }}) смотреть онлайн</h3>
-                <p class="card-film__name text">
-                    <span class="card-film__subtitle"><span>Название</span>:</span> {{ cardFilm.name_russian }}
-                </p>
-                <p class="card-film__country text">
-                    <span class="card-film__subtitle"><span>Страна</span>:</span> {{ cardFilm.country_ru }}
-                </p>
-                <p class="card-film__year text">
-                    <span class="card-film__subtitle"><span>Год выхода</span>:</span> {{ cardFilm.year }}
-                </p>                    
-                <p v-if="cardFilm.description" class="card-film__description text">
-                    <span class="card-film__subtitle"><span>Описание</span>:</span> {{ cardFilm.description }}
-                </p>
-            </div>
-
-            <ButtonClose @click="close" class="card-film__close" /> 
+        <img class="card-film__poster" :src="cardFilm.small_poster" alt="">
+        <div class="card-film__info">
+            <h3 class="card-film__title">{{ cardFilm.name_russian }} ({{ cardFilm.year }}) смотреть онлайн</h3>
+            <p class="card-film__name text">
+                <span class="card-film__subtitle"><span>Название</span>:</span> {{ cardFilm.name_russian }}
+            </p>
+            <p class="card-film__country text">
+                <span class="card-film__subtitle"><span>Страна</span>:</span> {{ cardFilm.country_ru }}
+            </p>
+            <p class="card-film__year text">
+                <span class="card-film__subtitle"><span>Год выхода</span>:</span> {{ cardFilm.year }}
+            </p>
+            <p v-if="cardFilm.description" class="card-film__description text">
+                <span class="card-film__subtitle"><span>Описание</span>:</span> {{ cardFilm.description }}
+            </p>
         </div>
+
+        <ButtonClose @click="close" class="card-film__close" />
     </div>
 </template>
 
@@ -39,7 +37,7 @@ export default {
     props: {
         film: {
             type: String,
-            default: '',
+            required: true,
         },
 
         isListFilms: {
@@ -85,24 +83,18 @@ export default {
 
 <style lang="scss" scoped>
 .card-film {
+    display: flex;
+    position: relative;
     width: 100%;
     padding: 1rem 5rem 3rem;
 
     @include respond-to(sm) {
+        flex-direction: column; 
         overflow-y: auto;
     }
 
     @include respond-to(xs) {
         padding: 1rem 1rem 2rem;
-    }
-
-    &__row {
-        display: flex;
-        position: relative;
-
-        @include respond-to(sm) {
-            flex-direction: column; 
-        }
     }
 
     &__poster {
@@ -145,22 +137,8 @@ export default {
     }
 
     &__close {
-        top: -22px;
-        right: -20px;
-
-        @include respond-to(md) {
-            top: -28px;
-            right: -47px;
-        }
-
-        @include respond-to(sm) {
-            top: -25px;
-        }
-
-        @include respond-to(xs) {
-            top: -25px;
-            right: -7px;
-        }
+        top: -15px;
+        right: 0;
     }
 }
 </style>

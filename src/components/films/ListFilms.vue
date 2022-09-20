@@ -10,14 +10,11 @@
             class="list-films__item"
             v-for="film in showPagefilms"
             :key="film.id"
-            :to="{ name: 'сardFilm', params: { page: page, id: film.id, film: JSON.stringify(film), isListFilms }}"
+            :to="{ name: 'сardFilm', params: { page: page, id: film.id, film: JSON.stringify(film)} }"
         >
             <img v-if="film.small_poster" class="list-films__poster" :src="film.small_poster"/>
             <span class="list-films__year">{{ film.year }}</span>
         </router-link>
-
-        <!-- <div v-if="isMobile && isTablet || sliderIndex !== 0" class="list-films__slider-prev"  @click="prevSlide">&#10094;</div>
-        <div v-if="isMobile && isTablet || maxCountSlides !== sliderIndex" class="list-films__slider-next" @click="nextSlide">&#10095;</div> -->
     </div>
 
     <div class="list-films__paginations">
@@ -69,8 +66,6 @@ export default {
     data() {
         return {
             page: 1,
-            sliderIndex: 0,
-            maxCountSlides: 0,
         };
     },
 
@@ -122,9 +117,6 @@ export default {
         },
 
         isShowBtnPageNext() {
-            //подумать над решением если не знать количество страниц
-            //проверка гит
-            // return this.page !== 5 && this.showPagefilms.length >= 10;
             return this.showPagefilms.length >= 10;
         },
     },
@@ -158,40 +150,6 @@ export default {
                 this.scrollBlockToTop();
             }
         },
-
-        nextSlide() {
-            this.sliderIndex++;
-            this.showSlides();
-        },
-
-        prevSlide() {
-            this.sliderIndex--;
-            this.showSlides();
-        },
-
-        showSlides() {   
-            if (!this.isTablet && !this.isMobile) return;
-
-            let slides = document.getElementsByClassName('list-films__item');
-
-            for (let i = 0; i < slides.length; i++) {
-                slides[i].style.display = 'none';
-            }
-
-            if (this.isTablet) {
-                slides[this.sliderIndex].style.display = 'block';
-                slides[this.sliderIndex + 1].style.display = 'block';
-                slides[this.sliderIndex + 2].style.display = 'block';
-
-                this.maxCountSlides = slides.length - 3;
-
-                return;
-            } else {
-                slides[this.sliderIndex].style.display = 'block';
-
-                this.maxCountSlides = slides.length;
-            }
-        }, 
 
         scrollBlockToTop() {
             let el = this.$refs.list;
