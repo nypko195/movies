@@ -43,6 +43,8 @@
 import Loader from '../ui/Loader.vue';
 
 export default {
+    name: 'ListFilms',
+
     inject: ['mq'],
 
     emits: ['get-films'],
@@ -54,13 +56,13 @@ export default {
     props: {
         films: {
             type: Array,
-            default: [],
+            default: () => ([]),
         },
 
         isShowLoader: {
             type: Boolean, 
             default: false,
-        }
+        },
     },
 
     data() {

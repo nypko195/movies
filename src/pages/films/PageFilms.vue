@@ -1,13 +1,13 @@
 <template>
-    <div id="films-list" class="p-films">
-        <transition name="fade">
+    <div class="page-films">
+        <!-- <transition name="fade"> -->
             <router-view
                 :is-show-loader="isShowLoader"
                 :films="films"
                 :search-name-film="searchNameFilm"
                 @get-films="getMoreFilms"
             />
-        </transition>      
+        <!-- </transition>       -->
     </div>
 </template>
 
@@ -83,7 +83,7 @@ export default {
 </script>
 
 <style lang="scss">
-.p-films{
+.page-films{
     display: flex;
     position: relative;
     flex-direction: column;
@@ -112,15 +112,5 @@ export default {
     @include respond-to(sm) {
         min-height: calc(100vh - 13.3rem);
     }
-}
-
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity .5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
 }
 </style>

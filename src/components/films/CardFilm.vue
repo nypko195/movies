@@ -3,15 +3,19 @@
         <img class="card-film__poster" :src="cardFilm.small_poster" alt="">
         <div class="card-film__info">
             <h3 class="card-film__title">{{ cardFilm.name_russian }} ({{ cardFilm.year }}) смотреть онлайн</h3>
+
             <p class="card-film__name text">
                 <span class="card-film__subtitle"><span>Название</span>:</span> {{ cardFilm.name_russian }}
             </p>
+
             <p class="card-film__country text">
                 <span class="card-film__subtitle"><span>Страна</span>:</span> {{ cardFilm.country_ru }}
             </p>
+
             <p class="card-film__year text">
                 <span class="card-film__subtitle"><span>Год выхода</span>:</span> {{ cardFilm.year }}
             </p>
+
             <p v-if="cardFilm.description" class="card-film__description text">
                 <span class="card-film__subtitle"><span>Описание</span>:</span> {{ cardFilm.description }}
             </p>
@@ -39,11 +43,6 @@ export default {
             type: String,
             required: true,
         },
-
-        isListFilms: {
-            type: Boolean,
-            default: false,
-        }
     },
 
     computed: {
@@ -53,7 +52,7 @@ export default {
 
         isMobile() {
             return this.mq.current === 'zero';
-        }
+        },
     },
 
     mounted() {
@@ -64,11 +63,7 @@ export default {
 
     methods: {
         close() {
-            if (this.isListFilms) {
-                this.$router.go(-1);
-            } else {
-                this.$router.push({ path: '/films/?page=1'});
-            }
+            this.$router.go(-1);
         },
 
         scrollToTop() {
