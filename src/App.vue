@@ -154,7 +154,7 @@ button {
 
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity .5s ease;
+    transition: opacity .3s ease;
 }
 
 .fade-enter-from,

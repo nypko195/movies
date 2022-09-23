@@ -3,7 +3,7 @@
         <div class="header__picture"></div>
 
         <section class="header__content">
-            <router-link to="/films/?page=1" class="header__logo" @click="animateFilmsList">Films</router-link>
+            <router-link to="/films/?page=1" class="header__logo" @click="animateListFilms">Films</router-link>
             <div class="header-search__box">
                 <input 
                     class="header-search__input"
@@ -97,8 +97,10 @@ export default {
             }
         },
 
-        animateFilmsList() {
-            let el = document.getElementById('films-list');
+        animateListFilms() {
+            let el = document.querySelector('.js-list-films');
+
+            if (!el) return;
 
             el.style.opacity = 0;
             el.style.transition = 'none';

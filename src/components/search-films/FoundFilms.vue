@@ -89,6 +89,12 @@ export default {
         },
     },
 
+    watch: {
+        async searchNameFilm() {
+            await this.getFoundFilms();
+        }
+    },
+
     async mounted() {
         await this.getFoundFilms();
     },

@@ -1,40 +1,38 @@
 <template> 
     <Loader v-if="isShowLoader"/>
 
-    <div 
-        v-else
-        ref="list"
-        class="list-films"
-    >
-        <router-link
-            class="list-films__item"
-            v-for="film in showPagefilms"
-            :key="film.id"
-            :to="{ name: 'сardFilm', params: { page: page, id: film.id, film: JSON.stringify(film)} }"
-        >
-            <img v-if="film.small_poster" class="list-films__poster" :src="film.small_poster"/>
-            <span class="list-films__year">{{ film.year }}</span>
-        </router-link>
-    </div>
+    <div v-else class="list-films js-list-films">
+        <div ref="list" class="list-films__content">
+            <router-link
+                class="list-films__item"
+                v-for="film in showFilmsCards"
+                :key="film.id"
+                :to="{ name: 'сardFilm', params: { page: page, id: film.id, film: JSON.stringify(film)} }"
+            >
+                <img v-if="film.small_poster" class="list-films__poster" :src="film.small_poster"/>
+                <span class="list-films__year">{{ film.year }}</span>
+            </router-link>
+        </div>
 
-    <div class="list-films__paginations">
-        <button
-            class="list-films__paginations-prev button-pagination"
-            :class="{'_disabled': isShowLoader}"
-            @click="prevPage"
-            v-show="isShowBtnPagePrev"
-        >
-            prev
-        </button>
-        <span class="list-films__paginations-page">{{ page }}</span>
-        <button
-            class="list-films__paginations-next button-pagination"
-            :class="{'_disabled': isShowLoader}"
-            @click="nextPage"
-            v-show="isShowBtnPageNext"
-        >
-            next
-        </button>
+        <div class="list-films__paginations">
+            <button
+                class="list-films__paginations-prev button-pagination"
+                :class="{'_disabled': isShowLoader}"
+                @click="prevPage"
+                v-show="isShowBtnPagePrev"
+            >
+                prev
+            </button>
+            <span class="list-films__paginations-page">{{ page }}</span>
+            <button
+                class="list-films__paginations-next button-pagination"
+                :class="{'_disabled': isShowLoader}"
+                @click="nextPage"
+                v-show="isShowBtnPageNext"
+            >
+                next
+            </button>
+        </div>
     </div>
 </template>
 
@@ -96,7 +94,7 @@ export default {
             return isScreenSizeSm
         },
 
-        showPagefilms() {
+        showFilmsCards() {
             return this.films.slice(this.minCountCards, this.maxCountCards);
         },
 
@@ -115,20 +113,20 @@ export default {
         },
 
         isShowBtnPagePrev() {
-            return this.page !== 1 || this.showPagefilms.length < 10 && this.showPagefilms.length > 1;
+            return this.page !== 1 || this.showFilmsCards.length < 10 && this.showFilmsCards.length > 1;
         },
 
         isShowBtnPageNext() {
-            return this.showPagefilms.length >= 10;
+            return this.showFilmsCards.length >= 10;
         },
     },
 
     watch: {
-        async page() {
-            let numberDisplayedfilms = 10;
-            let endfilmList = this.page === (this.films.length / numberDisplayedfilms);
+        page() {
+            let numberDisplayedFilms = 10;
+            let endFilmList = this.page === (this.films.length / numberDisplayedFilms);
 
-            if (endfilmList) {
+            if (endFilmList) {
                 this.$emit('get-films');
             }
         },
@@ -140,7 +138,7 @@ export default {
             this.$router.push(`${this.$route.path}?page=${this.page}`);
 
             if (this.isTablet || this.isMobile) {
-                this.scrollBlockToTop();
+                this.scrollToTopPage();
             }
         },
 
@@ -149,11 +147,11 @@ export default {
             this.$router.push(`${this.$route.path}?page=${this.page}`);
 
             if (this.isTablet || this.isMobile) {
-                this.scrollBlockToTop();
+                this.scrollToTopPage();
             }
         },
 
-        scrollBlockToTop() {
+        scrollToTopPage() {
             let el = this.$refs.list;
             let scroll = el.getBoundingClientRect().top + pageYOffset;
 
@@ -169,8 +167,7 @@ export default {
 <style lang="scss" scoped>
 .list-films {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
 
     @include respond-to(sm) {
         position: relative;
@@ -180,6 +177,12 @@ export default {
 
     @include respond-to(xs) {
         padding: 0 .5rem;
+    }
+
+    &__content {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
     &__item {
@@ -297,13 +300,9 @@ export default {
     &__paginations {
         position: relative;
         width: 100%;
-        margin-top: auto;
+        margin-top: 2rem;
         margin-bottom:5rem;
         font-weight: 700;
-
-        @include respond-to(md) {
-            margin-top: 2rem;
-        }
 
         @include respond-to(sm) {
             margin: 1rem 0 4rem;
