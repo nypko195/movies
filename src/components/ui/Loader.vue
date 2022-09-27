@@ -6,7 +6,7 @@
     .loader {
         position: relative;
         margin: 0 auto;
-        margin-top: 25%;
+        margin-top: 20%;
         font-size: 2rem;
         width: 1em;
         height: 1em;

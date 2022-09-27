@@ -3,7 +3,7 @@
         <div class="header__picture"></div>
 
         <section class="header__content">
-            <router-link to="/films/?page=1" class="header__logo" @click="animateListFilms">Films</router-link>
+            <router-link to="/films/?page=1" class="header__logo">Films</router-link>
             <div class="header-search__box">
                 <input 
                     class="header-search__input"
@@ -67,17 +67,17 @@ export default {
     },
 
     computed: {
-        isNameFilmLength() {
+        isNameFilm() {
             return this.searchNameFilm.length;
-        }
+        },
     },
 
     methods: {
         emitTitleFilm() {
-            if (!this.isNameFilmLength) return;
+            if (!this.isNameFilm) return;
 
-            this.$router.push({ name: 'foundFilms' });
             this.$emit('search', this.searchNameFilm);
+            this.$router.push({ name: 'foundFilms' });
             this.searchNameFilm = '';
             this.isOpenBurgerMenu = false;
             this.lockedScrollBody();
@@ -95,20 +95,6 @@ export default {
             } else {
                 document.body.classList.remove('_locked');
             }
-        },
-
-        animateListFilms() {
-            let el = document.querySelector('.js-list-films');
-
-            if (!el) return;
-
-            el.style.opacity = 0;
-            el.style.transition = 'none';
-
-            setTimeout(() => {
-                el.style.opacity = 1;
-                el.style.transition = 'opacity .4s';
-            }, 400);
         },
     }
 }

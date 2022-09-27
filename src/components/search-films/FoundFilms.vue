@@ -57,7 +57,7 @@ import Loader from '../ui/Loader.vue';
 import ButtonClose from '../ui/ButtonClose.vue'
 
 // function
-import { getFoundFilms }  from '../../api/index.js';
+import { getFoundFilmsList }  from '../../api/index.js';
 
 export default {
     name: 'foundFilms',
@@ -91,26 +91,26 @@ export default {
 
     watch: {
         async searchNameFilm() {
-            await this.getFoundFilms();
+            await this.getFoundFilmsList();
         }
     },
 
     async mounted() {
-        await this.getFoundFilms();
+        await this.getFoundFilmsList();
     },
 
     methods: {
-        async getFoundFilms() {
+        async getFoundFilmsList() {
             if (!this.searchNameFilm) return;
             this.isShowLoader = true;
 
-            this.foundFilms = await getFoundFilms(this.normalizeSearchNameFilm());
+            this.foundFilms = await getFoundFilmsList(this.normalizeNameFilm(this.searchNameFilm));
 
             this.isShowLoader = false;
         },
 
-        normalizeSearchNameFilm() {
-            return this.searchNameFilm.toLowerCase().trim();
+        normalizeNameFilm(name) {
+            return name.toLowerCase().trim();
         }, 
 
         normalizeDescription(description) {

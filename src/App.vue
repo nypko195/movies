@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <TheHeader @search="getFilmName" />
+        <TheHeader @search="setNameFilm" />
 
         <PageFilms :search-name-film="searchNameFilm" />
 
@@ -30,7 +30,7 @@ export default {
     },
 
     methods: {
-        getFilmName(name) {
+        setNameFilm(name) {
             this.searchNameFilm = name;
         },
     }

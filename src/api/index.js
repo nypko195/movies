@@ -24,7 +24,7 @@ export async function getFilmsByPage(page) {
     }
 }
 
-export async function getFoundFilms(searchNameFilm) {
+export async function getFoundFilmsList(searchNameFilm) {
     try {
         const response = await fetch(`${urlForFilmsSearch + searchNameFilm}`);
 
