@@ -1,7 +1,7 @@
 <template>
     <Loader v-if="isShowLoader"/>
 
-    <div v-if="!isShowLoader" class="found">
+    <div v-else class="found">
         <div class="found-result title">
             {{ title }}
 
@@ -56,9 +56,6 @@
 import Loader from '../ui/Loader.vue';
 import ButtonClose from '../ui/ButtonClose.vue'
 
-// function
-import { getFoundFilmsList }  from '../../api/index.js';
-
 export default {
     name: 'foundFilms',
 
@@ -70,17 +67,15 @@ export default {
     },
 
     props: {
-        searchNameFilm: {
-            type: String,
-            default: '',
+        isShowLoader: {
+            type: Boolean,
+            default: false,
         },
-    },
 
-    data() {
-        return {
-            foundFilms: [],
-            isShowLoader: false, 
-        };
+        foundFilms: {
+            type: Boolean,
+            default: () => ([]),
+        },
     },
 
     computed: {
@@ -89,30 +84,7 @@ export default {
         },
     },
 
-    watch: {
-        async searchNameFilm() {
-            await this.getFoundFilmsList();
-        }
-    },
-
-    async mounted() {
-        await this.getFoundFilmsList();
-    },
-
     methods: {
-        async getFoundFilmsList() {
-            if (!this.searchNameFilm) return;
-            this.isShowLoader = true;
-
-            this.foundFilms = await getFoundFilmsList(this.normalizeNameFilm(this.searchNameFilm));
-
-            this.isShowLoader = false;
-        },
-
-        normalizeNameFilm(name) {
-            return name.toLowerCase().trim();
-        }, 
-
         normalizeDescription(description) {
             if (this.mq.current === 'sm' && description.length > 300) {
                 return `${description.substring(0, 300)}...`; 

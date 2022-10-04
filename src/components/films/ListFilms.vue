@@ -14,31 +14,21 @@
             </router-link>
         </div>
 
-        <div class="list-films__paginations">
-            <button
-                class="list-films__paginations-prev button-pagination"
-                :class="{'_disabled': isShowLoader}"
-                @click="prevPage"
-                v-show="isShowBtnPagePrev"
-            >
-                prev
-            </button>
-            <span class="list-films__paginations-page">{{ page }}</span>
-            <button
-                class="list-films__paginations-next button-pagination"
-                :class="{'_disabled': isShowLoader}"
-                @click="nextPage"
-                v-show="isShowBtnPageNext"
-            >
-                next
-            </button>
-        </div>
+        <Pagination 
+            :page="page"
+            :is-show-btn-prev="isShowBtnPagePrev"
+            :is-show-btn-next="isShowBtnPageNext"
+            :is-disabled="isShowLoader"
+            @prev-page="prevPage"
+            @next-page="nextPage"
+        />
     </div>
 </template>
 
 <script>
 // components
 import Loader from '../ui/Loader.vue';
+import Pagination from '../ui/Pagination.vue';
 
 export default {
     name: 'ListFilms',
@@ -49,6 +39,7 @@ export default {
 
     components: {
         Loader,
+        Pagination,
     },
 
     props: {
@@ -295,60 +286,6 @@ export default {
         color: $white;
         font-size: 1.6rem;
         font-weight: 700;
-    }
-
-    &__paginations {
-        position: relative;
-        width: 100%;
-        margin-top: 2rem;
-        margin-bottom:5rem;
-        font-weight: 700;
-
-        @include respond-to(sm) {
-            margin: 1rem 0 4rem;
-        }
-
-        &-prev {
-            left: 36%;
-
-            @include respond-to(md) {
-                left: 35%;
-            }
-
-            @include respond-to(sm) {
-                left: 31%;
-            }
-
-            @include respond-to(xs) {
-                left: 14%;
-            }
-
-            &._disabled {
-                pointer-events: none;
-                opacity: .4;
-            }
-        }
-
-        &-next {
-            left: 55%;
-
-            @include respond-to(xs) {
-                left: 62%;
-            }
-
-            &._disabled {
-                pointer-events: none;
-                opacity: .4;
-            }
-        }
-
-        &-page {
-            position: absolute;
-            left: 50%;
-            font-size: 1.6rem;
-            font-weight: 700;
-            cursor: default;
-        }     
     }
 }
 </style>

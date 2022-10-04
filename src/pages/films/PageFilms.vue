@@ -4,6 +4,7 @@
                 v-slot="{Component}"
                 :is-show-loader="isShowLoader"
                 :films="films"
+                :found-films="foundFilms"
                 :search-name-film="searchNameFilm"
                 @get-films="getMoreFilms"
             >
@@ -18,7 +19,7 @@
 
 <script>
 // function
-import { getFilms, getFilmsByPage }  from '../../api/index.js';
+import { getFilms, getFilmsByPage, getFoundFilmsList }  from '../../api/index.js';
 
 export default {
     name: 'PageFilms',
@@ -33,14 +34,23 @@ export default {
     data() {
         return {
             films: [],
-            currentPage: 2,
+            foundFilms: [],
+            filmsPageNumber: 2,
             isShowLoader: false,
         };
     },
 
+    watch: {
+        async searchNameFilm() {
+            if (!this.searchNameFilm) return;
+
+            await this.getFoundFilmsList();
+        }
+    },
+
     async mounted() {
         await this.getFilms();
-        await this.checkingUrl();
+        this.checkUrl();
     },
 
     methods: {
@@ -48,8 +58,8 @@ export default {
             this.isShowLoader = true;
 
             if (isNeedFilms) {              
-                this.films = [...this.films, ...await getFilmsByPage(this.currentPage)]; 
-                this.currentPage++;
+                this.films = [...this.films, ...await getFilmsByPage(this.filmsPageNumber)]; 
+                this.filmsPageNumber++;
 
                 this.isShowLoader = false;
                 return;
@@ -64,7 +74,16 @@ export default {
             await this.getFilms(true);
         },
 
-        checkingUrl() {
+        async getFoundFilmsList() {
+            if (!this.searchNameFilm) return;
+            this.isShowLoader = true;
+
+            this.foundFilms = await getFoundFilmsList(this.normalizeNameFilm(this.searchNameFilm));
+
+            this.isShowLoader = false;
+        },
+
+        checkUrl() {
             if (!this.films.length) return;
 
             let DISPLAYED_CARDS_COUNT = 10;
@@ -76,12 +95,23 @@ export default {
             });
 
             if (!!film[0] && numberOfQueryParams.length === 2) {
-                this.$router.push({ name: 'сardFilm', params: { page: numberOfQueryParams[0], id: film[0]?.id, film: JSON.stringify(film[0]) }});
+                this.$router.push({ 
+                    name: 'сardFilm', 
+                    params: { 
+                        page: numberOfQueryParams[0], 
+                        id: film[0]?.id, 
+                        film: JSON.stringify(film[0]) 
+                    }
+                });
             } else if ((this.films.length / DISPLAYED_CARDS_COUNT) >= Number(pageNumber)) {
                 this.$router.push({ name: 'listFilms' });
             } else {
                 this.$router.push({ name: 'notFound'});
             }
+        },
+
+        normalizeNameFilm(name) {
+            return name.toLowerCase().trim();
         },
     }
 }

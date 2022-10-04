@@ -4,21 +4,10 @@
 
         <section class="header__content">
             <router-link to="/films/?page=1" class="header__logo">Films</router-link>
-            <div class="header-search__box">
-                <input 
-                    class="header-search__input"
-                    type="text" 
-                    placeholder="Введите название" 
-                    v-model.trim="searchNameFilm"
-                    @keyup.enter="emitTitleFilm"
-                />
 
-                <div 
-                    class="header-search__button"
-                    @click="emitTitleFilm"
-                >                
-                </div> 
-            </div>
+            <SearchBox 
+                @title-film="emitTitleFilm"
+            />
 
             <div class="header-burger">
                 <div 
@@ -34,53 +23,40 @@
             class="header__menu"
             :class="{'_active': isOpenBurgerMenu}"
         >
-            <div class="header-search__box _menu">
-                <input 
-                    class="header-search__input"
-                    type="text" 
-                    placeholder="Введите название" 
-                    v-model.trim="searchNameFilm"
-                    @keyup.enter="emitTitleFilm"
-                />
-
-                <div 
-                    class="header-search__button"
-                    @click="emitTitleFilm"
-                >                
-                </div> 
-            </div>
+            <SearchBox 
+                @title-film="emitTitleFilm"
+                is-menu
+            />
         </div>
     </div>
 </template>
 
 <script>
+import SearchBox from '../ui/SearchBox.vue';
+
 export default {
     name: 'TheHeader',
 
     emits: ['search'],
 
+    components: {
+        SearchBox,
+    },
+
     data() {
         return {
-            searchNameFilm: '',
             isOpenBurgerMenu: false,
         };
     },
 
-    computed: {
-        isNameFilm() {
-            return this.searchNameFilm.length;
-        },
-    },
-
     methods: {
-        emitTitleFilm() {
-            if (!this.isNameFilm) return;
+        emitTitleFilm(title) {
+            if (!title) return;
 
-            this.$emit('search', this.searchNameFilm);
+            this.$emit('search', title);
             this.$router.push({ name: 'foundFilms' });
-            this.searchNameFilm = '';
-            this.isOpenBurgerMenu = false;
-            this.lockedScrollBody();
+
+            this.reset();
         },
 
         openBurgerMenu() {
@@ -95,6 +71,11 @@ export default {
             } else {
                 document.body.classList.remove('_locked');
             }
+        },
+
+        reset() {
+            this.isOpenBurgerMenu = false;
+            this.lockedScrollBody();
         },
     }
 }
@@ -158,6 +139,10 @@ export default {
 
         &:hover {
             transform: scale(1.1);
+
+            @include respond-to(sm) {
+                transform: scale(1);
+            }
         }
     }
 

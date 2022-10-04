@@ -37,6 +37,10 @@
 
         &:hover {
             transform: scale(1.1);
+
+            @include respond-to(sm) {
+                transform: scale(1);
+            }
         }
     }
 }
