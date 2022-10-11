@@ -2,7 +2,7 @@
     <Loader v-if="isShowLoader"/>
 
     <div v-else class="found">
-        <div class="found-result title">
+        <h2 class="found-result title">
             {{ title }}
 
             <router-link :to="{ name: 'listFilms' }">
@@ -10,7 +10,7 @@
                     class="found-close"
                 />
             </router-link>
-        </div>
+        </h2>
 
         <div class="found-list">        
             <router-link 
@@ -73,7 +73,7 @@ export default {
         },
 
         foundFilms: {
-            type: Boolean,
+            type: Array,
             default: () => ([]),
         },
     },
@@ -119,8 +119,8 @@ export default {
     }
 
     &-close {
-        top: -12px;
-        right: 30px;
+        top: -5px;
+        right: 38px;
 
         @include respond-to(md) {
             top: -12px;
@@ -133,7 +133,7 @@ export default {
 
         @include respond-to(xs) {
             top: -15px;
-            right: 3px;
+            right: 0;
         }
     }
 

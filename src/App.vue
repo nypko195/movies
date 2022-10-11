@@ -1,8 +1,8 @@
 <template>
     <div class="wrapper">
-        <TheHeader @search="setNameFilm" />
+        <TheHeader @set-name-film="setSearchFilmName" />
 
-        <PageFilms :search-name-film="searchNameFilm" />
+        <PageFilms :search-film-name="searchFilmName" />
 
         <TheFooter/>
     </div>
@@ -25,13 +25,13 @@ export default {
 
     data() {
         return {
-            searchNameFilm: '',
+            searchFilmName: '',
         };
     },
 
     methods: {
-        setNameFilm(name) {
-            this.searchNameFilm = name;
+        setSearchFilmName(name) {
+            this.searchFilmName = name;
         },
     }
 }
@@ -40,7 +40,6 @@ export default {
 <style lang="scss">
 @import "normalize-scss";
 @import "./styles/bundle.scss";
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap');
 
 html {
     font-family: 'Roboto Mono', monospace;

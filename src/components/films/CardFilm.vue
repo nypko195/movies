@@ -2,7 +2,7 @@
     <div class="card-film">
         <img class="card-film__poster" :src="cardFilm.small_poster" alt="">
         <div class="card-film__info">
-            <h3 class="card-film__title">{{ cardFilm.name_russian }} ({{ cardFilm.year }}) смотреть онлайн</h3>
+            <h2 class="card-film__title">{{ cardFilm.name_russian }} ({{ cardFilm.year }}) смотреть онлайн</h2>
 
             <p class="card-film__name text">
                 <span class="card-film__subtitle"><span>Название</span>:</span> {{ cardFilm.name_russian }}
@@ -132,8 +132,22 @@ export default {
     }
 
     &__close {
-        top: -15px;
-        right: 0;
+        top: -5px;
+        right: 38px;
+
+        @include respond-to(md) {
+            top: -12px;
+            right: 3px;
+        }
+
+        @include respond-to(sm) {
+            right: 2px;
+        }
+
+        @include respond-to(xs) {
+            top: -15px;
+            right: 0;
+        }
     }
 }
 </style>

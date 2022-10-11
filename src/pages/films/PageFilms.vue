@@ -5,7 +5,7 @@
                 :is-show-loader="isShowLoader"
                 :films="films"
                 :found-films="foundFilms"
-                :search-name-film="searchNameFilm"
+                :search-name-film="searchFilmName"
                 @get-films="getMoreFilms"
             >
                 <transition name="fade" mode="out-in">
@@ -25,7 +25,7 @@ export default {
     name: 'PageFilms',
 
     props: {
-        searchNameFilm: {
+        searchFilmName: {
             type: String,
             default: ''
         },
@@ -35,14 +35,14 @@ export default {
         return {
             films: [],
             foundFilms: [],
-            filmsPageNumber: 2,
+            requestPageNumber: 2,
             isShowLoader: false,
         };
     },
 
     watch: {
-        async searchNameFilm() {
-            if (!this.searchNameFilm) return;
+        async searchFilmName() {
+            if (!this.searchFilmName) return;
 
             await this.getFoundFilmsList();
         }
@@ -50,7 +50,7 @@ export default {
 
     async mounted() {
         await this.getFilms();
-        this.checkUrl();
+        this.checkParamsUrl();
     },
 
     methods: {
@@ -58,8 +58,8 @@ export default {
             this.isShowLoader = true;
 
             if (isNeedFilms) {              
-                this.films = [...this.films, ...await getFilmsByPage(this.filmsPageNumber)]; 
-                this.filmsPageNumber++;
+                this.films = [...this.films, ...await getFilmsByPage(this.requestPageNumber)]; 
+                this.requestPageNumber++;
 
                 this.isShowLoader = false;
                 return;
@@ -75,31 +75,49 @@ export default {
         },
 
         async getFoundFilmsList() {
-            if (!this.searchNameFilm) return;
+            if (!this.searchFilmName) return;
             this.isShowLoader = true;
 
-            this.foundFilms = await getFoundFilmsList(this.normalizeNameFilm(this.searchNameFilm));
+            this.foundFilms = await getFoundFilmsList(this.normalizeNameFilm(this.searchFilmName));
 
             this.isShowLoader = false;
         },
 
-        checkUrl() {
+        checkParamsUrl() {            
             if (!this.films.length) return;
 
-            let DISPLAYED_CARDS_COUNT = 10;
             let pageNumber = this.$route.query?.page;
+            let params = [];
 
-            let numberOfQueryParams = pageNumber.split('/');
-            let film = this.films.filter(film => {
-                return film.id === Number(numberOfQueryParams[1]);
+            if (pageNumber) {
+                params = pageNumber.split('/');
+            }
+
+            if (!params.length) return;
+
+            this.openPage(params, pageNumber);
+        },
+
+        getFilmById(id) {
+            return this.films.filter(film => {
+                return film.id === Number(id);
             });
+        },
 
-            if (!!film[0] && numberOfQueryParams.length === 2) {
+        openPage(params, pageNumber) {
+            const DISPLAYED_CARDS_COUNT = 10;
+            let film = [];
+
+            if (params.length >= 2); {
+                film = this.getFilmById(params[1]);
+            }
+
+            if (film[0]?.id && params.length === 2) {
                 this.$router.push({ 
                     name: 'сardFilm', 
                     params: { 
-                        page: numberOfQueryParams[0], 
-                        id: film[0]?.id, 
+                        page: params[0], 
+                        id: film[0].id, 
                         film: JSON.stringify(film[0]) 
                     }
                 });

@@ -5,12 +5,12 @@
             type="text" 
             placeholder="Введите название" 
             v-model.trim="searchNameFilm"
-            @keyup.enter="emitTitleFilm"
+            @keyup.enter="setNameFilm"
         />
 
         <div 
             class="search-box__button"
-            @click="emitTitleFilm"
+            @click="setNameFilm"
         >                
         </div> 
     </div>
@@ -19,6 +19,8 @@
 <script>
 export default {
     name: 'SearchBox',
+
+    emits: ['set-name-film'],
 
     props: {
         isMenu: {
@@ -42,8 +44,8 @@ export default {
     },
 
     methods: {
-        emitTitleFilm() {
-            this.$emit('title-film', this.searchNameFilm);
+        setNameFilm() {
+            this.$emit('set-name-film', this.searchNameFilm);
 
             this.resetNameFilm();
         },
