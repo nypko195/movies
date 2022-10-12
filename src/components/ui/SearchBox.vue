@@ -4,7 +4,7 @@
             class="search-box__input"
             type="text" 
             placeholder="Введите название" 
-            v-model.trim="searchNameFilm"
+            v-model.trim="filmNameFromSearch"
             @keyup.enter="setNameFilm"
         />
 
@@ -20,7 +20,7 @@
 export default {
     name: 'SearchBox',
 
-    emits: ['set-name-film'],
+    emits: ['change-film-name'],
 
     props: {
         isMenu: {
@@ -31,7 +31,7 @@ export default {
 
     data() {
         return {
-            searchNameFilm: '',
+            filmNameFromSearch: '',
         };
     },
 
@@ -45,13 +45,13 @@ export default {
 
     methods: {
         setNameFilm() {
-            this.$emit('set-name-film', this.searchNameFilm);
+            this.$emit('change-film-name', this.filmNameFromSearch);
 
             this.resetNameFilm();
         },
 
         resetNameFilm() {
-            this.searchNameFilm = '';
+            this.filmNameFromSearch = '';
         },
     },
 };

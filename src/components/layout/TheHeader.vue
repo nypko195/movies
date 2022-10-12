@@ -6,7 +6,7 @@
             <router-link to="/films/?page=1" class="header__logo">Films</router-link>
 
             <SearchBox 
-                @set-name-film="setNameFilm"
+                @change-film-name="changeFilmName"
             />
 
             <div class="header-burger">
@@ -24,7 +24,7 @@
             :class="{'_active': isOpenBurgerMenu}"
         >
             <SearchBox 
-                @title-film="setNameFilm"
+                @change-film-name="changeFilmName"
                 is-menu
             />
         </div>
@@ -37,7 +37,7 @@ import SearchBox from '../ui/SearchBox.vue';
 export default {
     name: 'TheHeader',
 
-    emits: ['set-name-film'],
+    emits: ['change-film-name'],
 
     components: {
         SearchBox,
@@ -50,10 +50,10 @@ export default {
     },
 
     methods: {
-        setNameFilm(name) {
+        changeFilmName(name) {
             if (!name) return;
 
-            this.$emit('set-name-film', name);
+            this.$emit('change-film-name', name);
             this.$router.push({ name: 'foundFilms' });
 
             this.reset();

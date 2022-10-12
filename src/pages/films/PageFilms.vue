@@ -5,7 +5,7 @@
                 :is-show-loader="isShowLoader"
                 :films="films"
                 :found-films="foundFilms"
-                :search-name-film="searchFilmName"
+                :search-name-film="filmNameFromSearch"
                 @get-films="getMoreFilms"
             >
                 <transition name="fade" mode="out-in">
@@ -25,7 +25,7 @@ export default {
     name: 'PageFilms',
 
     props: {
-        searchFilmName: {
+        filmNameFromSearch: {
             type: String,
             default: ''
         },
@@ -41,8 +41,8 @@ export default {
     },
 
     watch: {
-        async searchFilmName() {
-            if (!this.searchFilmName) return;
+        async filmNameFromSearch() {
+            if (!this.filmNameFromSearch) return;
 
             await this.getFoundFilmsList();
         }
@@ -57,8 +57,10 @@ export default {
         async getFilms(isNeedFilms) {
             this.isShowLoader = true;
 
-            if (isNeedFilms) {              
-                this.films = [...this.films, ...await getFilmsByPage(this.requestPageNumber)]; 
+            if (isNeedFilms) {
+                let newFilms = await getFilmsByPage(this.requestPageNumber);
+
+                this.films = [...this.films, ...newFilms]; 
                 this.requestPageNumber++;
 
                 this.isShowLoader = false;
@@ -75,27 +77,27 @@ export default {
         },
 
         async getFoundFilmsList() {
-            if (!this.searchFilmName) return;
+            if (!this.filmNameFromSearch) return;
             this.isShowLoader = true;
 
-            this.foundFilms = await getFoundFilmsList(this.normalizeNameFilm(this.searchFilmName));
+            this.foundFilms = await getFoundFilmsList(this.normalizeNameFilm(this.filmNameFromSearch));
 
             this.isShowLoader = false;
         },
 
-        checkParamsUrl() {            
+        checkParamsUrl() {
             if (!this.films.length) return;
 
             let pageNumber = this.$route.query?.page;
-            let params = [];
+            let urlParams = [];
 
             if (pageNumber) {
-                params = pageNumber.split('/');
+                urlParams = pageNumber.split('/');
             }
 
-            if (!params.length) return;
+            if (!urlParams.length) return;
 
-            this.openPage(params, pageNumber);
+            this.openPage(urlParams, pageNumber);
         },
 
         getFilmById(id) {
@@ -104,19 +106,19 @@ export default {
             });
         },
 
-        openPage(params, pageNumber) {
+        openPage(urlParams, pageNumber) {
             const DISPLAYED_CARDS_COUNT = 10;
             let film = [];
 
-            if (params.length >= 2); {
-                film = this.getFilmById(params[1]);
+            if (urlParams.length >= 2); {
+                film = this.getFilmById(urlParams[1]);
             }
 
-            if (film[0]?.id && params.length === 2) {
+            if (film[0]?.id && urlParams.length === 2) {
                 this.$router.push({ 
                     name: 'сardFilm', 
                     params: { 
-                        page: params[0], 
+                        page: urlParams[0], 
                         id: film[0].id, 
                         film: JSON.stringify(film[0]) 
                     }

@@ -1,8 +1,8 @@
 <template>
     <div class="wrapper">
-        <TheHeader @set-name-film="setSearchFilmName" />
+        <TheHeader @change-film-name="changeFilmName" />
 
-        <PageFilms :search-film-name="searchFilmName" />
+        <PageFilms :film-name-from-search="filmNameFromSearch" />
 
         <TheFooter/>
     </div>
@@ -25,13 +25,13 @@ export default {
 
     data() {
         return {
-            searchFilmName: '',
+            filmNameFromSearch: '',
         };
     },
 
     methods: {
-        setSearchFilmName(name) {
-            this.searchFilmName = name;
+        changeFilmName(name) {
+            this.filmNameFromSearch = name;
         },
     }
 }
