@@ -4,8 +4,8 @@
                 v-slot="{Component}"
                 :is-show-loader="isShowLoader"
                 :films="films"
-                :found-films="foundFilms"
                 :search-name-film="filmNameFromSearch"
+                :is-films-not-found="isFilmsNotFound"
                 @get-films="getMoreFilms"
             >
                 <transition name="fade" mode="out-in">
@@ -34,9 +34,9 @@ export default {
     data() {
         return {
             films: [],
-            foundFilms: [],
             requestPageNumber: 2,
             isShowLoader: false,
+            isFilmsNotFound: false,
         };
     },
 
@@ -45,7 +45,7 @@ export default {
             if (!this.filmNameFromSearch) return;
 
             await this.getFoundFilmsList();
-        }
+        },
     },
 
     async mounted() {
@@ -69,6 +69,7 @@ export default {
 
             this.films = await getFilms();
 
+            this.isFilmsNotFound = false;
             this.isShowLoader = false;
         },
 
@@ -80,7 +81,15 @@ export default {
             if (!this.filmNameFromSearch) return;
             this.isShowLoader = true;
 
-            this.foundFilms = await getFoundFilmsList(this.normalizeNameFilm(this.filmNameFromSearch));
+            if (this.isFilmsNotFound) {
+                this.isFilmsNotFound = false;
+            }
+
+            this.films = await getFoundFilmsList(this.normalizeNameFilm(this.filmNameFromSearch));
+
+            if (!this.films.length) {
+                this.isFilmsNotFound = true;
+            }
 
             this.isShowLoader = false;
         },
@@ -160,10 +169,6 @@ export default {
     @include respond-to(md) {
         margin: 10px 2rem;
         min-height: calc(100vh - 15rem);
-    }
-
-    @include respond-to(sm) {
-        min-height: calc(100vh - 13.3rem);
     }
 
     &__wrapper {

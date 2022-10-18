@@ -1,10 +1,16 @@
 <template>
     <div class="wrapper">
-        <TheHeader @change-film-name="changeFilmName" />
+        <TheHeader
+            @reset-page="resetPage"
+            @change-film-name="changeFilmName" 
+        />
 
-        <PageFilms :film-name-from-search="filmNameFromSearch" />
+        <PageFilms
+            ref="page"
+            :film-name-from-search="filmNameFromSearch"
+        />
 
-        <TheFooter/>
+        <TheFooter />
     </div>
 </template>
 
@@ -32,6 +38,10 @@ export default {
     methods: {
         changeFilmName(name) {
             this.filmNameFromSearch = name;
+        },
+
+        resetPage() {
+            this.$refs.page.getFilms();
         },
     }
 }

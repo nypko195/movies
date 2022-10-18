@@ -3,7 +3,13 @@
         <div class="header__picture"></div>
 
         <section class="header__content">
-            <router-link to="/films/?page=1" class="header__logo">Films</router-link>
+            <router-link 
+                to="/films/?page=1" 
+                class="header__logo"
+                @click="resetPage"
+            >
+                Films
+            </router-link>
 
             <SearchBox 
                 @change-film-name="changeFilmName"
@@ -37,7 +43,7 @@ import SearchBox from '../ui/SearchBox.vue';
 export default {
     name: 'TheHeader',
 
-    emits: ['change-film-name'],
+    emits: ['change-film-name', 'reset-page'],
 
     components: {
         SearchBox,
@@ -54,9 +60,7 @@ export default {
             if (!name) return;
 
             this.$emit('change-film-name', name);
-            this.$router.push({ name: 'foundFilms' });
-
-            this.reset();
+            this.resetBurgerMenu();
         },
 
         openBurgerMenu() {
@@ -73,9 +77,13 @@ export default {
             }
         },
 
-        reset() {
+        resetBurgerMenu() {
             this.isOpenBurgerMenu = false;
             this.lockedScrollBody();
+        },
+
+        resetPage() {
+            this.$emit('reset-page');
         },
     }
 }

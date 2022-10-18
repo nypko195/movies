@@ -1,6 +1,13 @@
 <template> 
     <Loader v-if="isShowLoader"/>
 
+    <div 
+        v-else-if="isFilmsNotFound"
+        class="list-films__not-found"      
+    >
+        К сожалению, по вашему запросу ничего не найдено...
+    </div>
+
     <div v-else class="list-films js-list-films">
         <div ref="list" class="list-films__content">
             <router-link
@@ -9,12 +16,26 @@
                 :key="film.id"
                 :to="{ name: 'сardFilm', params: { page: page, id: film.id, film: JSON.stringify(film)} }"
             >
-                <img v-if="film.small_poster" class="list-films__poster" :src="film.small_poster"/>
+                <img 
+                    v-if="film.small_poster"
+                    :src="film.small_poster"
+                    :alt="film.name_russian"
+                    class="list-films__poster" 
+                />
+
+                <img 
+                    v-else                    
+                    src="../../assets/images/found-films/no-foto.png" 
+                    :alt="film.name_russian"
+                    class="list-films__poster"
+                />
+
                 <span class="list-films__year">{{ film.year }}</span>
             </router-link>
         </div>
 
-        <Pagination 
+        <Pagination
+            v-if="films.length"
             :page="page"
             :is-show-btn-prev="isShowBtnPagePrev"
             :is-show-btn-next="isShowBtnPageNext"
@@ -49,6 +70,11 @@ export default {
         },
 
         isShowLoader: {
+            type: Boolean, 
+            default: false,
+        },
+
+        isFilmsNotFound: {
             type: Boolean, 
             default: false,
         },
@@ -158,11 +184,12 @@ export default {
 <style lang="scss" scoped>
 .list-films {
     display: flex;
+    width: 100%;
+    height: 100%;
     flex-direction: column;
 
     @include respond-to(sm) {
         position: relative;
-        height: 100%;
         padding: 0 1rem;
     }
 
@@ -170,16 +197,38 @@ export default {
         padding: 0 .5rem;
     }
 
+    &__not-found {
+        margin-top: 2rem;
+        font-weight: 500;
+        font-size: 2.4rem;
+
+        @include respond-to(sm) {
+            padding: 0 1rem;
+        }
+    }
+
     &__content {
         display: flex;
+        width: 81%;
+        height: 100%;
+        margin: 0 auto;
         flex-wrap: wrap;
-        justify-content: center;
+
+        @include respond-to(md) {
+            width: 90.5%;
+        }
+
+        @include respond-to(sm) {
+            width: 100%;
+            justify-content: center;
+        }
     }
 
     &__item {
         position: relative;
+        height: 25rem;
         flex: 0 0 16%;
-        margin-right: 1.5rem;
+        margin-right: 1rem;
         cursor: pointer;
 
         &:hover {
@@ -223,6 +272,7 @@ export default {
 
         @include respond-to(sm) {
             width: 100%;
+            height: unset;
 
             &:nth-child(5) {
                 margin-right: 1.5rem;

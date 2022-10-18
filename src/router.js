@@ -3,7 +3,6 @@ import { createRouter, createWebHistory } from "vue-router";
 //page
 import ListFilms from './components/films/ListFilms.vue';
 import CardFilm from './components/films/CardFilm.vue';
-import FoundFilms from './components/search-films/FoundFilms.vue';
 
 //error
 import NotFound from './pages/error/NotFound.vue';
@@ -28,12 +27,6 @@ export const router = createRouter({
             name: 'сardFilm',
             component: CardFilm,
             props: true,
-        },
-
-        {
-            path: '/films/search/',
-            name: 'foundFilms',
-            component: FoundFilms,
         },
 
         {
