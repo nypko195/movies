@@ -2,6 +2,8 @@
     "editor.cursorStyle": "line",
     "editor.wordWrap": "off",
     "files.exclude": {
+        "**/app/assets/build/": true,
+        "**/app/package-lock.json": true,
         "**/apps": true
     },
     "search.exclude": {
@@ -9,7 +11,9 @@
         "**/node_modules": true,
         "**/bower_components": true,
         "**/tmp": true,
-        "**/apps": true,
         "**/app/assets/build/": true,
+        "**/*.json": true,
+        "**/*.sql": true,
+        "**/*.py": true,
     },
 }
