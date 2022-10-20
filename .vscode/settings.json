@@ -1,0 +1,15 @@
+{
+    "editor.cursorStyle": "line",
+    "editor.wordWrap": "off",
+    "files.exclude": {
+        "**/apps": true
+    },
+    "search.exclude": {
+        "**/.git": true,
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/tmp": true,
+        "**/apps": true,
+        "**/app/assets/build/": true,
+    },
+}
