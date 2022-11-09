@@ -1,10 +1,7 @@
-<template> 
-    <Loader v-if="isShowLoader"/>
+<template>
+    <Loader v-if="isShowLoader" />
 
-    <div 
-        v-else-if="isFilmsNotFound"
-        class="list-films__not-found"      
-    >
+    <div v-else-if="isFilmsNotFound" class="list-films__not-found">
         К сожалению, по вашему запросу ничего не найдено...
     </div>
 
@@ -12,20 +9,27 @@
         <div ref="list" class="list-films__content">
             <router-link
                 class="list-films__item"
-                v-for="film in showFilmsCards"
+                v-for="film in displayedFilmsCards"
                 :key="film.id"
-                :to="{ name: 'сardFilm', params: { page: page, id: film.id, film: JSON.stringify(film)} }"
+                :to="{
+                    name: 'сardFilm',
+                    params: {
+                        page: currentPage,
+                        id: film.id,
+                        sourceFilm: JSON.stringify(film),
+                    },
+                }"
             >
-                <img 
+                <img
                     v-if="film.small_poster"
                     :src="film.small_poster"
                     :alt="film.name_russian"
-                    class="list-films__poster" 
+                    class="list-films__poster"
                 />
 
-                <img 
-                    v-else                    
-                    src="../../assets/images/found-films/no-foto.png" 
+                <img
+                    v-else
+                    src="../../assets/images/found-films/no-foto.png"
                     :alt="film.name_russian"
                     class="list-films__poster"
                 />
@@ -36,17 +40,20 @@
 
         <Pagination
             v-if="films.length"
-            :page="page"
-            :is-show-btn-prev="isShowBtnPagePrev"
-            :is-show-btn-next="isShowBtnPageNext"
+            :current-page="currentPage"
             :is-disabled="isShowLoader"
-            @prev-page="prevPage"
-            @next-page="nextPage"
+            :number-show-films-card="displayedFilmsCards.length"
+            :is-mobile="isMobile"
+            :is-tablet="isTablet"
+            @change-current-page="changeCurrentPage"
+            @scroll-to-top-page="scrollToTopPage"
         />
     </div>
 </template>
 
 <script>
+import { MAX_NUMBER_CARD_ON_PAGE } from '../../helpers/constants.js';
+
 // components
 import Loader from '../ui/Loader.vue';
 import Pagination from '../ui/Pagination.vue';
@@ -56,7 +63,7 @@ export default {
 
     inject: ['mq'],
 
-    emits: ['get-films'],
+    emits: ['get-extra-films'],
 
     components: {
         Loader,
@@ -70,29 +77,28 @@ export default {
         },
 
         isShowLoader: {
-            type: Boolean, 
+            type: Boolean,
             default: false,
         },
 
         isFilmsNotFound: {
-            type: Boolean, 
+            type: Boolean,
             default: false,
         },
     },
 
     data() {
         return {
-            page: 1,
+            currentPage: 1,
         };
     },
 
     created() {
-        this.page = this.$route.query?.page || 1;
-        this.$router.push(`${this.$route.path}?page=${this.page}`);
+        this.openPage();
 
         this.$router.beforeEach((to) => {
             if (to.fullPath === '/films/?page=1') {
-                this.page = 1;
+                this.currentPage = 1;
             }
         });
     },
@@ -108,77 +114,68 @@ export default {
         isTablet() {
             const isScreenSizeSm = this.mq.current === 'sm';
 
-            return isScreenSizeSm
+            return isScreenSizeSm;
         },
 
-        showFilmsCards() {
+        displayedFilmsCards() {
             return this.films.slice(this.minCountCards, this.maxCountCards);
         },
 
         minCountCards() {
-            const MAX_NUMBER_CARD_ON_PAGE = 10;
-            const startPaginationState = (this.page - 1) * MAX_NUMBER_CARD_ON_PAGE;
+            const startPaginationState =
+                (this.currentPage - 1) * MAX_NUMBER_CARD_ON_PAGE;
 
             return startPaginationState;
         },
 
         maxCountCards() {
-            const MAX_NUMBER_CARD_ON_PAGE = 10;
-            const endPaginationState = this.page * MAX_NUMBER_CARD_ON_PAGE;
+            const endPaginationState =
+                this.currentPage * MAX_NUMBER_CARD_ON_PAGE;
 
             return endPaginationState;
         },
 
-        isShowBtnPagePrev() {
-            return this.page !== 1 || this.showFilmsCards.length < 10 && this.showFilmsCards.length > 1;
-        },
-
-        isShowBtnPageNext() {
-            return this.showFilmsCards.length >= 10;
+        defineInitialPage() {
+            return this.$route.query?.page || 1;
         },
     },
 
     watch: {
-        page() {
-            let numberDisplayedFilms = 10;
-            let endFilmList = this.page === (this.films.length / numberDisplayedFilms);
+        currentPage() {
+            let endFilmList =
+                this.currentPage ===
+                this.films.length / MAX_NUMBER_CARD_ON_PAGE;
 
             if (endFilmList) {
-                this.$emit('get-films');
+                this.$emit('get-extra-films');
             }
         },
     },
 
     methods: {
-        nextPage() {
-            this.page++;
-            this.$router.push(`${this.$route.path}?page=${this.page}`);
-
-            if (this.isTablet || this.isMobile) {
-                this.scrollToTopPage();
-            }
-        },
-
-        prevPage() {
-            this.page--;
-            this.$router.push(`${this.$route.path}?page=${this.page}`);
-
-            if (this.isTablet || this.isMobile) {
-                this.scrollToTopPage();
-            }
-        },
-
         scrollToTopPage() {
-            let el = this.$refs.list;
-            let scroll = el.getBoundingClientRect().top + pageYOffset;
+            if (this.isTablet || this.isMobile) {
+                let el = this.$refs.list;
+                let scrollPosition =
+                    el.getBoundingClientRect().top + window.pageYOffset;
 
-            window.scrollTo({
-                top: scroll,
-                behavior: 'smooth'
-            });
-        }
-    }
-}
+                window.scrollTo({
+                    top: scrollPosition,
+                    behavior: 'smooth',
+                });
+            }
+        },
+
+        changeCurrentPage(page) {
+            this.currentPage = page;
+        },
+
+        openPage() {
+            this.currentPage = this.defineInitialPage;
+            this.$router.push(`${this.$route.path}?page=${this.currentPage}`);
+        },
+    },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -194,7 +191,7 @@ export default {
     }
 
     @include respond-to(xs) {
-        padding: 0 .5rem;
+        padding: 0 0.5rem;
     }
 
     &__not-found {
@@ -252,8 +249,8 @@ export default {
                 position: absolute;
                 z-index: 1;
                 top: calc(50% - 2rem);
-                left: calc(50% - .5rem);
-                border: 2rem solid transparent; 
+                left: calc(50% - 0.5rem);
+                border: 2rem solid transparent;
                 border-left: 2rem solid $white;
             }
         }
@@ -288,7 +285,8 @@ export default {
         }
     }
 
-    &__slider-prev, &__slider-next {
+    &__slider-prev,
+    &__slider-next {
         position: absolute;
         top: calc(50% - 1.3rem);
         z-index: 1;
@@ -296,7 +294,7 @@ export default {
         font-size: 2.6rem;
     }
 
-    &__slider-next {           
+    &__slider-next {
         right: -5rem;
     }
 
@@ -332,7 +330,7 @@ export default {
         bottom: 7%;
         left: 10%;
         padding: 5px;
-        background-color: $green;    
+        background-color: $green;
         color: $white;
         font-size: 1.6rem;
         font-weight: 700;

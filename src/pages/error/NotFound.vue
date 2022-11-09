@@ -1,14 +1,15 @@
 <template>
     <div class="not-found">
-        <div class="not-found__title">
-            404
-        </div>
+        <div class="not-found__title">404</div>
 
         <div class="not-found__subtitle">
             Что-то пошло не так! Страница, которую вы запросили не существует.
         </div>
 
-        <router-link :to="{ name: 'listFilms' }" class="not-found__button button">
+        <router-link
+            :to="{ name: 'listFilms' }"
+            class="not-found__button button"
+        >
             Вернуться на главную
         </router-link>
     </div>

@@ -1,27 +1,33 @@
 <template>
     <div class="card-film">
-        <img class="card-film__poster" :src="cardFilm.small_poster" alt="">
+        <img
+            class="card-film__poster"
+            :src="film.small_poster"
+            :alt="film.name"
+        />
         <div class="card-film__info">
-            <h2 class="card-film__title">{{ cardFilm.name_russian }} ({{ cardFilm.year }}) смотреть онлайн</h2>
+            <h2 class="card-film__title">
+                {{ film.name_russian }} ({{ film.year }}) смотреть
+                онлайн
+            </h2>
 
-            <p class="card-film__name text">
-                <span class="card-film__subtitle"><span>Название</span>:</span> {{ cardFilm.name_russian }}
-            </p>
-
-            <p class="card-film__country text">
-                <span class="card-film__subtitle"><span>Страна</span>:</span> {{ cardFilm.country_ru }}
-            </p>
-
-            <p class="card-film__year text">
-                <span class="card-film__subtitle"><span>Год выхода</span>:</span> {{ cardFilm.year }}
-            </p>
-
-            <p v-if="cardFilm.description" class="card-film__description text">
-                <span class="card-film__subtitle"><span>Описание</span>:</span> {{ cardFilm.description }}
-            </p>
+            <ul class="card-film__params">
+                <li class="card-film__param text">
+                    Название: {{ film.name_russian }}
+                </li>
+                <li class="card-film__param text">
+                    Страна: {{ film.country_ru }}
+                </li>
+                <li class="card-film__param text">
+                    Год выхода: {{ film.year }}
+                </li>
+                <li class="card-film__param text">
+                    Описание: {{ film.description }}
+                </li>
+            </ul>
         </div>
 
-        <ButtonClose @click="close" class="card-film__close" />
+        <ButtonClose class="card-film__close" @click="close" />
     </div>
 </template>
 
@@ -39,15 +45,15 @@ export default {
     },
 
     props: {
-        film: {
+        sourceFilm: {
             type: String,
             required: true,
         },
     },
 
     computed: {
-        cardFilm() {
-            return JSON.parse(this.film);
+        film() {
+            return JSON.parse(this.sourceFilm);
         },
 
         isMobile() {
@@ -69,11 +75,10 @@ export default {
         scrollToTop() {
             window.scrollTo({
                 top: 0,
-                behavior: 'smooth',
             });
         },
-    }
-}
+    },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -84,7 +89,7 @@ export default {
     padding: 1rem 5rem 3rem;
 
     @include respond-to(sm) {
-        flex-direction: column; 
+        flex-direction: column;
         overflow-y: auto;
     }
 
@@ -97,13 +102,13 @@ export default {
 
         @include respond-to(sm) {
             width: 50%;
-            height: 35rem;  
+            height: 35rem;
         }
 
         @include respond-to(xs) {
             width: 100%;
             padding: 0 4rem;
-            height: 35rem;  
+            height: 35rem;
         }
     }
 
@@ -127,7 +132,7 @@ export default {
         text-align: left;
 
         @include respond-to(sm) {
-            margin-bottom: 1rem; 
+            margin-bottom: 1rem;
         }
     }
 
@@ -147,6 +152,12 @@ export default {
         @include respond-to(xs) {
             top: -15px;
             right: 0;
+        }
+    }
+
+    &__param {
+        &:nth-child(n + 2) {
+            margin-top: 12px;
         }
     }
 }

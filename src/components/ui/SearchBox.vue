@@ -1,18 +1,14 @@
 <template>
     <div class="search-box" :class="classes">
-        <input 
+        <input
             class="search-box__input"
-            type="text" 
-            placeholder="Введите название" 
+            type="text"
+            placeholder="Введите название"
             v-model.trim="filmNameFromSearch"
             @keyup.enter="setNameFilm"
         />
 
-        <div 
-            class="search-box__button"
-            @click="setNameFilm"
-        >                
-        </div> 
+        <div class="search-box__button" @click="setNameFilm"></div>
     </div>
 </template>
 
@@ -39,7 +35,7 @@ export default {
         classes() {
             return {
                 '_menu': this.isMenu,
-            }
+            };
         },
     },
 
@@ -66,7 +62,6 @@ export default {
     }
 
     &._menu {
-
         @include respond-to(sm) {
             display: block;
         }
@@ -78,8 +73,8 @@ export default {
         padding: 2rem;
         border: 1px solid $border-main;
         border-radius: 5px;
-        transition: all .5s ease;
-        
+        transition: all 0.5s ease;
+
         &:hover {
             border-radius: 24px;
         }
@@ -87,7 +82,7 @@ export default {
         @include respond-to(sm) {
             margin: 2rem 0;
             width: 100%;
-        }       
+        }
     }
 
     &__button {
@@ -96,7 +91,7 @@ export default {
         top: 0;
         right: 10%;
         width: 4rem;
-        height: 4rem; 
+        height: 4rem;
         cursor: pointer;
 
         @include respond-to(sm) {
@@ -106,11 +101,11 @@ export default {
         @include respond-to(xs) {
             right: 7.5%;
         }
-        
+
         &:after {
             content: '';
             position: absolute;
-            top: 22%; 
+            top: 22%;
             left: 78%;
             width: 60%;
             height: 60%;

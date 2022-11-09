@@ -3,36 +3,27 @@
         <div class="header__picture"></div>
 
         <section class="header__content">
-            <router-link 
-                to="/films/?page=1" 
+            <router-link
+                to="/films/?page=1"
                 class="header__logo"
                 @click="resetPage"
             >
                 Films
             </router-link>
 
-            <SearchBox 
-                @change-film-name="changeFilmName"
-            />
+            <SearchBox @change-film-name="changeFilmName" />
 
             <div class="header-burger">
-                <div 
+                <div
                     class="header-burger__button"
-                    :class="{'_active': isOpenBurgerMenu}"
+                    :class="{ _active: isOpenBurgerMenu }"
                     @click="openBurgerMenu"
-                >
-                </div>
+                ></div>
             </div>
         </section>
 
-        <div 
-            class="header__menu"
-            :class="{'_active': isOpenBurgerMenu}"
-        >
-            <SearchBox 
-                @change-film-name="changeFilmName"
-                is-menu
-            />
+        <div class="header__menu" :class="{ _active: isOpenBurgerMenu }">
+            <SearchBox @change-film-name="changeFilmName" is-menu />
         </div>
     </div>
 </template>
@@ -85,8 +76,8 @@ export default {
         resetPage() {
             this.$emit('reset-page');
         },
-    }
-}
+    },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -120,7 +111,7 @@ export default {
         margin: 0 auto;
         padding: 0 5rem;
         justify-content: space-between;
-        align-items: center;   
+        align-items: center;
         background-color: $white;
         border-radius: 5px;
 
@@ -131,7 +122,7 @@ export default {
 
         @include respond-to(md) {
             margin: 0 2rem;
-            padding: 0 1rem;    
+            padding: 0 1rem;
         }
 
         @include respond-to(sm) {
@@ -162,7 +153,7 @@ export default {
         padding: 12rem 2rem 0;
         background: $green;
         transform: translateY(+150%);
-        transition: transform .5s ease;
+        transition: transform 0.5s ease;
 
         @include respond-to(xs) {
             padding: 8rem 2rem 0;
@@ -193,8 +184,8 @@ export default {
             padding: 2rem;
             border: 1px solid $border-main;
             border-radius: 5px;
-            transition: all .5s ease;
-            
+            transition: all 0.5s ease;
+
             &:hover {
                 border-radius: 24px;
             }
@@ -202,7 +193,7 @@ export default {
             @include respond-to(sm) {
                 margin: 2rem 0;
                 width: 100%;
-            }       
+            }
         }
 
         &__button {
@@ -211,7 +202,7 @@ export default {
             top: 0;
             right: 10%;
             width: 4rem;
-            height: 4rem; 
+            height: 4rem;
             cursor: pointer;
 
             @include respond-to(sm) {
@@ -221,11 +212,11 @@ export default {
             @include respond-to(xs) {
                 right: 7.5%;
             }
-            
+
             &:after {
                 content: '';
                 position: absolute;
-                top: 22%; 
+                top: 22%;
                 left: 78%;
                 width: 60%;
                 height: 60%;
@@ -255,7 +246,7 @@ export default {
 
         &__button {
             position: relative;
-            
+
             @include respond-to(sm) {
                 height: 2px;
                 width: 30px;
@@ -268,7 +259,7 @@ export default {
                     height: 2px;
                     width: 30px;
                     background-color: $black;
-                    transition: all .3s ease;
+                    transition: all 0.3s ease;
                 }
 
                 &:before {

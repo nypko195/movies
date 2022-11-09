@@ -1,6 +1,11 @@
 <template>
     <div class="footer">
-        <a href="https://t.me/nypko195" class="footer__title title" target="_blank">by Sviridov.A.</a>
+        <a
+            href="https://t.me/nypko195"
+            class="footer__title title"
+            target="_blank"
+            >by Sviridov.A.</a
+        >
     </div>
 </template>
 
@@ -12,8 +17,8 @@
     margin: 0 auto;
     padding: 0 5rem;
     justify-content: space-between;
-    align-items: center; 
-    color: $title-footer;  
+    align-items: center;
+    color: $title-footer;
     background-color: $white;
     border-radius: 5px;
 
@@ -22,7 +27,7 @@
         margin: 0 10rem;
     }
 
-    @include respond-to(md) {    
+    @include respond-to(md) {
         margin: 0 2rem;
         padding: 0 1rem;
     }

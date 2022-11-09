@@ -1,20 +1,20 @@
 <template>
     <div class="pagination">
-        <button 
+        <button
             v-show="isShowBtnPrev"
             class="pagination__button-prev button-pagination"
-            :class="{'_disabled': isDisabled}"
-            @click="prevPage"                
+            :class="{ _disabled: isDisabled }"
+            @click="prevPage"
         >
             prev
         </button>
 
-        <span class="pagination__page">{{ page }}</span>
+        <span class="pagination__page">{{ currentPage }}</span>
 
         <button
             v-show="isShowBtnNext"
             class="pagination__button-next button-pagination"
-            :class="{'_disabled': isDisabled}"
+            :class="{ _disabled: isDisabled }"
             @click="nextPage"
         >
             next
@@ -26,38 +26,74 @@
 export default {
     name: 'Pagination',
 
+    emits: ['change-current-page', 'scroll-to-top-page'],
+
     props: {
-        page: {
+        currentPage: {
             type: [Number, String],
             default: 0,
-        },        
-
-        isShowBtnPrev: {
-            type: Boolean,
-            default: false,
         },
 
-        isShowBtnNext: {
-            type: Boolean,
-            default: false,
+        numberShowFilmsCards: {
+            type: Number,
+            default: 10,
         },
 
         isDisabled: {
             type: Boolean,
             default: false,
         },
+
+        isMobile: {
+            type: Boolean,
+            default: false,
+        },
+
+        isTablet: {
+            type: Boolean,
+            default: false,
+        },
+    },
+
+    computed: {
+        isShowBtnPrev() {
+            return (
+                this.currentPage !== 1 ||
+                (this.numberShowFilmsCards < 10 &&
+                    this.numberShowFilmsCards > 1)
+            );
+        },
+
+        isShowBtnNext() {
+            return this.numberShowFilmsCards >= 10;
+        },
     },
 
     methods: {
-        prevPage() {
-            this.$emit('prev-page');
+        nextPage() {
+            let page = this.currentPage;
+            page++;
+            this.$emit('change-current-page', page);
+
+            this.$router.push(`${this.$route.path}?page=${page}`);
+
+            if (this.isTablet || this.isMobile) {
+                this.$emit('scroll-to-top-page');
+            }
         },
 
-        nextPage() {
-            this.$emit('next-page');
+        prevPage() {
+            let page = this.currentPage;
+            page--;
+            this.$emit('change-current-page', page);
+            this.$router.push(`${this.$route.path}?page=${page}`);
+
+            if (this.isTablet || this.isMobile) {
+                this.$emit('scroll-to-top-page');
+            }
         },
     },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -65,7 +101,7 @@ export default {
     position: relative;
     width: 100%;
     margin-top: 2rem;
-    margin-bottom:5rem;
+    margin-bottom: 5rem;
     font-weight: 700;
 
     @include respond-to(sm) {
@@ -73,10 +109,9 @@ export default {
     }
 
     &__button {
-
         &._disabled {
             pointer-events: none;
-            opacity: .4;
+            opacity: 0.4;
         }
 
         &-prev {
@@ -110,6 +145,6 @@ export default {
         font-size: 1.6rem;
         font-weight: 700;
         cursor: default;
-    }     
+    }
 }
 </style>

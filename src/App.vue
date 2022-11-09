@@ -1,14 +1,8 @@
 <template>
     <div class="wrapper">
-        <TheHeader
-            @reset-page="resetPage"
-            @change-film-name="changeFilmName" 
-        />
+        <TheHeader @reset-page="resetPage" @change-film-name="changeFilmName" />
 
-        <PageFilms
-            ref="page"
-            :film-name-from-search="filmNameFromSearch"
-        />
+        <PageFilms ref="page" :film-name-from-search="filmNameFromSearch" />
 
         <TheFooter />
     </div>
@@ -43,13 +37,13 @@ export default {
         resetPage() {
             this.$refs.page.getFilms();
         },
-    }
-}
+    },
+};
 </script>
 
 <style lang="scss">
-@import "normalize-scss";
-@import "./styles/bundle.scss";
+@import 'normalize-scss';
+@import './styles/bundle.scss';
 
 html {
     font-family: 'Roboto Mono', monospace;
@@ -122,14 +116,15 @@ button {
 
 .text {
     font-size: 1.6rem;
+    line-height: 2rem;
 }
 
 .button-pagination {
     position: absolute;
     width: 10rem;
     height: 3rem;
-    background-color: $green; 
-    border: none; 
+    background-color: $green;
+    border: none;
     color: $white;
     font-size: 1.6rem;
     font-weight: 700;
@@ -143,13 +138,13 @@ button {
 .button {
     display: inline-block;
     padding: 20px;
-    background-color: $green; 
-    border: none; 
+    background-color: $green;
+    border: none;
     color: $white;
     font-size: 1.6rem;
     font-weight: 700;
-    opacity: .9;
-    transition: all .5s ease;
+    opacity: 0.9;
+    transition: all 0.5s ease;
 
     &:hover {
         border-radius: 24px;
@@ -163,7 +158,7 @@ button {
 
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity .3s ease;
+    transition: opacity 0.3s ease;
 }
 
 .fade-enter-from,
