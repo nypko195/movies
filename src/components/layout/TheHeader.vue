@@ -51,6 +51,7 @@ export default {
             if (!name) return;
 
             this.$emit('change-film-name', name);
+            this.goToFirstPage();
             this.resetBurgerMenu();
         },
 
@@ -75,6 +76,10 @@ export default {
 
         resetPage() {
             this.$emit('reset-page');
+        },
+
+        goToFirstPage() {
+            this.$router.push(`${this.$route.path}?page=1`);
         },
     },
 };

@@ -55,22 +55,28 @@ export default {
 
     methods: {
         async getFilms(isNeedFilms) {
-            this.isShowLoader = true;
+            try {
+                this.isShowLoader = true;
 
-            if (isNeedFilms) {
-                let newFilms = await getFilmsByPage(this.requestPageNumber);
+                if (isNeedFilms) {
+                    let newFilms = await getFilmsByPage(this.requestPageNumber);
 
-                this.films = [...this.films, ...newFilms];
-                this.requestPageNumber++;
+                    this.films = [...this.films, ...newFilms];
+                    this.requestPageNumber++;
 
+                    this.isShowLoader = false;
+                    return;
+                }
+
+                this.films = await getFilms();
+
+                this.isFilmsNotFound = false;
                 this.isShowLoader = false;
-                return;
+            } catch (err) {
+                console.log('[PageFilms.vue]: Failed to load method getFils', err)
+
+                this.$router.push({name: 'error', params: {err}});
             }
-
-            this.films = await getFilms();
-
-            this.isFilmsNotFound = false;
-            this.isShowLoader = false;
         },
 
         async getExtraFilms() {
@@ -78,22 +84,28 @@ export default {
         },
 
         async getFilmOfSearch() {
-            if (!this.filmNameFromSearch) return;
-            this.isShowLoader = true;
+            try {
+                if (!this.filmNameFromSearch) return;
+                this.isShowLoader = true;
 
-            if (this.isFilmsNotFound) {
-                this.isFilmsNotFound = false;
+                if (this.isFilmsNotFound) {
+                    this.isFilmsNotFound = false;
+                }
+
+                this.films = await getFilmOfSearch(
+                    this.normalizeNameFilm(this.filmNameFromSearch)
+                );
+
+                if (!this.films.length) {
+                    this.isFilmsNotFound = true;
+                }
+
+                this.isShowLoader = false;
+            } catch (err) {
+                console.log('[PageFilms.vue]: Failed to load method getFilmOfSearch', err)
+
+                this.$router.push({name: 'error', params: {err}});
             }
-
-            this.films = await getFilmOfSearch(
-                this.normalizeNameFilm(this.filmNameFromSearch)
-            );
-
-            if (!this.films.length) {
-                this.isFilmsNotFound = true;
-            }
-
-            this.isShowLoader = false;
         },
 
         checkParamsUrl() {
@@ -141,7 +153,7 @@ export default {
             ) {
                 this.$router.push({ name: 'listFilms' });
             } else {
-                this.$router.push({ name: 'notFound' });
+                this.$router.push({ name: 'error' });
             }
         },
 

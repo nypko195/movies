@@ -5,7 +5,7 @@ import ListFilms from './components/films/ListFilms.vue';
 import CardFilm from './components/films/CardFilm.vue';
 
 //error
-import NotFound from './pages/error/NotFound.vue';
+import Error from './pages/error/Error.vue';
 
 export const router = createRouter({
     history: createWebHistory(),
@@ -30,8 +30,9 @@ export const router = createRouter({
 
         {
             path: '/:pathMatch(.*)*',
-            name: 'notFound',
-            component: NotFound,
+            name: 'error',
+            component: Error,
+            props: true,
         },
     ],
 });

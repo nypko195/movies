@@ -12,7 +12,7 @@ export async function getFilms() {
 
         return data;
     } catch (err) {
-        console.log('[index.js]: Failed to load method getFils', err);
+        throw err;
     }
 }
 
@@ -24,7 +24,7 @@ export async function getFilmsByPage(page) {
 
         return data;
     } catch (err) {
-        console.log('[index.js]: Failed to load method getFilmsByPage', err);
+        throw err;
     }
 }
 
@@ -36,6 +36,6 @@ export async function getFilmOfSearch(searchNameFilm) {
 
         return data;
     } catch (err) {
-        console.log('[index.js]: Failed to load method getFilmOfSearch', err);
+        throw err;
     }
 }
