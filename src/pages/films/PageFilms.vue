@@ -18,8 +18,8 @@
 </template>
 
 <script>
-// function
 import { getFilms, getFilmsByPage, getFilmOfSearch } from '../../api/index.js';
+import { MAX_NUMBER_CARD_ON_PAGE } from '../../helpers/constants.js';
 
 export default {
     name: 'PageFilms',
@@ -40,43 +40,63 @@ export default {
         };
     },
 
+    computed: {
+        hasParamsUrl() {
+            return Boolean(this.$route.params?.page && this.$route.params?.id);
+        },
+    },
+
     watch: {
         async filmNameFromSearch() {
             if (!this.filmNameFromSearch) return;
 
-            await this.getFilmOfSearch();
+            try {
+                await this.getFilmOfSearch();
+            } catch (err) {
+                console.log('[PageFilms.vue]: Failed to load method getFilmOfSearch', err)
+
+                this.$router.push({name: 'error', params: {err}});
+            }
         },
     },
 
     async mounted() {
         await this.getFilms();
-        this.checkParamsUrl();
+        this.getParamsUrl();
     },
 
     methods: {
         async getFilms(isNeedFilms) {
-            try {
-                this.isShowLoader = true;
+            this.isShowLoader = true;
 
-                if (isNeedFilms) {
-                    let newFilms = await getFilmsByPage(this.requestPageNumber);
+            if (isNeedFilms) {
+                let newFilms;
 
-                    this.films = [...this.films, ...newFilms];
-                    this.requestPageNumber++;
+                try {
+                    newFilms = await getFilmsByPage(this.requestPageNumber); 
+                } catch (err) {
+                    console.log('[PageFilms.vue]: Failed to load method getFils', err)
 
-                    this.isShowLoader = false;
-                    return;
+                    this.$router.push({name: 'error', params: {err}});
                 }
 
-                this.films = await getFilms();
+                this.films = [...this.films, ...newFilms];
+                this.requestPageNumber++;
 
-                this.isFilmsNotFound = false;
                 this.isShowLoader = false;
+                return;
+            }
+
+            try {
+                this.films = await getFilms();
             } catch (err) {
                 console.log('[PageFilms.vue]: Failed to load method getFils', err)
 
                 this.$router.push({name: 'error', params: {err}});
             }
+
+            this.isFilmsNotFound = false;
+            this.isShowLoader = false;
         },
 
         async getExtraFilms() {
@@ -84,77 +104,91 @@ export default {
         },
 
         async getFilmOfSearch() {
+            if (!this.filmNameFromSearch) return;
+            this.isShowLoader = true;
+
+            if (this.isFilmsNotFound) {
+                this.isFilmsNotFound = false;
+            }
+
             try {
-                if (!this.filmNameFromSearch) return;
-                this.isShowLoader = true;
-
-                if (this.isFilmsNotFound) {
-                    this.isFilmsNotFound = false;
-                }
-
                 this.films = await getFilmOfSearch(
                     this.normalizeNameFilm(this.filmNameFromSearch)
                 );
-
-                if (!this.films.length) {
-                    this.isFilmsNotFound = true;
-                }
-
-                this.isShowLoader = false;
             } catch (err) {
                 console.log('[PageFilms.vue]: Failed to load method getFilmOfSearch', err)
 
                 this.$router.push({name: 'error', params: {err}});
             }
+
+            if (!this.films.length) {
+                this.isFilmsNotFound = true;
+            }
+
+            this.isShowLoader = false;
         },
 
-        checkParamsUrl() {
-            if (!this.films.length) return;
+        getParamsUrl() {
+            if (!this.films.length && !this.hasParamsUrl) return;
 
-            let pageNumber = this.$route.query?.page;
-            let urlParams = [];
-
-            if (pageNumber) {
-                urlParams = pageNumber.split('/');
-            }
+            let urlParams = this.$route.query.page.split('/');
 
             if (!urlParams.length) return;
 
-            this.openPage(urlParams, pageNumber);
+            this.opensOneOfThePages(this.setParamsUrl(urlParams));
         },
 
-        getFilmById(id) {
+        setParamsUrl(urlParams) {
+            return {
+                page: urlParams[0],
+                id: urlParams[1],
+            };
+        },
+
+        findNeededFilm(id) {
             return this.films.filter((film) => {
                 return film.id === Number(id);
             });
         },
 
-        openPage(urlParams, pageNumber) {
-            const DISPLAYED_CARDS_COUNT = 10;
-            let film = [];
+        getFilmById(id) {
+            return this.findNeededFilm(id)[0];
+        },
 
-            if (urlParams.length >= 2);
-            {
-                film = this.getFilmById(urlParams[1]);
+        opensOneOfThePages(urlParams) {
+            let film;
+
+            if (Object.keys(urlParams).length === 2 && urlParams?.id) {
+                film = this.getFilmById(urlParams.id);
             }
 
-            if (film[0]?.id && urlParams.length === 2) {
-                this.$router.push({
-                    name: 'сardFilm',
-                    params: {
-                        page: urlParams[0],
-                        id: film[0].id,
-                        film: JSON.stringify(film[0]),
-                    },
-                });
-            } else if (
-                this.films.length / DISPLAYED_CARDS_COUNT >=
-                Number(pageNumber)
-            ) {
+            if (film?.id) {
+                this.openCardFilm(film, urlParams)
+                return;
+            }
+
+            if ((this.films.length / MAX_NUMBER_CARD_ON_PAGE) >= Number(urlParams.page)) {
                 this.$router.push({ name: 'listFilms' });
-            } else {
-                this.$router.push({ name: 'error' });
+                return;
             }
+
+            this.openErrorPage();
+        },
+
+
+        openErrorPage() {
+            this.$router.push({ name: 'error' });
+        },
+
+        openCardFilm(film, urlParams) {
+            this.$router.push({
+                name: 'сardFilm',
+                params: {
+                    page: urlParams.page,
+                    id: film.id,
+                    sourceFilm: JSON.stringify(film),
+                },
+            });
         },
 
         normalizeNameFilm(name) {

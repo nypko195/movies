@@ -2,10 +2,11 @@
     <div class="footer">
         <a
             href="https://t.me/nypko195"
-            class="footer__title title"
+            class="footer__link title"
             target="_blank"
-            >by Sviridov.A.</a
         >
+            by Sviridov.A.
+        </a>
     </div>
 </template>
 
@@ -36,7 +37,7 @@
         justify-content: center;
     }
 
-    &__title {
+    &__link {
         font-weight: 700;
         transition: all 0.3s ease;
 

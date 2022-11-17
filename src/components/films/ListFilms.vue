@@ -5,7 +5,7 @@
         К сожалению, по вашему запросу ничего не найдено...
     </div>
 
-    <div v-else class="list-films js-list-films">
+    <div v-else class="list-films">
         <div ref="list" class="list-films__content">
             <router-link
                 class="list-films__item"
@@ -40,11 +40,9 @@
 
         <Pagination
             v-if="films.length"
-            :current-page="currentPage"
+            :current-page="Number(currentPage)"
             :is-disabled="isShowLoader"
-            :number-show-films-card="displayedFilmsCards.length"
-            :is-mobile="isMobile"
-            :is-tablet="isTablet"
+            :number-show-films-cards="displayedFilmsCards.length"
             @change-current-page="changeCurrentPage"
             @scroll-to-top-page="scrollToTopPage"
         />
@@ -54,14 +52,11 @@
 <script>
 import { MAX_NUMBER_CARD_ON_PAGE } from '../../helpers/constants.js';
 
-// components
 import Loader from '../ui/Loader.vue';
 import Pagination from '../ui/Pagination.vue';
 
 export default {
     name: 'ListFilms',
-
-    inject: ['mq'],
 
     emits: ['get-extra-films'],
 
@@ -95,28 +90,10 @@ export default {
 
     created() {
         this.openPage();
-
-        this.$router.beforeEach((to) => {
-            if (to.fullPath === '/films/?page=1') {
-                this.currentPage = 1;
-            }
-        });
+        this.goToFirstPage();
     },
 
     computed: {
-        isMobile() {
-            const isScreenSizeXs = this.mq.current === 'xs';
-            const isScreenSizeZero = this.mq.current === 'zero';
-
-            return isScreenSizeXs || isScreenSizeZero;
-        },
-
-        isTablet() {
-            const isScreenSizeSm = this.mq.current === 'sm';
-
-            return isScreenSizeSm;
-        },
-
         displayedFilmsCards() {
             return this.films.slice(this.minCountCards, this.maxCountCards);
         },
@@ -142,9 +119,7 @@ export default {
 
     watch: {
         currentPage() {
-            let endFilmList =
-                this.currentPage ===
-                this.films.length / MAX_NUMBER_CARD_ON_PAGE;
+            let endFilmList = this.currentPage === (this.films.length / MAX_NUMBER_CARD_ON_PAGE);
 
             if (endFilmList) {
                 this.$emit('get-extra-films');
@@ -154,16 +129,14 @@ export default {
 
     methods: {
         scrollToTopPage() {
-            if (this.isTablet || this.isMobile) {
-                let el = this.$refs.list;
-                let scrollPosition =
-                    el.getBoundingClientRect().top + window.pageYOffset;
+            let el = this.$refs.list;
+            let distanceFromElToTopBorder = el.getBoundingClientRect().top
+            let scrollPosition = distanceFromElToTopBorder + window.pageYOffset;
 
-                window.scrollTo({
-                    top: scrollPosition,
-                    behavior: 'smooth',
-                });
-            }
+            window.scrollTo({
+                top: scrollPosition,
+                behavior: 'smooth',
+            });
         },
 
         changeCurrentPage(page) {
@@ -173,6 +146,14 @@ export default {
         openPage() {
             this.currentPage = this.defineInitialPage;
             this.$router.push(`${this.$route.path}?page=${this.currentPage}`);
+        },
+
+        goToFirstPage() {
+            this.$router.beforeEach((to) => {
+                if (to.fullPath === '/films/?page=1') {
+                    this.currentPage = 1;
+                }
+            });
         },
     },
 };

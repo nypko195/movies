@@ -1,9 +1,11 @@
 <template>
     <div class="error">
-        <div class="error__title">{{ errorCode }}</div>
+        <div class="error__title">
+            {{ title }}
+        </div>
 
         <div class="error__subtitle">
-            {{ errorMessage }}
+            {{ message }}
         </div>
 
         <router-link
@@ -14,7 +16,8 @@
             Вернуться на главную
         </router-link>
 
-        <button v-else
+        <button 
+            v-else
             class="error__button button"
             @click="reloadPage"
         >
@@ -35,11 +38,11 @@ export default {
     },
 
     computed: {
-        errorCode() {
+        title() {
             return this.err ? 'Упс' : '404';
         },
 
-        errorMessage() {
+        message() {
             return this.err
                 ? 'Что-то пошло не так!'
                 : 'Что-то пошло не так! Страница, которую вы запросили не существует';

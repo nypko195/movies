@@ -30,7 +30,7 @@ export default {
 
     props: {
         currentPage: {
-            type: [Number, String],
+            type: Number,
             default: 0,
         },
 
@@ -40,16 +40,6 @@ export default {
         },
 
         isDisabled: {
-            type: Boolean,
-            default: false,
-        },
-
-        isMobile: {
-            type: Boolean,
-            default: false,
-        },
-
-        isTablet: {
             type: Boolean,
             default: false,
         },
@@ -76,21 +66,16 @@ export default {
             this.$emit('change-current-page', page);
 
             this.$router.push(`${this.$route.path}?page=${page}`);
-
-            if (this.isTablet || this.isMobile) {
-                this.$emit('scroll-to-top-page');
-            }
+            this.$emit('scroll-to-top-page');
         },
 
         prevPage() {
             let page = this.currentPage;
             page--;
             this.$emit('change-current-page', page);
-            this.$router.push(`${this.$route.path}?page=${page}`);
 
-            if (this.isTablet || this.isMobile) {
-                this.$emit('scroll-to-top-page');
-            }
+            this.$router.push(`${this.$route.path}?page=${page}`);
+            this.$emit('scroll-to-top-page');
         },
     },
 };

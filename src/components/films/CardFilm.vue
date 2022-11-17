@@ -7,8 +7,7 @@
         />
         <div class="card-film__info">
             <h2 class="card-film__title">
-                {{ film.name_russian }} ({{ film.year }}) смотреть
-                онлайн
+                {{ film.name_russian }} ({{ film.year }}) смотреть онлайн
             </h2>
 
             <ul class="card-film__params">
@@ -32,13 +31,10 @@
 </template>
 
 <script>
-// components
 import ButtonClose from '../ui/ButtonClose.vue';
 
 export default {
     name: 'CardFilm',
-
-    inject: ['mq'],
 
     components: {
         ButtonClose,
@@ -55,27 +51,11 @@ export default {
         film() {
             return JSON.parse(this.sourceFilm);
         },
-
-        isMobile() {
-            return this.mq.current === 'zero';
-        },
-    },
-
-    mounted() {
-        if (this.isMobile) {
-            this.scrollToTop();
-        }
     },
 
     methods: {
         close() {
             this.$router.push('/');
-        },
-
-        scrollToTop() {
-            window.scrollTo({
-                top: 0,
-            });
         },
     },
 };

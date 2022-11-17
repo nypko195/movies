@@ -8,7 +8,7 @@
             @keyup.enter="setNameFilm"
         />
 
-        <div class="search-box__button" @click="setNameFilm"></div>
+        <button class="search-box__button" @click="setNameFilm"></button>
     </div>
 </template>
 

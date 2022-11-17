@@ -9,7 +9,6 @@
 </template>
 
 <script>
-// components
 import TheHeader from './components/layout/TheHeader.vue';
 import PageFilms from './pages/films/PageFilms.vue';
 import TheFooter from './components/layout/TheFooter.vue';

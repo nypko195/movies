@@ -30,7 +30,7 @@ export async function getFilmsByPage(page) {
 
 export async function getFilmOfSearch(searchNameFilm) {
     try {
-        const response = await fetch(`${urlSearchFilm + searchNameFilm}`);
+        const response = await fetch(`${urlSearchFilm}${searchNameFilm}`);
 
         let { data } = await response.json();
 

@@ -1,10 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-//page
 import ListFilms from './components/films/ListFilms.vue';
 import CardFilm from './components/films/CardFilm.vue';
 
-//error
 import Error from './pages/error/Error.vue';
 
 export const router = createRouter({
