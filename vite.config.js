@@ -9,9 +9,16 @@ export default defineConfig({
     vue(),
     stylelint({
       fix: true,
+      cache: false,
       include: ['src/**/*.{scss,vue,}'],
     }),
-    eslintPlugin(),
+    eslintPlugin({
+      fix: true,
+      cache: false,
+      include: ['src/**/*.{scss,vue,}'],
+      emitError: true,
+      emitWarning: true,
+    }),
   ],
 
   css: { 
