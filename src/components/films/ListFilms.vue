@@ -8,9 +8,9 @@
     <div v-else class="list-films">
         <div ref="list" class="list-films__content">
             <router-link
-                class="list-films__item"
                 v-for="film in displayedFilmsCards"
                 :key="film.id"
+                class="list-films__item"
                 :to="{
                     name: 'сardFilm',
                     params: {
@@ -50,15 +50,13 @@
 </template>
 
 <script>
-import { MAX_NUMBER_CARD_ON_PAGE } from '../../helpers/constants.js';
+import {MAX_NUMBER_CARD_ON_PAGE} from '../../helpers/constants.js';
 
 import Loader from '../ui/Loader.vue';
 import Pagination from '../ui/Pagination.vue';
 
 export default {
     name: 'ListFilms',
-
-    emits: ['get-extra-films'],
 
     components: {
         Loader,
@@ -68,7 +66,7 @@ export default {
     props: {
         films: {
             type: Array,
-            default: () => ([]),
+            default: () => [],
         },
 
         isShowLoader: {
@@ -82,15 +80,12 @@ export default {
         },
     },
 
+    emits: ['get-extra-films'],
+
     data() {
         return {
             currentPage: 1,
         };
-    },
-
-    created() {
-        this.openPage();
-        this.goToFirstPage();
     },
 
     computed: {
@@ -119,7 +114,9 @@ export default {
 
     watch: {
         currentPage() {
-            let endFilmList = this.currentPage === (this.films.length / MAX_NUMBER_CARD_ON_PAGE);
+            let endFilmList =
+                this.currentPage ===
+                this.films.length / MAX_NUMBER_CARD_ON_PAGE;
 
             if (endFilmList) {
                 this.$emit('get-extra-films');
@@ -127,10 +124,15 @@ export default {
         },
     },
 
+    created() {
+        this.openPage();
+        this.goToFirstPage();
+    },
+
     methods: {
         scrollToTopPage() {
             let el = this.$refs.list;
-            let distanceFromElToTopBorder = el.getBoundingClientRect().top
+            let distanceFromElToTopBorder = el.getBoundingClientRect().top;
             let scrollPosition = distanceFromElToTopBorder + window.pageYOffset;
 
             window.scrollTo({
@@ -172,7 +174,7 @@ export default {
     }
 
     @include respond-to(xs) {
-        padding: 0 0.5rem;
+        padding: 0 .5rem;
     }
 
     &__not-found {
@@ -211,10 +213,10 @@ export default {
 
         &:hover {
             top: -2px;
-            box-shadow: 0px 5px 10px 2px rgba(74, 153, 153, 0.36);
+            box-shadow: 0 5px 10px 2px rgb(74 153 153 / 36%);
 
             &:before {
-                content: '';
+                content: "";
                 position: absolute;
                 z-index: 1;
                 top: calc(50% - 3.5rem);
@@ -226,11 +228,11 @@ export default {
             }
 
             &:after {
-                content: '';
+                content: "";
                 position: absolute;
                 z-index: 1;
                 top: calc(50% - 2rem);
-                left: calc(50% - 0.5rem);
+                left: calc(50% - .5rem);
                 border: 2rem solid transparent;
                 border-left: 2rem solid $white;
             }
@@ -288,7 +290,7 @@ export default {
         min-width: 17rem;
         width: 100%;
         height: 25rem;
-        background-image: url('../../assets/placeholder.png');
+        background-image: url("../../assets/placeholder.png");
         background-size: contain;
 
         @include respond-to(sm) {

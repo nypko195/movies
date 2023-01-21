@@ -1,10 +1,19 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-
 // https://vitejs.dev/config/
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import stylelint from 'vite-plugin-stylelint';
+import eslintPlugin from 'vite-plugin-eslint';
+
 export default defineConfig({
-  plugins: [vue()],
-  
+  plugins: [
+    vue(),
+    stylelint({
+      fix: true,
+      include: ['src/**/*.{scss,vue,}'],
+    }),
+    eslintPlugin(),
+  ],
+
   css: { 
     preprocessorOptions : { 
         scss : { 
@@ -12,4 +21,4 @@ export default defineConfig({
         } 
     } 
   },
-})
+});

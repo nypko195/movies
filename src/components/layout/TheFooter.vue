@@ -39,7 +39,7 @@
 
     &__link {
         font-weight: 700;
-        transition: all 0.3s ease;
+        transition: all .3s ease;
 
         &:hover {
             transform: scale(1.1);

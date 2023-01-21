@@ -1,10 +1,6 @@
 <template>
     <div class="card-film">
-        <img
-            class="card-film__poster"
-            :src="film.small_poster"
-            :alt="film.name"
-        />
+        <img :src="film.small_poster" class="card-film__poster" :alt="film.name" />
         <div class="card-film__info">
             <h2 class="card-film__title">
                 {{ film.name_russian }} ({{ film.year }}) смотреть онлайн
@@ -136,6 +132,7 @@ export default {
     }
 
     &__param {
+
         &:nth-child(n + 2) {
             margin-top: 12px;
         }

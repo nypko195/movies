@@ -26,8 +26,6 @@
 export default {
     name: 'Pagination',
 
-    emits: ['change-current-page', 'scroll-to-top-page'],
-
     props: {
         currentPage: {
             type: Number,
@@ -44,6 +42,8 @@ export default {
             default: false,
         },
     },
+
+    emits: ['change-current-page', 'scroll-to-top-page'],
 
     computed: {
         isShowBtnPrev() {
@@ -94,9 +94,10 @@ export default {
     }
 
     &__button {
+
         &._disabled {
             pointer-events: none;
-            opacity: 0.4;
+            opacity: .4;
         }
 
         &-prev {

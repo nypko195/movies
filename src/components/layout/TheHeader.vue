@@ -16,14 +16,14 @@
             <div class="header-burger">
                 <div
                     class="header-burger__button"
-                    :class="{ _active: isOpenBurgerMenu }"
+                    :class="{_active: isOpenBurgerMenu}"
                     @click="openBurgerMenu"
                 ></div>
             </div>
         </section>
 
-        <div class="header__menu" :class="{ _active: isOpenBurgerMenu }">
-            <SearchBox @change-film-name="changeFilmName" is-menu />
+        <div class="header__menu" :class="{_active: isOpenBurgerMenu}">
+            <SearchBox is-menu @change-film-name="changeFilmName" />
         </div>
     </div>
 </template>
@@ -34,11 +34,11 @@ import SearchBox from '../ui/SearchBox.vue';
 export default {
     name: 'TheHeader',
 
-    emits: ['change-film-name', 'reset-page'],
-
     components: {
         SearchBox,
     },
+
+    emits: ['change-film-name', 'reset-page'],
 
     data() {
         return {
@@ -92,7 +92,7 @@ export default {
     &__picture {
         display: block;
         height: 28rem;
-        background-image: url('../../assets/header-bg/bg.jpg');
+        background-image: url("../../assets/header-bg/bg.jpg");
         background-repeat: no-repeat;
         background-position: top;
 
@@ -139,7 +139,7 @@ export default {
         color: $logo;
         font-size: 36px;
         font-weight: 700;
-        transition: all 0.3s ease;
+        transition: all .3s ease;
 
         &:hover {
             transform: scale(1.1);
@@ -158,7 +158,7 @@ export default {
         padding: 12rem 2rem 0;
         background: $green;
         transform: translateY(+150%);
-        transition: transform 0.5s ease;
+        transition: transform .5s ease;
 
         @include respond-to(xs) {
             padding: 8rem 2rem 0;
@@ -170,6 +170,7 @@ export default {
     }
 
     &-search {
+
         &__box {
             display: flex;
             position: relative;
@@ -189,7 +190,7 @@ export default {
             padding: 2rem;
             border: 1px solid $border-main;
             border-radius: 5px;
-            transition: all 0.5s ease;
+            transition: all .5s ease;
 
             &:hover {
                 border-radius: 24px;
@@ -219,13 +220,13 @@ export default {
             }
 
             &:after {
-                content: '';
+                content: "";
                 position: absolute;
                 top: 22%;
                 left: 78%;
                 width: 60%;
                 height: 60%;
-                background-image: url('../../assets/search.svg');
+                background-image: url("../../assets/search.svg");
                 background-repeat: no-repeat;
 
                 @include respond-to(md) {
@@ -259,12 +260,12 @@ export default {
 
                 &:before,
                 &:after {
-                    content: '';
+                    content: "";
                     position: absolute;
                     height: 2px;
                     width: 30px;
                     background-color: $black;
-                    transition: all 0.3s ease;
+                    transition: all .3s ease;
                 }
 
                 &:before {

@@ -14,37 +14,38 @@
 
     &:before,
     &:after {
-        content: '';
+        content: "";
         position: absolute;
         height: 2px;
         top: 23px;
         left: 10px;
         width: 2rem;
         background-color: $icon-reset;
-        transition: all 0.5s ease-out;
+        transition: all .5s ease-out;
     }
 
     &:before {
-        content: '';
+        content: "";
         transform: rotate(45deg);
     }
 
     &:after {
-        content: '';
+        content: "";
         transform: rotate(135deg);
     }
 
     &:hover {
+
         &:before {
-            content: '';
+            content: "";
             transform: rotate(135deg);
-            transition: all 0.5s ease-out;
+            transition: all .5s ease-out;
         }
 
         &:after {
-            content: '';
+            content: "";
             transform: rotate(225deg);
-            transition: all 0.5s ease-out;
+            transition: all .5s ease-out;
         }
     }
 }

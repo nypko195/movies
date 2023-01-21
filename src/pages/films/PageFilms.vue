@@ -1,7 +1,7 @@
 <template>
     <div class="page-films">
         <router-view
-            v-slot="{ Component }"
+            v-slot="{Component}"
             :is-show-loader="isShowLoader"
             :films="films"
             :search-name-film="filmNameFromSearch"
@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import { getFilms, getFilmsByPage, getFilmOfSearch } from '../../api/index.js';
-import { MAX_NUMBER_CARD_ON_PAGE } from '../../helpers/constants.js';
+import {getFilms, getFilmsByPage, getFilmOfSearch} from '../../api/index.js';
+import {MAX_NUMBER_CARD_ON_PAGE} from '../../helpers/constants.js';
 
 export default {
     name: 'PageFilms',
@@ -53,7 +53,10 @@ export default {
             try {
                 await this.getFilmOfSearch();
             } catch (err) {
-                console.log('[PageFilms.vue]: Failed to load method getFilmOfSearch', err)
+                console.log(
+                    '[PageFilms.vue]: Failed to load method getFilmOfSearch',
+                    err
+                );
 
                 this.$router.push({name: 'error', params: {err}});
             }
@@ -73,9 +76,12 @@ export default {
                 let newFilms;
 
                 try {
-                    newFilms = await getFilmsByPage(this.requestPageNumber); 
+                    newFilms = await getFilmsByPage(this.requestPageNumber);
                 } catch (err) {
-                    console.log('[PageFilms.vue]: Failed to load method getFils', err)
+                    console.log(
+                        '[PageFilms.vue]: Failed to load method getFils',
+                        err
+                    );
 
                     this.$router.push({name: 'error', params: {err}});
                 }
@@ -90,7 +96,10 @@ export default {
             try {
                 this.films = await getFilms();
             } catch (err) {
-                console.log('[PageFilms.vue]: Failed to load method getFils', err)
+                console.log(
+                    '[PageFilms.vue]: Failed to load method getFils',
+                    err
+                );
 
                 this.$router.push({name: 'error', params: {err}});
             }
@@ -116,7 +125,10 @@ export default {
                     this.normalizeNameFilm(this.filmNameFromSearch)
                 );
             } catch (err) {
-                console.log('[PageFilms.vue]: Failed to load method getFilmOfSearch', err)
+                console.log(
+                    '[PageFilms.vue]: Failed to load method getFilmOfSearch',
+                    err
+                );
 
                 this.$router.push({name: 'error', params: {err}});
             }
@@ -163,21 +175,23 @@ export default {
             }
 
             if (film?.id) {
-                this.openCardFilm(film, urlParams)
+                this.openCardFilm(film, urlParams);
                 return;
             }
 
-            if ((this.films.length / MAX_NUMBER_CARD_ON_PAGE) >= Number(urlParams.page)) {
-                this.$router.push({ name: 'listFilms' });
+            if (
+                this.films.length / MAX_NUMBER_CARD_ON_PAGE >=
+                Number(urlParams.page)
+            ) {
+                this.$router.push({name: 'listFilms'});
                 return;
             }
 
             this.openErrorPage();
         },
 
-
         openErrorPage() {
-            this.$router.push({ name: 'error' });
+            this.$router.push({name: 'error'});
         },
 
         openCardFilm(film, urlParams) {

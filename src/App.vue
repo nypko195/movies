@@ -41,14 +41,14 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'normalize-scss';
-@import './styles/bundle.scss';
+@import "normalize-scss";
+@import "./styles/bundle";
 
 html {
-    font-family: 'Roboto Mono', monospace;
+    font-family: "Roboto Mono", monospace;
     font-size: 10px;
     font-weight: 400;
-    letter-spacing: -0.01em;
+    letter-spacing: -.01em;
 }
 
 body {
@@ -86,8 +86,6 @@ optgroup,
 select,
 textarea {
     font-family: inherit;
-    -webkit-appearance: none;
-    -moz-appearance: none;
     appearance: none;
 }
 
@@ -98,8 +96,6 @@ button {
     outline: none;
     font-family: inherit;
     color: inherit;
-    -webkit-appearance: none;
-    -moz-appearance: none;
     appearance: none;
     cursor: pointer;
 }
@@ -142,8 +138,8 @@ button {
     color: $white;
     font-size: 1.6rem;
     font-weight: 700;
-    opacity: 0.9;
-    transition: all 0.5s ease;
+    opacity: .9;
+    transition: all .5s ease;
 
     &:hover {
         border-radius: 24px;
@@ -157,7 +153,7 @@ button {
 
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity 0.3s ease;
+    transition: opacity .3s ease;
 }
 
 .fade-enter-from,

@@ -1,10 +1,10 @@
 <template>
     <div class="search-box" :class="classes">
         <input
+            v-model.trim="filmNameFromSearch"
             class="search-box__input"
             type="text"
             placeholder="Введите название"
-            v-model.trim="filmNameFromSearch"
             @keyup.enter="setNameFilm"
         />
 
@@ -16,14 +16,14 @@
 export default {
     name: 'SearchBox',
 
-    emits: ['change-film-name'],
-
     props: {
         isMenu: {
             type: Boolean,
             default: false,
         },
     },
+
+    emits: ['change-film-name'],
 
     data() {
         return {
@@ -73,7 +73,7 @@ export default {
         padding: 2rem;
         border: 1px solid $border-main;
         border-radius: 5px;
-        transition: all 0.5s ease;
+        transition: all .5s ease;
 
         &:hover {
             border-radius: 24px;
@@ -103,13 +103,13 @@ export default {
         }
 
         &:after {
-            content: '';
+            content: "";
             position: absolute;
             top: 22%;
             left: 78%;
             width: 60%;
             height: 60%;
-            background-image: url('../../assets/search.svg');
+            background-image: url("../../assets/search.svg");
             background-repeat: no-repeat;
 
             @include respond-to(md) {
