@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import {createRouter, createWebHistory} from 'vue-router';
 
 import ListFilms from './components/films/ListFilms.vue';
 import CardFilm from './components/films/CardFilm.vue';
@@ -10,7 +10,7 @@ export const router = createRouter({
     routes: [
         {
             path: '',
-            redirect: { name: 'listFilms' },
+            redirect: {name: 'listFilms'},
         },
 
         {

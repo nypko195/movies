@@ -10,72 +10,68 @@
 
         <router-link
             v-if="!err"
-            :to="{ name: 'listFilms' }"
+            :to="{name: 'listFilms'}"
             class="error__button button"
         >
             Вернуться на главную
         </router-link>
 
-        <button 
-            v-else
-            class="error__button button"
-            @click="reloadPage"
-        >
+        <button v-else class="error__button button" @click="reloadPage">
             Попробуйте снова
         </button>
     </div>
 </template>
 
 <script>
-export default {
-    name: 'Error',
+    export default {
+        name: 'Error',
 
-    props: {
-        err: {
-            type: String,
-            default: '',
-        },
-    },
-
-    computed: {
-        title() {
-            return this.err ? 'Упс' : '404';
+        props: {
+            err: {
+                type: String,
+                default: '',
+            },
         },
 
-        message() {
-            return this.err
-                ? 'Что-то пошло не так!'
-                : 'Что-то пошло не так! Страница, которую вы запросили не существует';
-        },
-    },
+        computed: {
+            title() {
+                return this.err ? 'Упс' : '404';
+            },
 
-    methods: {
-        reloadPage() {
-            location.reload();
+            message() {
+                return this.err
+                    ? 'Что-то пошло не так!'
+                    : 'Что-то пошло не так! Страница, которую вы запросили не существует';
+            },
         },
-    },
-};
+
+        methods: {
+            reloadPage() {
+                location.reload();
+            },
+        },
+    };
 </script>
 
 <style lang="scss" scoped>
-.error {
-    width: 100%;
-    padding: 1rem 5rem;
+    .error {
+        width: 100%;
+        padding: 1rem 5rem;
 
-    &__title {
-        font-size: 12rem;
-        font-weight: 700;
-    }
+        &__title {
+            font-size: 12rem;
+            font-weight: 700;
+        }
 
-    &__subtitle {
-        font-size: 2rem;
-        font-weight: 700;
-    }
+        &__subtitle {
+            font-size: 2rem;
+            font-weight: 700;
+        }
 
-    &__button {
-        margin-top: 5rem;
-        cursor: pointer;
-        user-select: none;
+        &__button {
+            margin-top: 5rem;
+            cursor: pointer;
+            user-select: none;
+        }
     }
-}
 </style>
