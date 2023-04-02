@@ -2,7 +2,6 @@ module.exports = {
     env: {
         browser: true,
         node: true,
-        jquery: true,
     },
     extends: ['eslint:recommended', 'plugin:vue/vue3-recommended'],
     parserOptions: {
